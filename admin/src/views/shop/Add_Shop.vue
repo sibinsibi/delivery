@@ -79,7 +79,7 @@
                 <div class="app-card app-card-settings shadow-sm p-4">
                   <div class="app-card-body">
                     <div class="row">
-                      <div class="col-md-3 col-12">
+                      <div class="col-md-3 col-12 div-mt">
                         <input
                           type="text"
                           class="form-control"
@@ -89,7 +89,7 @@
                           autocomplete="off"
                         />
                       </div>
-                      <div class="col-md-3 col-12">
+                      <div class="col-md-3 col-12 div-mt">
                         <input
                           type="text"
                           class="form-control"
@@ -99,7 +99,7 @@
                           autocomplete="off"
                         />
                       </div>
-                      <div class="col-md-3 col-12">
+                      <div class="col-md-3 col-12 div-mt">
                         <input
                           type="text"
                           class="form-control"
@@ -109,7 +109,7 @@
                           autocomplete="off"
                         />
                       </div>
-                      <div class="col-md-3 col-12">
+                      <div class="col-md-3 col-12 div-mt">
                         <input
                           type="text"
                           class="form-control"

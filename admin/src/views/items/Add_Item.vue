@@ -129,7 +129,7 @@
           <div class="modal-body">
             <form id="item-form">
               <div class="row">
-                <div class="col-md-6 col-sm-6 ">
+                <div class="col-md-6 col-sm-6 div-mt">
                   <input
                     type="text"
                     class="form-control"
@@ -139,7 +139,7 @@
                     autocomplete="off"
                   />
                 </div>
-                <div class="col-md-6 col-sm-6">
+                <div class="col-md-6 col-sm-6  div-mt">
                   <input
                     type="text"
                     class="form-control"

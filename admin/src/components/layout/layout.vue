@@ -272,11 +272,17 @@
                   aria-labelledby="user-dropdown-toggle"
                 >
                   <li>
-                    <a class="dropdown-item" href="account.html">Account</a>
+                    <div class="dropdown-item">
+                      {{ $store.state.user.email }}
+                    </div>
                   </li>
                   <li>
-                    <a class="dropdown-item" href="settings.html">Settings</a>
+                    <hr class="dropdown-divider" />
                   </li>
+                  <li>
+                    <a class="dropdown-item" href="account.html">Account</a>
+                  </li>
+
                   <li>
                     <hr class="dropdown-divider" />
                   </li>
@@ -306,14 +312,15 @@
           >&times;</a
         >
         <div class="app-branding">
-          <a class="app-logo" href="index.html"
+          <router-link class="app-logo" to="/"
             ><img
               class="logo-icon me-2"
               src="img/web/app-logo.svg"
               alt="logo"
-            /><span class="logo-text">KOKACHI</span></a
+            /><span class="logo-text">KOKACHI</span></router-link
           >
         </div>
+        <div class="text-center">{{ $store.state.user.name }}</div>
         <!--//app-branding-->
 
         <nav id="app-nav-main" class="app-nav app-nav-main flex-grow-1">
@@ -345,7 +352,7 @@
               <!--//nav-link-->
             </li>
             <!--//nav-item-->
-         <!--   <li class="nav-item">
+            <!--   <li class="nav-item">
               <a class="nav-link" href="docs.html">
                 <span class="nav-icon">
                   <svg
@@ -517,7 +524,7 @@
               >
                 <span class="nav-icon">
                   <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                   <svg
+                  <svg
                     width="1em"
                     height="1em"
                     viewBox="0 0 16 16"
