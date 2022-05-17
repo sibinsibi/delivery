@@ -32,7 +32,7 @@ import Toaster from "@meforma/vue-toaster";
 createApp(App)
   .use(store)
   .use(router)
-  .use(Toaster, { position: "top-right" })
+  .use(Toaster, { position: "bottom"})
   .mount("#app");
 
 // createApp(App).mount('#app')
