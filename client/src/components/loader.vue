@@ -1,5 +1,6 @@
 <template>
-  <div class="loading">Loading&#8230;</div>
+          <div class="whirly-loader"> </div>
+
 </template>
 
 <script>

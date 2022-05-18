@@ -30,7 +30,7 @@ export default {
       const auth = getAuth();
       signInWithEmailAndPassword(auth, this.email, this.password)
         .then(async (userCredential) => {
-          const docRef = doc(this.db, "users", userCredential.user.uid);
+          const docRef = doc(this.db, "customers", userCredential.user.uid);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
             let userObj = {};
@@ -98,14 +98,12 @@ export default {
         name: this.name,
         mobile: "",
         email: user.email,
-        active: false,
-        //loggedIn: false,
-        zoneId: [],
-        role: "",
+        active: true,
+        //loggedIn: true,
       };
       //set tokenid
       try {
-        await setDoc(doc(this.db, "users", user.uid), userObj);
+        await setDoc(doc(this.db, "customers", user.uid), userObj);
         userObj.uid = user.uid;
         this.setUser(user);
       } catch (error) {
@@ -136,7 +134,7 @@ export default {
       onAuthStateChanged(auth, async (user) => {
         console.log(user)
         if (user) {
-          const docRef = doc(this.db, "users", user.uid);
+          const docRef = doc(this.db, "customers", user.uid);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
             let userObj = {};
