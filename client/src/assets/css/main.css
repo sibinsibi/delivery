@@ -52,7 +52,7 @@
     transition: 0.25s
 }
 
-.box h1 {
+.box h1, h5 {
     color: white;
     text-transform: uppercase;
     font-weight: 500
@@ -75,7 +75,7 @@
     border-radius: 24px;
     transition: 0.25s;
     cursor: pointer;
-    box-shadow: 0px 0px 20px 0px rgb(0 0 0 / 25%);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 
 }
 
@@ -86,70 +86,6 @@
 .forgot {
     text-decoration: underline;
     color: beige;
-}
-
-ul.social-network {
-    list-style: none;
-    display: inline;
-    margin-left: 0 !important;
-    padding: 0
-}
-
-ul.social-network li {
-    display: inline;
-    margin: 0 5px
-}
-
-.social-network a.icoFacebook:hover {
-    background-color: #3B5998
-}
-
-.social-network a.icoTwitter:hover {
-    background-color: #33ccff
-}
-
-.social-network a.icoGoogle:hover {
-    background-color: #BD3518
-}
-
-.social-network a.icoFacebook:hover i,
-.social-network a.icoTwitter:hover i,
-.social-network a.icoGoogle:hover i {
-    color: #fff
-}
-
-a.socialIcon:hover,
-.socialHoverClass {
-    color: #44BCDD
-}
-
-.social-circle li a {
-    display: inline-block;
-    position: relative;
-    margin: 0 auto 0 auto;
-    border-radius: 50%;
-    text-align: center;
-    width: 50px;
-    height: 50px;
-    font-size: 20px
-}
-
-.social-circle li i {
-    margin: 0;
-    line-height: 50px;
-    text-align: center
-}
-
-.social-circle li a:hover i,
-.triggeredHover {
-    transform: rotate(360deg);
-    transition: all 0.2s
-}
-
-.social-circle i {
-    color: #fff;
-    transition: all 0.8s;
-    transition: all 0.8s
 }
 
   /* loader start */
@@ -218,3 +154,21 @@ a.socialIcon:hover,
       border-radius: 0px !important;
     }
   }
+  .login-signup-form{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  

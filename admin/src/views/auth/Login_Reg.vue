@@ -55,11 +55,11 @@
                     </div> -->
                   </div>
                   <!--//col-6-->
-                  <div class="col-6">
+                 <!-- <div class="col-6">
                     <div class="forgot-password text-end">
                       <a href="reset-password.html">Forgot password?</a>
                     </div>
-                  </div>
+                  </div> -->
                   <!--//col-6-->
                 </div>
                 <!--//extra-->

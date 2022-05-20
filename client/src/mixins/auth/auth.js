@@ -18,6 +18,7 @@ export default {
       cPassword: "",
       db: getFirestore(),
       loader: false,
+      showPwd: false,
     };
   },
   methods: {
@@ -74,6 +75,7 @@ export default {
 
       if (this.signupPassword !== this.cPassword) {
         this.$toast.error("Password mismatch");
+        return
       }
       this.loader = true;
       const auth = getAuth();
@@ -132,7 +134,7 @@ export default {
       const auth = getAuth();
 
       onAuthStateChanged(auth, async (user) => {
-        console.log(user)
+        console.log(user);
         if (user) {
           const docRef = doc(this.db, "customers", user.uid);
           const docSnap = await getDoc(docRef);
@@ -142,23 +144,39 @@ export default {
             userObj.uid = docSnap.id;
             this.$store.dispatch("SET_USER", userObj);
 
-            if (!userObj.active){
+            if (!userObj.active) {
               this.$router.push("/denied");
-              return
-            }else{
-              if (this.$router.currentRoute._value.path == "/denied" || this.$router.currentRoute._value.path == "/login")
-              this.$router.push("/");
+              return;
+            } else {
+              if (
+                this.$router.currentRoute._value.path == "/denied" ||
+                this.$router.currentRoute._value.path == "/login"
+              )
+                this.$router.push("/");
             }
           } else {
             this.$store.dispatch("SET_USER", "");
             this.logout();
           }
-        }else this.logout();
+        } else this.logout();
       });
     },
     checkAuth: function() {
       if (!this.$store.getters.user) this.$router.push("/login");
       if (!this.$store.getters.user.active) this.$router.push("/denied");
+    },
+    showPassword: function(flag) {
+      flag ? (this.showPwd = !this.showPwd) : (this.showPwd = !this.showPwd);
+
+      const x = document.getElementById("signupPassword");
+      const y = document.getElementById("cPassword");
+      if (x.type === "password") {
+        x.type = "text";
+        y.type = "text";
+      } else {
+        x.type = "password";
+        y.type = "password";
+      }
     },
   },
 };

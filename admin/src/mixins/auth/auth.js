@@ -74,6 +74,7 @@ export default {
 
       if (this.signupPassword !== this.cPassword) {
         this.$toast.error("Password mismatch");
+        return
       }
       this.loader = true;
       const auth = getAuth();
