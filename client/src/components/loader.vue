@@ -1,6 +1,7 @@
 <template>
-          <div class="whirly-loader"> </div>
-
+  <div class="overlay">
+    <div class="whirly-loader"></div>
+  </div>
 </template>
 
 <script>

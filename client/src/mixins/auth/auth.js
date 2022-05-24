@@ -4,6 +4,8 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithRedirect
 } from "firebase/auth";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 export default {
@@ -65,17 +67,22 @@ export default {
         return;
       }
 
-      const pwdValidation = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-      if (!pwdValidation.test(this.signupPassword)) {
-        this.$toast.error(
-          " Min 8 letter password, with at least a symbol, upper and lower case letters and a number"
-        );
+      if(this.signupPassword.length < 5){
+        this.$toast.error("Password length should be greater than 5");
         return;
       }
 
+      // const pwdValidation = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+      // if (!pwdValidation.test(this.signupPassword)) {
+      //   this.$toast.error(
+      //     " Min 8 letter password, with at least a symbol, upper and lower case letters and a number"
+      //   );
+      //   return;
+      // }
+
       if (this.signupPassword !== this.cPassword) {
         this.$toast.error("Password mismatch");
-        return
+        return;
       }
       this.loader = true;
       const auth = getAuth();
@@ -97,7 +104,7 @@ export default {
     },
     createUser: async function(user) {
       const userObj = {
-        name: this.name,
+        name: this.name || user.displayName,
         mobile: "",
         email: user.email,
         active: true,
@@ -134,7 +141,7 @@ export default {
       const auth = getAuth();
 
       onAuthStateChanged(auth, async (user) => {
-        console.log(user);
+        //console.log(user);
         if (user) {
           const docRef = doc(this.db, "customers", user.uid);
           const docSnap = await getDoc(docRef);
@@ -177,6 +184,32 @@ export default {
         x.type = "password";
         y.type = "password";
       }
+    },
+    signInWithGoogle: async function() {
+      const provider = new GoogleAuthProvider();
+      const auth = getAuth();
+      signInWithRedirect(auth, provider)
+        .then((result) => {
+          // This gives you a Google Access Token. You can use it to access the Google API.
+          //const credential = GoogleAuthProvider.credentialFromResult(result);
+          //const token = credential.accessToken;
+          // The signed-in user info.
+          const user = result.user;
+          this.createUser(user);
+        })
+        .catch((error) => {
+          // Handle Errors here.
+          //const errorCode = error.code;
+          //const errorMessage = error.message;
+          // The email of the user's account used.
+          //const email = error.customData.email;
+          // The AuthCredential type that was used.
+         // const credential = GoogleAuthProvider.credentialFromError(error);
+          // ...
+
+          console.log(error)
+        });
+
     },
   },
 };

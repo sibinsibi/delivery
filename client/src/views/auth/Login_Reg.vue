@@ -76,6 +76,7 @@
             height="48"
             viewBox="0 0 48 48"
             style=" fill:#000000;"
+            @click="signInWithGoogle"
           >
             <path
               fill="#FFC107"

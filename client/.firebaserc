@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "delivery-d2b04"
+  },
+  "targets": {
+    "delivery-d2b04": {
+      "hosting": {
+        "client-dev": [
+          "client-dev-b7062"
+        ]
+      }
+    }
+  }
+}
