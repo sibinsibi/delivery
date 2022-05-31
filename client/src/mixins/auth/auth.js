@@ -12,8 +12,8 @@ export default {
   data() {
     return {
       showReg: false,
-      email: "",
-      password: "",
+      email: "sibinsibi143@gmail.com",
+      password: "sowhatcb3$",
       name: "",
       signupEmail: "",
       signupPassword: "",

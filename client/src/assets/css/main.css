@@ -175,8 +175,14 @@
     left: 50%;
     transform: translate(-50%, -50%);
   }
-  
-
+  .location-icon {
+    color: red;
+    vertical-align:middle;
+  }
+  .user-icon {
+    color: red;
+    font-size: 40px;
+  }
   
   
   

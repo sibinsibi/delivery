@@ -1,7 +1,7 @@
 <template>
   <div>
     <Layout />
-    
+    <button @click="logout">lo</button>
   </div>
 </template>
 
@@ -16,9 +16,6 @@ export default {
     return {
       test: "",
     };
-  },
-  mounted() {
-    //setTimeout(() => this.checkAuth(), 1000);
   },
   methods: {},
 };
