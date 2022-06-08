@@ -1,11 +1,11 @@
 <template>
   <div class="container-fluid mt-1">
-    <div class="row">
+    <div class="row header-box">
       <div class="col-1">
-        <span class="material-icons md-18 location-icon">location_on</span>
+        <span class="material-icons md-18 location-icon mt-1">location_on</span>
       </div>
       <div class="col-7">
-          <h6 class="mt-1">My home</h6>
+          <h6 class="mt-2">My home</h6>
       </div>
       <div class="col-4 text-end">
         <span class="material-icons md-18 user-icon">account_circle</span>
