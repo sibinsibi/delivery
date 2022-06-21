@@ -5,7 +5,7 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
-  signInWithRedirect
+  signInWithRedirect,
 } from "firebase/auth";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 export default {
@@ -40,7 +40,7 @@ export default {
             userObj = docSnap.data();
             userObj.uid = docSnap.id;
             this.$store.dispatch("SET_USER", userObj);
-            this.setUser(userObj);
+            await this.setUser(userObj);
           } else {
             this.$router.push("/login");
           }
@@ -67,7 +67,7 @@ export default {
         return;
       }
 
-      if(this.signupPassword.length < 5){
+      if (this.signupPassword.length < 5) {
         this.$toast.error("Password length should be greater than 5");
         return;
       }
@@ -121,7 +121,7 @@ export default {
         this.$toast.error("Something went wrong. Try after some time");
       }
     },
-    setUser: function(user) {
+    setUser: async function(user) {
       this.$store.dispatch("SET_USER", user);
       this.loader = false;
       this.$router.push("/");
@@ -139,7 +139,6 @@ export default {
     },
     setUserState: function() {
       const auth = getAuth();
-
       onAuthStateChanged(auth, async (user) => {
         //console.log(user);
         if (user) {
@@ -204,12 +203,11 @@ export default {
           // The email of the user's account used.
           //const email = error.customData.email;
           // The AuthCredential type that was used.
-         // const credential = GoogleAuthProvider.credentialFromError(error);
+          // const credential = GoogleAuthProvider.credentialFromError(error);
           // ...
 
-          console.log(error)
+          console.log(error);
         });
-
     },
   },
 };

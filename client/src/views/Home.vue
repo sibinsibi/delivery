@@ -258,15 +258,17 @@
 <script>
 // import Layout from "@/components/layout/layout.vue";
 import auth from "@/mixins/auth/auth.js";
+import address from "@/mixins/address/address.js";
 
 export default {
   components: {},
-  mixins: [auth],
+  mixins: [auth, address],
   data() {
     return {};
   },
   async mounted() {
     await this.setUserState();
+    await this.checkAddress();
   },
   methods: {},
 };

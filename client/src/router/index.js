@@ -15,6 +15,11 @@ const routes = [
     name: "Denied",
     component: () => import("../views/Denied.vue"),
   },
+  {
+    path: "/add_address",
+    name: "Add-Address",
+    component: () => import("../views/address/Add_Address.vue"),
+  },
 
 ];
 
