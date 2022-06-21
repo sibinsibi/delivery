@@ -108,6 +108,7 @@ export default {
         mobile: "",
         email: user.email,
         active: true,
+        address: []
         //loggedIn: true,
       };
       //set tokenid
@@ -140,7 +141,6 @@ export default {
     setUserState: function() {
       const auth = getAuth();
       onAuthStateChanged(auth, async (user) => {
-        //console.log(user);
         if (user) {
           const docRef = doc(this.db, "customers", user.uid);
           const docSnap = await getDoc(docRef);

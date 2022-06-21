@@ -22,16 +22,18 @@
         placeholder="Name"
         name="name"
         autocomplete="off"
+        v-model="customerName"
       />
     </div>
     <div class="mb-3 mt-3 form-group">
       <input
-        type="text"
+        type="number"
         class="form-control"
         id="mobile"
         placeholder="Mobile"
         name="mobile"
         autocomplete="off"
+        v-model="mob"
       />
     </div>
     <div class="mb-3 mt-3 form-group">
@@ -42,6 +44,7 @@
         placeholder="House/Flat Name/No"
         name="house"
         autocomplete="off"
+        v-model="house"
       />
     </div>
     <div class="mb-3 mt-3 form-group">
@@ -52,6 +55,7 @@
         placeholder="Place"
         name="place"
         autocomplete="off"
+        v-model="place"
       />
     </div>
     <div class="mb-3 mt-3 form-group">
@@ -61,13 +65,27 @@
         id="comment"
         name="text"
         placeholder="Landmark/ Direction to reach (Optional)"
+        v-model="landmark"
       ></textarea>
     </div>
-    <button class="add-address-button" @click="saveNewAddress">Save</button>
-    <ul class="mt-3">
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        id="defaultFlag"
+        name="defaultFlag"
+        :value="defaultFlag"
+        v-model="defaultFlag"
+      />
+      <label class="form-check-label">Set as default address</label>
+    </div>
+    <button type="button" class="add-address-button" @click="saveNewAddress">
+      Save
+    </button>
+    <!-- <ul class="mt-3">
       <li>Please allow location access</li>
       <li>You can add address of your current location. We will update soon</li>
-    </ul>
+    </ul> -->
   </form>
 </template>
 
