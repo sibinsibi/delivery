@@ -1,108 +1,74 @@
 <template>
- <div class="container">
-  <div class="row mx-0 justify-content-center">
-    <div class="col-md-7 col-lg-5 px-lg-2 col-xl-4 px-xl-0 px-xxl-3">
-      <form
-        method="POST"
-        class="w-100 rounded-1 p-4 border bg-white"
-        action="https://herotofu.com/start"
-      >
-        <label class="d-block mb-4">
-          <span class="form-label d-block">Your name</span>
-          <input
-            name="name"
-            type="text"
-            class="form-control"
-            placeholder="Joe Bloggs"
-          />
-        </label>
-
-        <label class="d-block mb-4">
-          <span class="form-label d-block">Address line 1</span>
-          <input
-            name="address1"
-            type="text"
-            class="form-control"
-            placeholder=""
-          />
-        </label>
-
-        <label class="d-block mb-4">
-          <span class="form-label d-block">Address line 2</span>
-          <input
-            name="address2"
-            type="text"
-            class="form-control"
-            placeholder=""
-          />
-        </label>
-
-        <label class="d-block mb-4">
-          <span class="form-label d-block">City</span>
-          <input name="city" type="text" class="form-control" placeholder="" />
-        </label>
-
-        <label class="d-block mb-4">
-          <span class="form-label d-block">State/Province</span>
-          <input name="state" type="text" class="form-control" placeholder="" />
-        </label>
-
-        <label class="d-block mb-4">
-          <span class="form-label d-block">Zip/Postal code</span>
-          <input name="zip" type="text" class="form-control" placeholder="" />
-        </label>
-
-        <label class="d-block mb-4">
-          <span class="form-label d-block">Country</span>
-          <input
-            name="country"
-            type="text"
-            class="form-control"
-            placeholder=""
-          />
-        </label>
-
-        <label class="d-block mb-4">
-          <span class="form-label d-block">Telephone</span>
-          <input
-            name="telephone"
-            type="text"
-            class="form-control"
-            placeholder=""
-          />
-        </label>
-
-        <label class="d-block mb-4">
-          <span class="form-label d-block">Delivery information</span>
-          <textarea
-            name="message"
-            class="form-control"
-            rows="3"
-            placeholder="floor/door lock code/etc."
-          ></textarea>
-        </label>
-
-        <div class="mb-3">
-          <button type="submit" class="btn btn-primary px-3 rounded-3">
-            Save
-          </button>
-        </div>
-
-        <div class="d-block text-end">
-          <div class="small">
-            by
-            <a
-              href="https://herotofu.com"
-              class="text-dark text-decoration-none"
-              target="_blank"
-              >HeroTofu</a
-            >
-          </div>
-        </div>
-      </form>
+  <form class="add-address">
+    <div class="mb-3 mt-3 row">
+      <div class="col-1">
+        <a href=""
+          ><span
+            class="material-icons md-18 common-icon mt-1 cursor"
+            @click="$router.go(-1)"
+            >arrow_back</span
+          ></a
+        >
+      </div>
+      <div class="col-10">
+        <h4 class="text-center">New address</h4>
+      </div>
     </div>
-  </div>
-</div>
+    <div class="mb-3 mt-3 form-group">
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        placeholder="Name"
+        name="name"
+        autocomplete="off"
+      />
+    </div>
+    <div class="mb-3 mt-3 form-group">
+      <input
+        type="text"
+        class="form-control"
+        id="mobile"
+        placeholder="Mobile"
+        name="mobile"
+        autocomplete="off"
+      />
+    </div>
+    <div class="mb-3 mt-3 form-group">
+      <input
+        type="text"
+        class="form-control"
+        id="house"
+        placeholder="House/Flat Name/No"
+        name="house"
+        autocomplete="off"
+      />
+    </div>
+    <div class="mb-3 mt-3 form-group">
+      <input
+        type="text"
+        class="form-control"
+        id="place"
+        placeholder="Place"
+        name="place"
+        autocomplete="off"
+      />
+    </div>
+    <div class="mb-3 mt-3 form-group">
+      <textarea
+        class="form-control"
+        rows="5"
+        id="comment"
+        name="text"
+        placeholder="Landmark/ Direction to reach (Optional)"
+      ></textarea>
+    </div>
+    <button class="add-address-button" @click="saveNewAddress">Save</button>
+    <ul class="mt-3">
+      <li>Please allow location access</li>
+      <li>You can add address of your current location. We will update soon</li>
+    </ul>
+  </form>
 </template>
 
 <script>

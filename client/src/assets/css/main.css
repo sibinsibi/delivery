@@ -576,6 +576,9 @@ h5 {
   color: red;
   font-size: 40px;
 }
+.common-icon{
+  color: red;
+}
 .rounded {
   border-radius: 1.25rem !important;
 }
@@ -672,3 +675,32 @@ h5 {
   font-family: 'Roboto', sans-serif;
   font-weight: bold;
 }
+.cursor {
+  cursor: pointer;
+}
+/* Add address start */
+.add-address {
+  padding-right: 1em;
+  padding-left: 1em;
+  
+}
+
+.add-address-button {
+  border: none;
+  background: red;
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 6px;
+  width: 100%;
+  color: white;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
+}
+ .add-address ul{
+  list-style-type: disc !important;
+  padding-left: 1em;
+}
+.add-address ul li {
+  color: #6c757d;
+  font-size: 13px;
+}
+/* Add address end */
