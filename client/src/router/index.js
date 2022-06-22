@@ -20,6 +20,16 @@ const routes = [
     name: "Add-Address",
     component: () => import("../views/address/Add_Address.vue"),
   },
+  {
+    path: "/account",
+    name: "Account",
+    component: () => import("../views/account/Account.vue"),
+  },
+  {
+    path: "/addresses",
+    name: "Addresses",
+    component: () => import("../views/address/Addresses.vue"),
+  },
 
 ];
 

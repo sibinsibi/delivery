@@ -579,6 +579,11 @@ h5 {
 .common-icon{
   color: red;
 }
+.back-icon {
+  color: red;
+  font-weight: 600;
+
+}
 .rounded {
   border-radius: 1.25rem !important;
 }
@@ -695,6 +700,16 @@ h5 {
   color: white;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
 }
+.goto-add-address-button {
+  border: 1px solid red;
+  background: white;
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 6px;
+  width: 100%;
+  color: red;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
+}
  .add-address ul{
   list-style-type: disc !important;
   padding-left: 1em;
@@ -705,3 +720,19 @@ h5 {
 }
 
 /* Add address end */
+.account-user-icon {
+  color: red;
+  font-size: 4em;
+}
+.a-text-decoration-color{
+  color: black !important;
+}
+.default-address-checkbox{
+  margin-right: -2em;
+}
+
+.address-action{
+  color: red;
+  text-decoration: none;
+  font-weight: 600;
+}

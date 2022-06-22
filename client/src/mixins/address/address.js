@@ -1,4 +1,4 @@
-import { getFirestore, doc, collection, addDoc } from "firebase/firestore";
+import { getFirestore, doc, updateDoc, arrayUnion } from "firebase/firestore";
 
 export default {
   data() {
@@ -9,7 +9,7 @@ export default {
       house: "",
       place: "",
       landmark: "",
-      defaultFlag: true
+      defaultFlag: false,
     };
   },
   methods: {
@@ -24,9 +24,9 @@ export default {
         this.$toast.error("Enter all rquired fields");
         return;
       }
-      if(this.mob.toString().length !== 10){
-        this.$toast.error("Enter 10 digit mobile number") 
-        return
+      if (this.mob.toString().length !== 10) {
+        this.$toast.error("Enter 10 digit mobile number");
+        return;
       }
       const address = {
         name: this.customerName,
@@ -34,20 +34,17 @@ export default {
         house: this.house,
         place: this.place,
         landmark: this.landmark,
-        latLng: ''
-      }
+        default: this.defaultFlag,
+        latLng: "",
+        id: `ADS${new Date().getTime()}`
+      };
       try {
-        const id = await doc(collection(this.db, "cities")).id;
-        
-
-        console.log(id,address)
-
         const custRef = doc(this.db, "customers", this.$store.state.user.uid);
-      //   await addDoc(custRef, {
-      //     "address": address
-      // });
-
-      //   this.$toast.success(`Updated successfully`);
+        await updateDoc(custRef, {
+          address: arrayUnion(address),
+        });
+        this.$toast.success(`Saved successfully`);
+        //goto all address apge
       } catch (err) {
         this.$toast.error(`Something went wrong` + err);
       }
