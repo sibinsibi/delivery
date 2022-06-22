@@ -1,11 +1,11 @@
 {
-    "theme_color": "#f69435",
-    "background_color": "#f69435",
+    "theme_color": "red",
+    "background_color": "red",
     "display": "standalone",
     "scope": "/",
     "start_url": "/",
-    "name": "vue-explore",
-    "short_name": "vue",
+    "name": "Kokachi - For your needs",
+    "short_name": "Kokachi",
     "icons": [
         {
             "src": "/icons/icon-192x192.png",
