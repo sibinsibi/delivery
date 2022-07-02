@@ -30,6 +30,12 @@ const routes = [
     name: "Addresses",
     component: () => import("../views/address/Addresses.vue"),
   },
+  {
+    path: "/edit_address/:id",
+    name: "Edit-Address",
+    component: () => import("../views/address/Edit_Address.vue"),
+  },
+  
 
 ];
 

@@ -9,17 +9,22 @@
         </router-link>
       </div>
       <div class="col-8 ps-3">My Address</div>
-      <div class="col-2 ps-3 text-end">
+      <div class="col-1 ps-3 text-end">
         <router-link to="/add_address"
           ><span class="material-icons common-icon cursor">add_circle</span>
         </router-link>
       </div>
+      <div class="col-1 ps-3 text-end">
+        <router-link to="/"
+          ><span class="material-icons common-icon cursor">home</span>
+        </router-link>
+      </div>
     </div>
 
-    <div class="container ps-4 pe-4 mt-2">
+    <div class="container ps-4 pe-4 mt-2" v-if="allAddress.length">
       <div
         class="row shadow p-3 mb-3 bg-body rounded"
-        v-for="address in $store.state.user.address"
+        v-for="address in allAddress"
         :key="address.id"
       >
         <div class="col-2">
@@ -39,36 +44,62 @@
         <div class="row">
           <div class="col-2"></div>
           <div class="col-2">
-            <router-link to="" class="address-action">EDIT</router-link>
+            <router-link to="" class="address-action" @click="gotoEditAddress(address.id)">EDIT</router-link>
           </div>
           <div class="col-2">
-            <router-link to="" class="address-action">DELETE</router-link>
+            <router-link
+              to=""
+              class="address-action"
+              @click="deleteAddress(address.id)"
+              >DELETE</router-link
+            >
           </div>
           <!-- <div class="col-6 text-end">
             <input type="checkbox"  class="default-address-checkbox">
           </div> -->
         </div>
       </div>
-      <router-link to="/add_address">
+    </div>
+
+    <div class="container" v-if="!allAddress.length">
+      <div class="row">
+        <div class="col-12 text-center">
+          <span class="material-icons common-icon cursor empty-address-icon"
+            >house</span
+          >
+          <p>No address found</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <router-link to="/add_address" class="text-decoration-null">
         <button type="button" class="goto-add-address-button">
           Add new address
         </button>
       </router-link>
     </div>
+    <Loader v-show="loader" />
   </div>
 </template>
 
 <script>
+import Loader from "@/components/loader";
 import auth from "@/mixins/auth/auth.js";
+import address from "@/mixins/address/address.js";
 
 export default {
-  components: {},
-  mixins: [auth],
+  components: { Loader },
+  mixins: [auth, address],
   data() {
     return {};
   },
   async mounted() {
-    await this.setUserState();
+    this.loader = true;
+    const user = await this.checkAuth();
+    this.uid = user.uid;
+    await this.getAllAddress(user.uid);
+    this.loader = false;
   },
   methods: {},
 };

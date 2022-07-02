@@ -1,15 +1,15 @@
 <template>
   <div class="pt-2">
     <div class="row mt-3 ps-2" style="width: 100%">
-    <div class="col-1"> <router-link to=""
-      ><span
-        class="material-icons back-icon cursor"
-        @click="$router.go(-1)"
-        >arrow_back</span
-      >
-     </router-link></div>
-    <div class="col-8 ps-3"> My Account</div>
-  </div>
+      <div class="col-1">
+        <router-link to=""
+          ><span class="material-icons back-icon cursor" @click="$router.go(-1)"
+            >arrow_back</span
+          >
+        </router-link>
+      </div>
+      <div class="col-8 ps-3">My Account</div>
+    </div>
     <div class="container ps-4 pe-4 mt-2">
       <div class="row shadow p-3 mb-5 bg-body rounded">
         <div class="col-8">
@@ -28,10 +28,7 @@
         </div>
       </div>
 
-      <router-link
-        class="text-decoration-none a-text-decoration-color"
-        to="/"
-      >
+      <router-link class="text-decoration-none a-text-decoration-color" to="/">
         <div class="row shadow p-3 mb-2 bg-body rounded">
           <div class="col-2">
             <router-link to="" class="text-end"
@@ -91,7 +88,7 @@ export default {
     return {};
   },
   async mounted() {
-    await this.setUserState();
+    await this.checkAuth();
   },
   methods: {},
 };

@@ -8,7 +8,7 @@
           >
         </router-link>
       </div>
-      <div class="col-6 ps-3">New address</div>
+      <div class="col-6 ps-3">Edit address</div>
       <div class="col-4 ps-3 text-end">
         <router-link to="/addresses" class="text-danger">
           All address
@@ -81,8 +81,8 @@
         />
         <label class="form-check-label">Set as default address</label>
       </div> -->
-      <button type="button" class="add-address-button" @click="saveNewAddress">
-        Save
+      <button type="button" class="add-address-button" @click="updateAddress(this.addressId)">
+        Update
       </button>
       <!-- <ul class="mt-3">
       <li>Please allow location access</li>
@@ -103,10 +103,13 @@ export default {
   components: { Loader },
   mixins: [auth, address],
   data() {
-    return {};
+    return {
+      addressId: this.$route.params.id
+    };
   },
   async mounted() {
     await this.checkAuth();
+    await this.getAddress(this.addressId)
   },
   methods: {},
 };

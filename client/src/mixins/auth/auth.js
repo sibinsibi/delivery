@@ -108,7 +108,6 @@ export default {
         mobile: "",
         email: user.email,
         active: true,
-        address: []
         //loggedIn: true,
       };
       //set tokenid
@@ -138,39 +137,81 @@ export default {
           this.$toast.error("Something went wrong. Try after sometime");
         });
     },
-    setUserState: function() {
-      const auth = getAuth();
-      onAuthStateChanged(auth, async (user) => {
-        if (user) {
-          const docRef = doc(this.db, "customers", user.uid);
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists()) {
-            let userObj = {};
-            userObj = docSnap.data();
-            userObj.uid = docSnap.id;
-            this.$store.dispatch("SET_USER", userObj);
+    getUser: async function() {
+      return new Promise((resolve) => {
+        const auth = getAuth();
 
-            if (!userObj.active) {
-              this.$router.push("/denied");
-              return;
+        onAuthStateChanged(auth, async (user) => {
+          if (user) {
+            const docRef = doc(this.db, "customers", user.uid);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+              let userObj = {};
+              userObj = docSnap.data();
+              userObj.uid = docSnap.id;
+              resolve(userObj);
+          
             } else {
-              if (
-                this.$router.currentRoute._value.path == "/denied" ||
-                this.$router.currentRoute._value.path == "/login"
-              )
-                this.$router.push("/");
+              
+              resolve('');
             }
-          } else {
-            this.$store.dispatch("SET_USER", "");
-            this.logout();
-          }
-        } else this.logout();
+          } else resolve(''); //this.logout();
+        });
       });
     },
-    checkAuth: function() {
-      if (!this.$store.getters.user) this.$router.push("/login");
-      if (!this.$store.getters.user.active) this.$router.push("/denied");
+    checkAuth: async function() {
+      const userObj = await this.getUser();
+      return new Promise((resolve) => {
+        if (userObj) {
+          this.$store.dispatch("SET_USER", userObj);
+          if (!userObj.active) {
+            resolve(this.$router.push("/denied"));
+          } else {
+            if (
+              this.$router.currentRoute._value.path == "/denied" ||
+              this.$router.currentRoute._value.path == "/login"
+            )
+              resolve(this.$router.push("/"));
+          }
+        } else {
+          this.$store.dispatch("SET_USER", "");
+          resolve(this.logout());
+        }
+
+        resolve(userObj)
+      });
     },
+    // setUserState: function() {
+    //   const auth = getAuth();
+    //   this.loader = true;
+    //   onAuthStateChanged(auth, async (user) => {
+    //     if (user) {
+    //       const docRef = doc(this.db, "customers", user.uid);
+    //       const docSnap = await getDoc(docRef);
+    //       if (docSnap.exists()) {
+    //         let userObj = {};
+    //         userObj = docSnap.data();
+    //         userObj.uid = docSnap.id;
+    //         this.$store.dispatch("SET_USER", userObj);
+
+    //         if (!userObj.active) {
+    //           this.$router.push("/denied");
+    //           return;
+    //         } else {
+    //           if (
+    //             this.$router.currentRoute._value.path == "/denied" ||
+    //             this.$router.currentRoute._value.path == "/login"
+    //           )
+    //             this.$router.push("/");
+    //         }
+    //       } else {
+    //         this.$store.dispatch("SET_USER", "");
+    //         this.logout();
+    //       }
+    //     } else this.logout();
+    //     this.loader = false;
+    //   });
+    // },
     showPassword: function(flag) {
       flag ? (this.showPwd = !this.showPwd) : (this.showPwd = !this.showPwd);
 

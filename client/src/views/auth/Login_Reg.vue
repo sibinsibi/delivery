@@ -150,7 +150,7 @@ import Loader from "@/components/loader";
 export default {
   mixins: [auth],
   async created() {
-    await this.setUserState();
+     await this.checkAuth()
   },
   components: { Loader },
 };
