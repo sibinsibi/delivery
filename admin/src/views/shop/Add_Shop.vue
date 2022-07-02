@@ -235,6 +235,7 @@ import {
   getDoc,
   addDoc,
   collection,
+  GeoPoint,
 } from "firebase/firestore";
 
 export default {
@@ -268,7 +269,7 @@ export default {
       const docRef = doc(this.db, "shopTypes", "types");
       const docSnap = await getDoc(docRef);
       const types = docSnap.data();
-     // const typesArr = [];
+      // const typesArr = [];
       // for (const key in types) {
       //   typesArr.push(key);
       // }
@@ -335,8 +336,7 @@ export default {
         mob: this.mob,
         mob1: this.mob1,
         geohash: hash,
-        lat: this.latitude,
-        lng: this.longitude,
+        latLng: new GeoPoint(this.latitude, this.longitude),
       };
       const shop = {
         name: this.name,
@@ -348,7 +348,7 @@ export default {
         photoUrl: "",
         open: false,
         category: this.typesArr,
-        details: {}
+        details: {},
       };
 
       try {

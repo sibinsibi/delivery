@@ -234,7 +234,7 @@ import {
   getFirestore,
   doc,
   getDoc,
-  updateDoc,
+  updateDoc,GeoPoint
 } from "firebase/firestore";
 
 export default {
@@ -268,6 +268,7 @@ export default {
   },
   methods: {
     getData: async function() {
+      this.loader = true;
       const shopRef = doc(this.db, "shops", this.shopId);
       const shopSnap = await getDoc(shopRef);
       const shop = shopSnap.data();
@@ -283,8 +284,8 @@ export default {
       this.zip = shop.address.zip;
       this.mob = shop.address.mob;
       this.mob1 = shop.address.mob1;
-      this.latitude = shop.address.lat;
-      this.longitude = shop.address.lng;
+      this.latitude = shop.address.latLng.latitude;
+      this.longitude = shop.address.latLng.longitude;
       this.typesArr = shop.category;
 
       const docRef = doc(this.db, "shopTypes", "types");
@@ -298,6 +299,7 @@ export default {
 
       setTimeout(async () => {
         await this.updateCategorycheckbox();
+        this.loader = false;
       }, 2000);
     },
     updateCategorycheckbox: async function() {
@@ -372,8 +374,7 @@ export default {
         mob: this.mob,
         mob1: this.mob1,
         geohash: hash,
-        lat: this.latitude,
-        lng: this.longitude,
+        latLng: new GeoPoint(this.latitude, this.longitude),
       };
       const shop = {
         name: this.name,
@@ -382,7 +383,6 @@ export default {
         active: this.active,
         veg: this.veg,
         address: address,
-        photoUrl: "",
         open: false,
         category: this.typesArr,
       };
@@ -390,8 +390,6 @@ export default {
       try {
         const shopRef = doc(this.db, "shops", this.shopId);
         await updateDoc(shopRef, shop);
-
-        //await updateDoc(collection(this.db, "shops", this.shopId), shop);
         this.$toast.success(`Updated successfully`);
       } catch (err) {
         this.$toast.error(`Something went wrong` + err);
