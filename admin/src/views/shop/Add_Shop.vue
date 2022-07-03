@@ -353,8 +353,10 @@ export default {
 
       try {
         await addDoc(collection(this.db, "shops"), shop);
-        document.getElementById("shop-form").reset();
+        // document.getElementById("shop-form").reset();
         this.$toast.success(`Saved successfully`);
+        location.reload();
+
       } catch (err) {
         this.$toast.error(`Something went wrong` + err);
       }

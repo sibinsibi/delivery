@@ -173,7 +173,7 @@
                     <div class="row">
                       <div
                         class="col-md-3 col-6"
-                        v-for="(item) in types"
+                        v-for="item in types"
                         :key="item"
                       >
                         <div class="form-check mb-3">
@@ -188,6 +188,31 @@
                             {{ item }}
                           </label>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--//app-card-body-->
+                </div>
+                <!--//app-card-->
+              </div>
+
+              <div class="col-12 col-md-12 mt-3">
+                <h6 class="notification-title mb-1">Shop photo</h6>
+                <div class="app-card app-card-settings shadow-sm p-4">
+                  <div class="app-card-body">
+                    <div class="row">
+                      <div class="col-md-12 col-12" v-if="photoUrl">
+                        <img :src="photoUrl" class="w-100"/>
+                      </div>
+                      <div class="col-md-12 col-12 mt-5">
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="photoUrl"
+                          name="photoUrl"
+                          v-model="photoUrl"
+                          autocomplete="off"
+                        />
                       </div>
                     </div>
                   </div>
@@ -234,7 +259,8 @@ import {
   getFirestore,
   doc,
   getDoc,
-  updateDoc,GeoPoint
+  updateDoc,
+  GeoPoint,
 } from "firebase/firestore";
 
 export default {
@@ -259,6 +285,7 @@ export default {
       longitude: "",
       loader: false,
       shopId: "",
+      photoUrl: "",
     };
   },
   mounted() {
@@ -287,6 +314,7 @@ export default {
       this.latitude = shop.address.latLng.latitude;
       this.longitude = shop.address.latLng.longitude;
       this.typesArr = shop.category;
+      this.photoUrl = shop.photoUrl;
 
       const docRef = doc(this.db, "shopTypes", "types");
       const docSnap = await getDoc(docRef);
@@ -317,8 +345,7 @@ export default {
         this.typesArr.push(id);
       } else {
         const index = this.typesArr.indexOf(id);
-        this.typesArr.splice(index, 1)
-
+        this.typesArr.splice(index, 1);
       }
     },
     saveNewShop: async function() {
@@ -385,6 +412,7 @@ export default {
         address: address,
         open: false,
         category: this.typesArr,
+        photoUrl: this.photoUrl,
       };
 
       try {
