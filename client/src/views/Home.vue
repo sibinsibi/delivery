@@ -58,7 +58,7 @@
           </svg>
         </div>
         <div class="col-7">
-         <!-- <h6 class="mt-2">My home</h6> -->
+          <!-- <h6 class="mt-2">My home</h6> -->
         </div>
         <div class="col-4 text-end">
           <router-link class="app-logo" to="/account">
@@ -151,63 +151,31 @@
           </div>
         </div>
         <h5 class="side-head">Shops types</h5>
-        <div class="col-4 pt-1">
-          <div class="chip">
-            <div class="chip-content">Chip Content</div>
-          </div>
-        </div>
-        <div class="col-4 pt-1">
-          <div class="chip">
-            <div class="chip-content">Chip Content</div>
-          </div>
-        </div>
-        <div class="col-4 pt-1">
-          <div class="chip">
-            <div class="chip-content">Chip Content</div>
-          </div>
-        </div>
-        <div class="col-4 pt-1">
-          <div class="chip">
-            <div class="chip-content">Chip Content</div>
+        <div class="col-4 pt-1" v-for="(types, index) in typesArr" :key="index">
+          <div class="chip text-nowrap">
+            <div class="chip-content text-capitalize text-nowrap">
+              {{ types }}
+            </div>
           </div>
         </div>
       </div>
 
       <div class="row">
-        <h6 class="side-head mt-3">Your partners</h6>
-
-        <div class="col-6 mt-2">
-          <!-- Card -->
-          <div class="card">
-            <!--Card image-->
-            <div>
-              <img
-                class="card-img-top"
-                src="https://mdbootstrap.com/img/Photos/Others/images/16.jpg"
-                alt="Card image cap"
-              />
-              <a href="#!">
-                <div class="mask rgba-white-slight"></div>
-              </a>
-            </div>
-
-            <!--Card content-->
-            <div class="card-body">
-              <!--Title-->
-              <h6 class="card-title">Makkuni Store</h6>
-            </div>
-          </div>
-          <!-- Card -->
+        <div class="col-8"><h6 class="side-head mt-3">Your partners</h6></div>
+        <div class="col-4 mt-3 text-end">
+          <router-link to="/addresses" class="text-danger">
+            View all
+          </router-link>
         </div>
-        <div class="col-6 mt-2">
+
+        <div class="col-6 mt-2" v-for="(shop) in allShops" :key="shop.id">
           <!-- Card -->
           <div class="card">
             <!--Card image-->
             <div>
               <img
                 class="card-img-top"
-                src="https://mdbootstrap.com/img/Photos/Others/images/15.jpg"
-                alt="Card image cap"
+                :src="shop.photoUrl"
               />
               <a href="#!">
                 <div class="mask rgba-white-slight"></div>
@@ -217,30 +185,9 @@
             <!--Card content-->
             <div class="card-body">
               <!--Title-->
-              <h6 class="card-title">Makkuni Store</h6>
-            </div>
-          </div>
-          <!-- Card -->
-        </div>
-        <div class="col-6 mt-2">
-          <!-- Card -->
-          <div class="card">
-            <!--Card image-->
-            <div>
-              <img
-                class="card-img-top"
-                src="https://mdbootstrap.com/img/Photos/Others/images/15.jpg"
-                alt="Card image cap"
-              />
-              <a href="#!">
-                <div class="mask rgba-white-slight"></div>
-              </a>
-            </div>
-
-            <!--Card content-->
-            <div class="card-body">
-              <!--Title-->
-              <h6 class="card-title">Makkuni Store</h6>
+              <h6 class="card-title shop-name fw-bolder">{{shop.name}}</h6>
+              <h6 class="card-title shop-name">({{shop.localName}})</h6>
+              <h6 class="card-title shop-name text-muted">{{ shop.address.street }}</h6>
             </div>
           </div>
           <!-- Card -->
@@ -304,22 +251,25 @@
       <span class="count">1</span>
       <span class="material-icons md-18 cart-icon">shopping_cart</span>
     </div>
+    <Loader v-show="loader" />
   </div>
 </template>
 
 <script>
-// import Layout from "@/components/layout/layout.vue";
 import auth from "@/mixins/auth/auth.js";
+import shop from "@/mixins/shop/shop.js";
+import Loader from "@/components/loader";
 
 export default {
-  components: {},
-  mixins: [auth],
+  mixins: [auth, shop],
+  components: { Loader },
   data() {
     return {};
   },
   async mounted() {
-     await this.checkAuth()
+    await this.checkAuth();
+    await this.getShopTypes();
+    await this.getShops('all');
   },
-  methods: {},
 };
 </script>

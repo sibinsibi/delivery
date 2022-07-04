@@ -54,7 +54,7 @@
         class="text-decoration-none a-text-decoration-color"
         to="/addresses"
       >
-        <div class="row shadow p-3 mb-5 bg-body rounded">
+        <div class="row shadow p-3 bg-body rounded">
           <div class="col-2">
             <router-link to="/addresses" class="text-end"
               ><span class="material-icons md-18 cursor common-icon"
@@ -74,6 +74,34 @@
           </div>
         </div>
       </router-link>
+
+       <router-link
+        class="text-decoration-none a-text-decoration-color"
+        to="" @click="gotoLogout"
+      >
+        <div class="row shadow p-3 bg-body rounded mt-2">
+          <div class="col-2">
+            <router-link class="text-end"  to="" @click="gotoLogout"
+              ><span class="material-icons md-18 cursor common-icon"
+                >exit_to_app</span
+              ></router-link
+            >
+          </div>
+          <div class="col-8">
+            Logout
+          </div>
+          <div class="col-2">
+            <router-link to="/addresses" class=""
+              ><span class="material-icons md-18 mt-1 cursor text-black-50"
+                >keyboard_arrow_right</span
+              ></router-link
+            >
+          </div>
+        </div>
+      </router-link>
+      
+
+      
     </div>
   </div>
 </template>
@@ -90,6 +118,27 @@ export default {
   async mounted() {
     await this.checkAuth();
   },
-  methods: {},
+  methods: {
+    gotoLogout: function(){
+       this.$swal
+        .fire({
+          title: "Are you sure?",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Logout",
+          background: "#fff",
+          backdrop: `
+          rgba(0,0,123,0.4)
+          left top
+          no-repeat `,
+        })
+        .then(async (result) => {
+          if (result.isConfirmed) {
+            this.logout()
+          }
+        });
+    }
+  },
 };
 </script>
