@@ -81,6 +81,7 @@
                         <tr>
                           <th>Name</th>
                           <th>Mob</th>
+                          <th>Type</th>
                           <th>Place</th>
                         </tr>
                       </thead>
@@ -93,6 +94,7 @@
                         >
                           <td class="cell">{{ item.name }}</td>
                           <td class="cell">{{ item.address.mob }}</td>
+                          <td class="cell">{{ item.category }}</td>
                           <td class="cell">{{ item.address.street }}</td>
                         </tr>
                       </tbody>
@@ -132,13 +134,16 @@
                 <thead>
                   <tr>
                     <th>Name</th>
+                    <th>പേര്</th>
                     <th>Active</th>
+                    <th>Photo</th>
                     <th>Edit</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="(item, index) in allItems" :key="index">
                     <td class="cell">{{ item.name }}</td>
+                    <td class="cell">{{ item.localName }}</td>
                     <td class="cell">
                       <div class="form-check form-switch mb-3">
                         <input
@@ -149,6 +154,9 @@
                           @click="updateActive(item.id)"
                         />
                       </div>
+                    </td>
+                    <td>
+                      <img :src="item.photoUrl" class="item-img-size"/>
                     </td>
                     <td class="cell">
                       <i
@@ -236,6 +244,8 @@ export default {
         );
         querySnapshot = await getDocs(q);
       } else if (flag === "all") {
+        this.typesArr = [];
+        window.$("#shop-form input:checkbox").prop("checked", false);
         q = query(collection(this.db, "shops"), where("active", "==", true));
         querySnapshot = await getDocs(q);
       }
@@ -279,7 +289,7 @@ export default {
       this.$toast.success(`Updated`);
     },
     gotoEditShop: function(id) {
-         window.$('#itemModal').modal('toggle');
+      window.$("#itemModal").modal("toggle");
 
       this.$root.$router.push({
         path: `/item/${id}`,

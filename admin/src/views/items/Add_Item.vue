@@ -81,6 +81,7 @@
                         <tr>
                           <th>Name</th>
                           <th>Mob</th>
+                          <th>Type</th>
                           <th>Place</th>
                         </tr>
                       </thead>
@@ -93,6 +94,7 @@
                         >
                           <td class="cell">{{ item.name }}</td>
                           <td class="cell">{{ item.address.mob }}</td>
+                          <td class="cell">{{ item.category }}</td>
                           <td class="cell">{{ item.address.street }}</td>
                         </tr>
                       </tbody>
@@ -241,7 +243,7 @@ import {
   query,
   where,
   collection,
-  addDoc
+  addDoc,
 } from "firebase/firestore";
 
 export default {
@@ -301,6 +303,8 @@ export default {
         );
         querySnapshot = await getDocs(q);
       } else if (flag === "all") {
+        this.typesArr = [];
+        window.$("#shop-form input:checkbox").prop("checked", false);
         q = query(collection(this.db, "shops"), where("active", "==", true));
         querySnapshot = await getDocs(q);
       }

@@ -203,6 +203,8 @@ export default {
         );
         querySnapshot = await getDocs(q);
       } else if (flag === "all") {
+        this.typesArr = [];
+        window.$("#shop-form input:checkbox").prop("checked", false);
         querySnapshot = await getDocs(collection(this.db, "shops"));
       }
       querySnapshot.forEach((doc) => {

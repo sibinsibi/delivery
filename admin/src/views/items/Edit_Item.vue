@@ -88,27 +88,44 @@
                     </div>
                   </div>
                 </div>
-                <div class="text-center mt-3">
-                  <button
-                    type="button"
-                    @click="saveItem"
-                    class="btn app-btn-primary"
-                  >
-                    Save
-                  </button>
-                  &nbsp;&nbsp;
-                  <button
-                    type="button"
-                    onclick="window.location.reload();"
-                    class="btn btn btn-danger"
-                  >
-                    Cancel
-                  </button>
+
+                <div class="col-12 col-md-12">
+                  <h6 class="notification-title mb-1">Item photo</h6>
+                  <div class="row">
+                    <div class="col-md-12 col-12" v-if="photoUrl">
+                      <img :src="photoUrl" class="w-50" />
+                    </div>
+                    <div class="col-md-12 col-12 mt-5">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="photoUrl"
+                        name="photoUrl"
+                        v-model="photoUrl"
+                        autocomplete="off"
+                      />
+                    </div>
+                  </div>
+                  <!--//app-card-->
                 </div>
               </form>
             </div>
           </div>
           <!--//app-card-->
+        </div>
+
+        <div class="text-center mt-3">
+          <button type="button" @click="saveItem" class="btn app-btn-primary">
+            Save
+          </button>
+          &nbsp;&nbsp;
+          <button
+            type="button"
+            onclick="window.location.reload();"
+            class="btn btn btn-danger"
+          >
+            Cancel
+          </button>
         </div>
         <!--//container-fluid-->
       </div>
@@ -137,6 +154,7 @@ export default {
       unit: "",
       price: "",
       itemId: "",
+      photoUrl: "",
     };
   },
   mounted() {
@@ -157,6 +175,7 @@ export default {
       this.eatable = item.eatable;
       this.price = item.price;
       this.unit = item.unit;
+      this.photoUrl = item.photoUrl;
     },
     saveItem: async function() {
       if (!this.name) {
@@ -183,7 +202,7 @@ export default {
         veg: this.veg,
         active: this.active,
         eatable: this.eatable,
-        photoUrl: "",
+        photoUrl: this.photoUrl,
       };
 
       try {

@@ -11104,4 +11104,6 @@ a {
     border-radius: 0px !important;
   }
 }
-
+.item-img-size {
+  width: 50px;
+}
