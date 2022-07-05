@@ -271,8 +271,6 @@ export default {
         allItems.push(item);
       });
       this.allItems = allItems;
-      console.log(allItems);
-
       window.$("#itemModal").modal("show");
     },
     updateActive: async function(id) {

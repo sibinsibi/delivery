@@ -151,7 +151,7 @@
           </div>
         </div>
         <h5 class="side-head">Shops types</h5>
-        <div class="col-4 pt-1" v-for="(types, index) in typesArr" :key="index">
+        <div class="col-4 pt-2" v-for="(types, index) in shopTypes" :key="index" @click="gotoShops(types)">
           <div class="chip text-nowrap">
             <div class="chip-content text-capitalize text-nowrap">
               {{ types }}
@@ -160,23 +160,28 @@
         </div>
       </div>
 
+      <!-- Fish/Chicken -->
       <div class="row">
-        <div class="col-8"><h6 class="side-head mt-3">Your partners</h6></div>
+        <div class="col-8">
+          <h6 class="side-head mt-3">Fish and Chicken</h6>
+        </div>
         <div class="col-4 mt-3 text-end">
-          <router-link to="/addresses" class="text-danger">
+          <!--<router-link to="" class="text-danger" @click="gotoShops('all')">
             View all
-          </router-link>
+          </router-link> -->
         </div>
 
-        <div class="col-6 mt-2" v-for="(shop) in allShops" :key="shop.id">
+        <div
+          class="col-6 mt-2"
+          v-for="shop in allShops"
+          :key="shop.id"
+          v-show="shop.category.every((i) => ['fish', 'chicken'].includes(i))"
+        >
           <!-- Card -->
           <div class="card">
             <!--Card image-->
             <div>
-              <img
-                class="card-img-top"
-                :src="shop.photoUrl"
-              />
+              <img class="card-img-top" :src="shop.photoUrl" />
               <a href="#!">
                 <div class="mask rgba-white-slight"></div>
               </a>
@@ -185,9 +190,51 @@
             <!--Card content-->
             <div class="card-body">
               <!--Title-->
-              <h6 class="card-title shop-name fw-bolder">{{shop.name}}</h6>
-              <h6 class="card-title shop-name">({{shop.localName}})</h6>
-              <h6 class="card-title shop-name text-muted">{{ shop.address.street }}</h6>
+              <h6 class="card-title shop-name fw-bolder">{{ shop.name }}</h6>
+              <h6 class="card-title shop-name">({{ shop.localName }})</h6>
+              <h6 class="card-title shop-name text-muted">
+                {{ shop.address.street }}
+              </h6>
+            </div>
+          </div>
+          <!-- Card -->
+        </div>
+      </div>
+
+      <!-- Fish/Chicken end-->
+
+      <div class="row">
+        <div class="col-8"><h6 class="side-head mt-3">Your partners</h6></div>
+        <div class="col-4 mt-3 text-end">
+          <router-link to="" class="text-danger" @click="gotoShops('all')">
+            View all
+          </router-link>
+        </div>
+
+        <div
+          class="col-6 mt-2"
+          v-for="shop in allShops"
+          :key="shop.id"
+          v-show="!shop.category.every((i) => ['fish', 'chicken'].includes(i))"
+        >
+          <!-- Card -->
+          <div class="card">
+            <!--Card image-->
+            <div>
+              <img class="card-img-top" :src="shop.photoUrl" />
+              <a href="#!">
+                <div class="mask rgba-white-slight"></div>
+              </a>
+            </div>
+
+            <!--Card content-->
+            <div class="card-body">
+              <!--Title-->
+              <h6 class="card-title shop-name fw-bolder">{{ shop.name }}</h6>
+              <h6 class="card-title shop-name">({{ shop.localName }})</h6>
+              <h6 class="card-title shop-name text-muted">
+                {{ shop.address.street }}
+              </h6>
             </div>
           </div>
           <!-- Card -->
@@ -246,9 +293,8 @@
         </div>
       </div>
     </div>
-    <button @click="logout">lo</button>
     <div class="cart-div">
-      <span class="count">1</span>
+      <span class="count">2</span>
       <span class="material-icons md-18 cart-icon">shopping_cart</span>
     </div>
     <Loader v-show="loader" />
@@ -267,9 +313,15 @@ export default {
     return {};
   },
   async mounted() {
+    this.loader = true
     await this.checkAuth();
     await this.getShopTypes();
-    await this.getShops('all');
+    await this.getShops("all");
+  },
+  methods: {
+    gotoShops: function(flag) {
+      this.$router.push({ path: "/shops", query: { filter: flag } });
+    },
   },
 };
 </script>

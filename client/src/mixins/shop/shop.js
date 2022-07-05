@@ -15,6 +15,7 @@ export default {
       loader: false,
       typesArr: [],
       allShops: [],
+      shopTypes: []
     };
   },
   methods: {
@@ -26,7 +27,19 @@ export default {
       for (const key in types) {
         typesArr.push(key);
       }
-      this.typesArr = typesArr;
+      this.shopTypes = typesArr;
+    },
+    updateTypeArr: function(id,) {
+      var chk = document.getElementById(id);
+      if (chk.checked) {
+        this.typesArr.push(id);
+      } else {
+        this.typesArr=  this.typesArr.filter(e => e !== id)
+
+        //this.typesArr.splice(index, 1);
+      }
+      console.log(this.typesArr)
+
     },
     getShops: async function(flag) {
       if (flag === "category" && !this.typesArr.length) {
@@ -50,11 +63,14 @@ export default {
         querySnapshot = await getDocs(q);
       }
       //open or not condition
-      querySnapshot.forEach((doc) => {
-        const shop = doc.data();
-        shop.id = doc.id;
-        allShops.push(shop);
-      });
+      if (querySnapshot.size) {
+        querySnapshot.forEach((doc) => {
+          const shop = doc.data();
+          shop.id = doc.id;
+          allShops.push(shop);
+        });
+      }
+      window.$("#filterModal").modal("hide");
       this.allShops = allShops;
       this.loader = false;
     },

@@ -279,11 +279,18 @@ h5 {
 .empty-address-icon {
   font-size: 8em;
   margin-top: 50%;
-  margin-bottom:1em;
+  margin-bottom: 1em;
 }
-.shop-name{
+.shop-name {
   font-size: 80%;
 }
 .card-img-top {
   height: 8em;
+}
+.get-all-shop-button-shops {
+  border: 1px solid #c7c8c9;
+  border-radius: 20px;
+}
+.font-size-filter{
+  font-size: 13px;
 }
