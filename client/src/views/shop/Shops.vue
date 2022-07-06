@@ -15,16 +15,9 @@
         </router-link>
       </div>
     </div>
-    <div class="container-fluid">
+    <div class="container-fluid pb-3">
       <div class="row">
-        <!--<div class="col-12 mt-3 text-end">
-          <router-link to="" class="text-danger" @click="openFilterModal()">
-            Filter
-          </router-link>
-        </div>
-        -->
-
-        <div class="col-12 p-2">
+        <div class="col-12 p-2 shadow">
           <div class="row w-100">
             <div class="col-6">
               <button
@@ -42,47 +35,60 @@
                 Categories
               </button>
             </div>
-            <div class="col-3 mt-2">
+            <div class="col-3 mt-2 text-center">
               <input
                 class="form-check-input"
-                type="checkbox"
-                value=""
+                type="radio"
+                id="both"
+                name="veg-filter"
+                @click="filterShopsVeg('both')"
+                checked
+              />
+              <label class="form-check-label" for="both">
+                Both
+              </label>
+            </div>
+            <div class="col-3 mt-2 text-center">
+              <input
+                class="form-check-input"
+                type="radio"
                 id="veg"
-                @click="updateTypeArr()"
+                name="veg-filter"
+                @click="filterShopsVeg('veg')"
               />
               <label class="form-check-label" for="veg">
                 Veg
               </label>
             </div>
-            <div class="col-3 mt-2">
-             <input
-                class="form-check-input"
-                type="checkbox"
-                value=""
-                id="non-veg"
-                @click="updateTypeArr()"
-              />
-              <label class="form-check-label" for="non-veg">
-                Non 
-              </label>
-            </div>
-            <div class="col-3 mt-2">
+            <div class="col-3 mt-2 text-center">
               <input
                 class="form-check-input"
-                type="checkbox"
-                value=""
-                id="both"
-                @click="updateTypeArr()"
+                type="radio"
+                id="non-veg"
+                name="veg-filter"
+                @click="filterShopsVeg('non')"
               />
-              <label class="form-check-label" for="both">
-                Both 
+              <label class="form-check-label" for="non-veg">
+                Non
               </label>
             </div>
-            <div class="col-3 mt-2">Clear</div>
+            
+            <div class="col-3 mt-2 text-center">
+              <input
+                class="form-check-input"
+                type="radio"
+                id="clear"
+                name="veg-filter"
+                onclick="window.location.reload()"
+              />
+              <label class="form-check-label" for="clear">
+                Clear
+              </label>
+            </div>
           </div>
         </div>
 
-        <div class="col-6 mt-2" v-for="shop in allShops" :key="shop.id">
+        <div class="col-6 mt-2" v-for="shop in allShops" :key="shop.id" @click="gotoShop(shop.id)">
           <!-- Card -->
           <div class="card">
             <!--Card image-->
@@ -110,7 +116,7 @@
 
     <!-- The Modal -->
     <div class="modal fade" id="filterModal">
-      <div class="modal-dialog modal-lg">
+      <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <!-- Modal Header -->
           <div class="modal-header">
@@ -166,7 +172,7 @@
 <script>
 import Loader from "@/components/loader";
 import auth from "@/mixins/auth/auth.js";
-import shop from "@/mixins/shop/shop.js";
+import shop from "@/mixins/shop/shops.js";
 
 export default {
   components: { Loader },
@@ -190,6 +196,9 @@ export default {
   methods: {
     openFilterModal: async function() {
       window.$("#filterModal").modal("show");
+    },
+    gotoShop: function(id) {
+      this.$router.push(`/shop/${id}`);
     },
   },
 };

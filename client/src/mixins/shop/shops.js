@@ -15,7 +15,8 @@ export default {
       loader: false,
       typesArr: [],
       allShops: [],
-      shopTypes: []
+      shopTypes: [],
+      tempShops: [],
     };
   },
   methods: {
@@ -29,17 +30,13 @@ export default {
       }
       this.shopTypes = typesArr;
     },
-    updateTypeArr: function(id,) {
+    updateTypeArr: function(id) {
       var chk = document.getElementById(id);
       if (chk.checked) {
         this.typesArr.push(id);
       } else {
-        this.typesArr=  this.typesArr.filter(e => e !== id)
-
-        //this.typesArr.splice(index, 1);
+        this.typesArr = this.typesArr.filter((e) => e !== id);
       }
-      console.log(this.typesArr)
-
     },
     getShops: async function(flag) {
       if (flag === "category" && !this.typesArr.length) {
@@ -72,7 +69,25 @@ export default {
       }
       window.$("#filterModal").modal("hide");
       this.allShops = allShops;
+      this.tempShops = this.allShops;
+      await this.filterShopsVeg('both');
+      const exist = document.getElementById("both");
+      if(exist) document.getElementById("both").checked = true;
       this.loader = false;
     },
+    filterShopsVeg: async function(val){
+      if(val === 'both'){
+        this.allShops = this.tempShops;
+        return
+      }
+      let flag = true;
+      if(val === 'veg'){
+        flag = true;
+      }
+      else if(val === 'non'){
+        flag = false;
+      }
+      this.allShops = this.tempShops.filter((shop)=> shop.veg === flag)
+    }
   },
 };

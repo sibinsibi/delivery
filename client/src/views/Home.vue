@@ -67,7 +67,7 @@
         </div>
       </div>
     </div>
-    <div class="container-fluid">
+    <div class="container-fluid pb-3">
       <div class="row">
         <div class="col-12 p-3">
           <div id="demo" class="carousel slide" data-bs-ride="carousel">
@@ -151,7 +151,12 @@
           </div>
         </div>
         <h5 class="side-head">Shops types</h5>
-        <div class="col-4 pt-2" v-for="(types, index) in shopTypes" :key="index" @click="gotoShops(types)">
+        <div
+          class="col-4 pt-2"
+          v-for="(types, index) in shopTypes"
+          :key="index"
+          @click="gotoShops(types)"
+        >
           <div class="chip text-nowrap">
             <div class="chip-content text-capitalize text-nowrap">
               {{ types }}
@@ -166,9 +171,7 @@
           <h6 class="side-head mt-3">Fish and Chicken</h6>
         </div>
         <div class="col-4 mt-3 text-end">
-          <!--<router-link to="" class="text-danger" @click="gotoShops('all')">
-            View all
-          </router-link> -->
+      
         </div>
 
         <div
@@ -176,6 +179,7 @@
           v-for="shop in allShops"
           :key="shop.id"
           v-show="shop.category.every((i) => ['fish', 'chicken'].includes(i))"
+          @click="gotoShop(shop.id)"
         >
           <!-- Card -->
           <div class="card">
@@ -216,6 +220,7 @@
           v-for="shop in allShops"
           :key="shop.id"
           v-show="!shop.category.every((i) => ['fish', 'chicken'].includes(i))"
+          @click="gotoShop(shop.id)"
         >
           <!-- Card -->
           <div class="card">
@@ -240,58 +245,6 @@
           <!-- Card -->
         </div>
       </div>
-
-      <div class="card-deck row mt-4">
-        <h5 class="side-head">Products for you</h5>
-        <div class="col-6 mt-2">
-          <div class="card">
-            <img
-              src="https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fsimplyalgerian.files.wordpress.com%2F2011%2F09%2Fyahni.jpg&f=1"
-              alt="Denim Jeans"
-              style="width:100%"
-            />
-            <h6 class="product-name mt-2">Tandoori</h6>
-            <p class="hotel">Food cafe</p>
-            <p class="price">$19.99</p>
-          </div>
-        </div>
-        <div class="col-6 mt-2">
-          <div class="card">
-            <img
-              src="https://images.duckduckgo.com/iu/?u=https%3A%2F%2Fs-media-cache-ak0.pinimg.com%2F736x%2F46%2Faa%2F72%2F46aa728c96e206ed218a0beb8df2a1c3.jpg&f=1"
-              alt="Denim Jeans"
-              style="width:100%"
-            />
-            <h6 class="product-name mt-2">Alfam</h6>
-            <p class="hotel">Cafe Holiday</p>
-            <p class="price">$19.99</p>
-          </div>
-        </div>
-        <div class="col-6 mt-2">
-          <div class="card">
-            <img
-              src="https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fsimplyalgerian.files.wordpress.com%2F2011%2F09%2Fyahni.jpg&f=1"
-              alt="Denim Jeans"
-              style="width:100%"
-            />
-            <h6 class="product-name mt-2">Tandoori</h6>
-            <p class="hotel">Food cafe</p>
-            <p class="price">$19.99</p>
-          </div>
-        </div>
-        <div class="col-6 mt-2">
-          <div class="card">
-            <img
-              src="https://images.duckduckgo.com/iu/?u=https%3A%2F%2Fs-media-cache-ak0.pinimg.com%2F736x%2F46%2Faa%2F72%2F46aa728c96e206ed218a0beb8df2a1c3.jpg&f=1"
-              alt="Denim Jeans"
-              style="width:100%"
-            />
-            <h6 class="product-name mt-2">Alfam</h6>
-            <p class="hotel">Cafe Holiday</p>
-            <p class="price">$19.99</p>
-          </div>
-        </div>
-      </div>
     </div>
     <div class="cart-div">
       <span class="count">2</span>
@@ -303,7 +256,7 @@
 
 <script>
 import auth from "@/mixins/auth/auth.js";
-import shop from "@/mixins/shop/shop.js";
+import shop from "@/mixins/shop/shops.js";
 import Loader from "@/components/loader";
 
 export default {
@@ -313,14 +266,16 @@ export default {
     return {};
   },
   async mounted() {
-    this.loader = true
     await this.checkAuth();
-    await this.getShopTypes();
-    await this.getShops("all");
+    this.getShopTypes();
+    this.getShops("all");
   },
   methods: {
     gotoShops: function(flag) {
       this.$router.push({ path: "/shops", query: { filter: flag } });
+    },
+    gotoShop: function(id) {
+      this.$router.push(`/shop/${id}`);
     },
   },
 };
