@@ -28,7 +28,7 @@
                 type="radio"
                 id="both"
                 name="veg-filter"
-                @click="filterItemVeg('both')"
+                @click="filterItemsVeg('both')"
               />
               <label class="form-check-label" for="both">
                 Both
@@ -40,7 +40,7 @@
                 type="radio"
                 id="veg"
                 name="veg-filter"
-                @click="filterItemVeg('veg')"
+                @click="filterItemsVeg('veg')"
               />
               <label class="form-check-label" for="veg">
                 Veg
@@ -52,7 +52,7 @@
                 type="radio"
                 id="non-veg"
                 name="veg-filter"
-                @click="filterItemVeg('non')"
+                @click="filterItemsVeg('non')"
               />
               <label class="form-check-label" for="non-veg">
                 Non
@@ -88,17 +88,91 @@
               >
               <h6 class="product-name mt-2">{{ item.name }}</h6>
               <h6 class="text-muted">({{ item.localName }})</h6>
-              <h6 class="">₹{{ item.price }}</h6>
+              <h6 class="">
+                ₹{{ item.price }}
+                {{ item.unit == "kg" ? "/Kg" : item.unit == "lt" ? "/L" : "" }}
+              </h6>
             </div>
             <div class="col-6 text-center">
               <img
                 :src="item.photoUrl"
                 class="mt-3 height-item each-item"
               /><br />
-              <button class="mt-2 btn btn-outline-danger btn-sm shadow-sm">
+              <button
+                class="mt-2 btn btn-outline-danger btn-sm shadow-sm"
+                @click="openCartModal(item)"
+              >
                 ADD
               </button>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="cart-modal"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 class="modal-title" id="staticBackdropLabel">
+              {{ selectedItem.name }}
+            </h6>
+            <h6 class="text-muted mt-2 fs-7">({{ selectedItem.localName }})</h6>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-12 text-center">
+                <img :src="selectedItem.photoUrl" class="w-50" />
+              </div>
+            </div>
+            <div
+              class="d-flex justify-content-center mt-2"
+              v-show="!selectedItem.eatable || selectedItem.unit === 'nb'"
+            >
+              <div class="p-2 bd-highlight">
+                <router-link to=""
+                  ><span class="material-icons common-icon cursor add-item-qty"
+                    >do_not_disturb_on</span
+                  >
+                </router-link>
+              </div>
+              <div class="p-2 bd-highlight">
+                {{ itemQty }}
+                {{ selectedItem.unit == "kg" ? selectedItem.unit : "" }}
+              </div>
+              <div class="p-2 bd-highlight">
+                <router-link to=""
+                  ><span class="material-icons common-icon cursor add-item-qty"
+                    >add_circle</span
+                  >
+                </router-link>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button type="button" class="btn btn-danger btn-sm">ADD</button>
           </div>
         </div>
       </div>
@@ -131,6 +205,9 @@ export default {
       shop: "",
       allItems: [],
       loader: false,
+      tempItems: [],
+      selectedItem: "",
+      itemQty: 1,
     };
   },
   async mounted() {
@@ -141,6 +218,11 @@ export default {
     this.getItems();
     this.loader = false;
   },
+  // beforeUnmount() {
+  //   window.addEventListener("popstate", () => {
+  //     window.$("#cart-modal").modal("hide");
+  //   });
+  // },
   methods: {
     getShop: async function() {
       const docRef = doc(this.db, "shops", this.shopId);
@@ -163,7 +245,26 @@ export default {
           }
         });
         this.allItems = allItems;
+        this.tempItems = this.allItems;
       }
+    },
+    filterItemsVeg: async function(val) {
+      if (val === "both") {
+        this.allItems = this.tempItems;
+        return;
+      }
+      let flag = true;
+      if (val === "veg") {
+        flag = true;
+      } else if (val === "non") {
+        flag = false;
+      }
+      this.allItems = this.tempItems.filter((item) => item.veg === flag);
+    },
+    openCartModal: function(item) {
+      //replce item
+      this.selectedItem = item;
+      window.$("#cart-modal").modal("show");
     },
   },
 };
