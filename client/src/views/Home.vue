@@ -170,9 +170,7 @@
         <div class="col-8">
           <h6 class="side-head mt-3">Fish and Chicken</h6>
         </div>
-        <div class="col-4 mt-3 text-end">
-      
-        </div>
+        <div class="col-4 mt-3 text-end"></div>
 
         <div
           class="col-6 mt-2"
@@ -247,8 +245,10 @@
       </div>
     </div>
     <div class="cart-div">
-      <span class="count">2</span>
-      <span class="material-icons md-18 cart-icon">shopping_cart</span>
+      <router-link to="/cart">
+        <span class="count">{{ cartLength }}</span>
+        <span class="material-icons md-18 cart-icon">shopping_cart</span>
+      </router-link>
     </div>
     <Loader v-show="loader" />
   </div>
@@ -263,12 +263,18 @@ export default {
   mixins: [auth, shop],
   components: { Loader },
   data() {
-    return {};
+    return {
+      cartLength: 0,
+    };
   },
   async mounted() {
     await this.checkAuth();
     this.getShopTypes();
     this.getShops("all");
+    let items =
+      window.sessionStorage.getItem("cartItems") &&
+      JSON.parse(window.sessionStorage.getItem("cartItems"));
+    this.cartLength = items.length;
   },
   methods: {
     gotoShops: function(flag) {

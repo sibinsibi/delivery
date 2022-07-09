@@ -15,6 +15,12 @@
         <router-link to="/"
           ><span class="material-icons common-icon cursor">home</span>
         </router-link>
+        <router-link to="/cart">
+          <span class="count-1" v-show="cartLength">{{
+            cartLength
+          }}</span>
+          <span class="material-icons common-icon cursor">shopping_cart</span>
+        </router-link>
       </div>
     </div>
 
@@ -111,19 +117,11 @@
     </div>
 
     <!-- Modal -->
-    <div
-      class="modal fade"
-      id="cart-modal"
-      data-bs-backdrop="static"
-      data-bs-keyboard="false"
-      tabindex="-1"
-      aria-labelledby="staticBackdropLabel"
-      aria-hidden="true"
-    >
+    <div class="modal fade" id="cart-modal" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h6 class="modal-title" id="staticBackdropLabel">
+            <h6 class="modal-title">
               {{ selectedItem.name }}
             </h6>
             <h6 class="text-muted mt-2 fs-7">({{ selectedItem.localName }})</h6>
@@ -145,7 +143,15 @@
               v-show="!selectedItem.eatable || selectedItem.unit === 'nb'"
             >
               <div class="p-2 bd-highlight">
-                <router-link to=""
+                <router-link
+                  to=""
+                  @click="
+                    updateCartItem(
+                      'dec',
+                      selectedItem.unit,
+                      selectedItem.eatable
+                    )
+                  "
                   ><span class="material-icons common-icon cursor add-item-qty"
                     >do_not_disturb_on</span
                   >
@@ -156,11 +162,25 @@
                 {{ selectedItem.unit == "kg" ? selectedItem.unit : "" }}
               </div>
               <div class="p-2 bd-highlight">
-                <router-link to=""
+                <router-link
+                  to=""
+                  @click="
+                    updateCartItem(
+                      'inc',
+                      selectedItem.unit,
+                      selectedItem.eatable
+                    )
+                  "
                   ><span class="material-icons common-icon cursor add-item-qty"
                     >add_circle</span
                   >
                 </router-link>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 text-center">
+                ₹{{ selectedItem.price * itemQty }}
               </div>
             </div>
           </div>
@@ -172,7 +192,13 @@
             >
               Cancel
             </button>
-            <button type="button" class="btn btn-danger btn-sm">ADD</button>
+            <button
+              type="button"
+              class="btn btn-danger btn-sm"
+              @click="addTocart()"
+            >
+              ADD
+            </button>
           </div>
         </div>
       </div>
@@ -208,6 +234,7 @@ export default {
       tempItems: [],
       selectedItem: "",
       itemQty: 1,
+      cartLength: 0,
     };
   },
   async mounted() {
@@ -216,20 +243,16 @@ export default {
     document.getElementById("both").checked = true;
     this.getShop();
     this.getItems();
+    this.getCartFromLocal()
     this.loader = false;
   },
-  // beforeUnmount() {
-  //   window.addEventListener("popstate", () => {
-  //     window.$("#cart-modal").modal("hide");
-  //   });
-  // },
   methods: {
     getShop: async function() {
       const docRef = doc(this.db, "shops", this.shopId);
       const docSnap = await getDoc(docRef);
       this.shop = docSnap.data();
     },
-    getItems: async function() {
+    getItems: async function() {    
       const q = query(
         collection(this.db, "items"),
         where("shopId", "==", this.shopId)
@@ -262,9 +285,96 @@ export default {
       this.allItems = this.tempItems.filter((item) => item.veg === flag);
     },
     openCartModal: function(item) {
-      //replce item
+      this.itemQty = 1;
       this.selectedItem = item;
       window.$("#cart-modal").modal("show");
+    },
+    updateCartItem: function(type, unit, eatable) {
+      if (type === "inc") {
+        //limit qty by adding
+        if (unit === "nb" || unit === "lt" || (unit === "kg" && eatable)) {
+          this.itemQty = this.itemQty + 1;
+        } else if (unit === "kg" && !eatable) {
+          this.itemQty = this.itemQty + 0.5;
+        }
+      } else {
+        if (unit === "nb" || unit === "lt" || (unit === "kg" && eatable)) {
+          this.itemQty !== 1 ? (this.itemQty = this.itemQty - 1) : null;
+        } else if (unit === "kg" && !eatable) {
+          this.itemQty !== 0.5 ? (this.itemQty = this.itemQty - 0.5) : null;
+        }
+      }
+    },
+    getCartFromLocal: function(){
+      let items =
+        window.sessionStorage.getItem("cartItems") &&
+        JSON.parse(window.sessionStorage.getItem("cartItems"));
+        this.cartLength = items.length
+    },
+    addTocart: function() {
+      let items =
+        window.sessionStorage.getItem("cartItems") &&
+        JSON.parse(window.sessionStorage.getItem("cartItems"));
+
+      if (items && items.length) {
+        const item = items[0];
+        if (item.shopId !== this.selectedItem.shopId) {
+          this.$swal
+            .fire({
+              title: "Replace cart item",
+              text: `Your cart contains items from ${item.shop.name}. Do you want to discard the selection and add items from ${this.shop.name}`,
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Replace",
+              background: "#fff",
+              backdrop: `
+          rgba(0,0,123,0.4)
+          left top
+          no-repeat `,
+            })
+            .then(async (result) => {
+              if (result.isConfirmed) {
+                //replce item if different shops
+                items = [];
+                this.addItem(items);
+              } else return false;
+            });
+        } else {
+          this.addItem(items);
+        }
+      } else {
+        // add first item
+        this.addItem(items);
+      }
+    },
+    addItem: async function(items) {
+      let itemArr = [];
+      if (items && items.length) {
+        itemArr = items;
+        for (let i = 0; i < itemArr.length; i++) {
+          if (itemArr[i].id === this.selectedItem.id) {
+            itemArr[i].qty = itemArr[i].qty + this.itemQty;
+            window.sessionStorage.setItem("cartItems", JSON.stringify(itemArr));
+            window.$("#cart-modal").modal("hide");
+            this.$toast.success(`${itemArr[i].name} added to cart`);
+            this.itemQty = 1;
+            this.selectedItem = "";
+            return;
+          }
+        }
+      }
+      //check adding same item
+      const item = this.selectedItem;
+      item.qty = this.itemQty;
+      item.shop = this.shop;
+      itemArr.push(item);
+      window.sessionStorage.setItem("cartItems", JSON.stringify(itemArr));
+      window.$("#cart-modal").modal("hide");
+      this.itemQty = 1;
+      this.selectedItem = "";
+      this.$toast.success(`${item.name} added to cart`);
+      await this.getCartFromLocal()
     },
   },
 };

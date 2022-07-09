@@ -23,6 +23,14 @@ export default {
       showPwd: false,
     };
   },
+  mounted() {
+    window.$(window).on("popstate", function() {
+      window.$(".modal").modal("hide");
+      window.$(".modal-backdrop").remove();
+      window.$(".in").remove();
+      window.$("body").css({ 'overflow' : 'auto', 'padding-right' : '' });
+    });
+  },
   methods: {
     login: function() {
       if (!this.email || !this.password) {
@@ -150,12 +158,10 @@ export default {
               userObj = docSnap.data();
               userObj.uid = docSnap.id;
               resolve(userObj);
-          
             } else {
-              
-              resolve('');
+              resolve("");
             }
-          } else resolve(''); //this.logout();
+          } else resolve(""); //this.logout();
         });
       });
     },
@@ -178,7 +184,7 @@ export default {
           resolve(this.logout());
         }
 
-        resolve(userObj)
+        resolve(userObj);
       });
     },
     // setUserState: function() {
