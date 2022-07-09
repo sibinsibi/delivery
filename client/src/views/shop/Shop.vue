@@ -271,6 +271,14 @@ export default {
         this.tempItems = this.allItems;
       }
     },
+    getCartFromLocal: async function(){
+      let items =
+        window.sessionStorage.getItem("cartItems") &&
+        JSON.parse(window.sessionStorage.getItem("cartItems"));
+        if(items && items.length)
+        this.cartLength = items.length
+        return items
+    },
     filterItemsVeg: async function(val) {
       if (val === "both") {
         this.allItems = this.tempItems;
@@ -284,9 +292,17 @@ export default {
       }
       this.allItems = this.tempItems.filter((item) => item.veg === flag);
     },
-    openCartModal: function(item) {
+    openCartModal: async function(item) {
       this.itemQty = 1;
       this.selectedItem = item;
+      const items = await this.getCartFromLocal()
+      if(items && items.length){
+        for(let i = 0; i < items.length; i++){
+          if(items[i].id === this.selectedItem.id){
+            this.itemQty = items[i].qty
+          }
+        }
+      }
       window.$("#cart-modal").modal("show");
     },
     updateCartItem: function(type, unit, eatable) {
@@ -305,16 +321,9 @@ export default {
         }
       }
     },
-    getCartFromLocal: function(){
-      let items =
-        window.sessionStorage.getItem("cartItems") &&
-        JSON.parse(window.sessionStorage.getItem("cartItems"));
-        this.cartLength = items.length
-    },
-    addTocart: function() {
-      let items =
-        window.sessionStorage.getItem("cartItems") &&
-        JSON.parse(window.sessionStorage.getItem("cartItems"));
+    addTocart: async function() {
+    
+      let items = await this.getCartFromLocal()
 
       if (items && items.length) {
         const item = items[0];
@@ -354,7 +363,7 @@ export default {
         itemArr = items;
         for (let i = 0; i < itemArr.length; i++) {
           if (itemArr[i].id === this.selectedItem.id) {
-            itemArr[i].qty = itemArr[i].qty + this.itemQty;
+            itemArr[i].qty = this.itemQty;
             window.sessionStorage.setItem("cartItems", JSON.stringify(itemArr));
             window.$("#cart-modal").modal("hide");
             this.$toast.success(`${itemArr[i].name} added to cart`);
@@ -364,7 +373,6 @@ export default {
           }
         }
       }
-      //check adding same item
       const item = this.selectedItem;
       item.qty = this.itemQty;
       item.shop = this.shop;
