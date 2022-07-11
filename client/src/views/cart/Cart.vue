@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <div class="container-fluid" v-if="allItems.length">
+    <div class="container-fluid pb-5" v-if="allItems.length">
       <div class="row ps-2 pe-2 mt-2">
         <div class="col-12">
           <div class="row each-item">
@@ -37,26 +37,32 @@
                   >
                 </div>
                 <div class="col-6">
-                  <h6 class="product-name mt-2 cart-font-size">
+                  <h6
+                    class="product-name mt-2 cart-font-size"
+                    :class="{ 'text-black-50': !item.active }"
+                  >
                     {{ item.name }}
                   </h6>
                   <h6 class="text-muted cart-font-size">
                     ({{ item.localName }})
                   </h6>
                 </div>
-                <div class="col-2 cart-font-size">
+                <div class="col-2 cart-font-size text-black-50">
                   {{ item.qty }}
                 </div>
-                <div class="col-2">
-                  <h6 class="cart-font-size">
+                <div class="col-2 text-center">
+                  <h6 class="cart-font-size" v-show="item.active">
                     ₹{{ item.price * item.qty }}
                     {{
                       item.unit == "kg" ? "/Kg" : item.unit == "lt" ? "/L" : ""
                     }}
                   </h6>
+                  <h6 class="not-availble-cart " v-show="!item.active">
+                    Currently not available
+                  </h6>
                 </div>
                 <div class="col-1">
-                  <router-link to="/"
+                  <router-link to="" @click="deleteItem(item)"
                     ><span class="material-icons common-icon cursor"
                       >delete</span
                     >
@@ -113,34 +119,81 @@
         <h6 class="fw-bolder">Bill Details</h6>
       </div>
 
-      <div class="row ps-2 pe-2 mt-1" v-show="selectedAddress">
+      <div class="row ps-2 pe-2 mt-1">
         <div class="container ps-2 pe-2 mt-2">
           <div class="row shadow p-3 mb-3 bg-body rounded">
             <div class="col-8">
               <h6 class="text-body cart-font-size">Item Total</h6>
             </div>
             <div class="col-4">
-              <h6 class="text-body cart-font-size">₹100</h6>
+              <h6 class="text-body cart-font-size">₹{{ totalItemAmount }}</h6>
             </div>
             <div class="col-8">
               <h6 class="text-body cart-font-size">Delivery fee</h6>
             </div>
             <div class="col-4">
-              <h6 class="text-body cart-font-size">₹100</h6>
+              <h6 class="text-body cart-font-size">
+                ₹{{ this.constant.deliveryCharge }}
+              </h6>
             </div>
-            <div class="col-8 border-bottom">
+            <!--   <div class="col-8 border-bottom">
               <h6 class="text-body cart-font-size">Taxes and charges</h6>
             </div>
             <div class="col-4 border-bottom">
               <h6 class="text-body cart-font-size">₹100</h6>
-            </div>
+            </div> -->
             <div class="col-8 mt-2">
               <h6 class="text-body cart-font-size fw-bold">To Pay</h6>
             </div>
             <div class="col-4 mt-2">
-              <h6 class="text-body cart-font-size fw-bold">₹100</h6>
+              <h6 class="text-body cart-font-size fw-bold">
+                ₹ {{ totalItemAmount + this.constant.deliveryCharge }}
+              </h6>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <h6 class="fw-bolder">Payment Options</h6>
+      </div>
+
+      <div class="row ps-2 pe-2 mt-2">
+        <div class="col-12">
+          <div class="row each-item">
+            <div class="col-12 mt-2 border-bottom">
+              <div class="row w-100 mb-2">
+                <div class="col-1">
+                  <router-link to=""
+                    ><span class="material-icons common-icon cursor fs-1"
+                      >payments</span
+                    >
+                  </router-link>
+                </div>
+                <div class="col-8 ps-3 pt-1 cart-font-size">
+                  Pay on Delivery
+                </div>
+                <div class="col-3 text-center">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    value="cod"
+                    id="cash-on-delivery"
+                    name="payment-method"
+                    v-model="paymentMethod"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-12">
+          <button class="btn btn-sm add-address-button" @click="placeOrder()">
+            Make Your Order
+          </button>
         </div>
       </div>
     </div>
@@ -213,6 +266,7 @@
 </template>
 
 <script>
+import constant from "@/constants/constant.json";
 import Loader from "@/components/loader";
 import auth from "@/mixins/auth/auth.js";
 import {
@@ -237,13 +291,16 @@ export default {
       showEmpty: false,
       allAddress: [],
       selectedAddress: false,
+      constant:
+        process.env.NODE_ENV === "development" ? constant.dev : constant.prod,
+      totalItemAmount: 0,
+      paymentMethod: "",
     };
   },
   async mounted() {
     this.loader = true;
     await this.checkAuth();
     this.getCartFromLocal();
-    //this.getAddress(this.$store.state.user.uid);
     this.loader = false;
   },
   methods: {
@@ -278,6 +335,7 @@ export default {
       return item;
     },
     getCartFromLocal: async function() {
+        this.allItems = []
       let items =
         window.sessionStorage.getItem("cartItems") &&
         JSON.parse(window.sessionStorage.getItem("cartItems"));
@@ -288,90 +346,47 @@ export default {
           const item = items[i];
           const itemFromDB = await this.getItemFromDB(item.id);
           itemFromDB.qty = item.qty;
+          itemFromDB.id = item.id;
           itemFromDB.total = itemFromDB.price * itemFromDB.qty;
           allItems.push(itemFromDB);
+          if (itemFromDB.active) await this.calculateTotal(itemFromDB.total);
         }
         this.allItems = allItems;
-        if (!this.allItems) this.showEmpty = true;
-      }
-    },
-    updateCartItem: function(type, unit, eatable) {
-      if (type === "inc") {
-        //limit qty by adding
-        if (unit === "nb" || unit === "lt" || (unit === "kg" && eatable)) {
-          this.itemQty = this.itemQty + 1;
-        } else if (unit === "kg" && !eatable) {
-          this.itemQty = this.itemQty + 0.5;
-        }
       } else {
-        if (unit === "nb" || unit === "lt" || (unit === "kg" && eatable)) {
-          this.itemQty !== 1 ? (this.itemQty = this.itemQty - 1) : null;
-        } else if (unit === "kg" && !eatable) {
-          this.itemQty !== 0.5 ? (this.itemQty = this.itemQty - 0.5) : null;
-        }
+        this.showEmpty = true;
       }
     },
-    addTocart: async function() {
-      let items = await this.getCartFromLocal();
+    calculateTotal: async function(amount) {
+      this.totalItemAmount = this.totalItemAmount + amount;
+    },
+    deleteItem: async function(item) {
+        this.loader = true
+      let items =
+        window.sessionStorage.getItem("cartItems") &&
+        JSON.parse(window.sessionStorage.getItem("cartItems"));
+      if (items && items.length) {
+        const newItemArr = items.filter((object) => {
+          return object.id !== item.id;
+        });
+        window.sessionStorage.setItem("cartItems", JSON.stringify(newItemArr));
+        this.totalItemAmount = 0;
+        await this.getCartFromLocal();
+        this.loader = false
+      }
+    },
+    placeOrder: async function() {
+      if (!this.selectedAddress) {
+        this.$toast.error(`Select your address`);
+        return;
+      }
+      if (!this.paymentMethod) {
+        this.$toast.error(`Select payment method`);
+        return;
+      }
 
-      if (items && items.length) {
-        const item = items[0];
-        if (item.shopId !== this.selectedItem.shopId) {
-          this.$swal
-            .fire({
-              title: "Replace cart item",
-              text: `Your cart contains items from ${item.shop.name}. Do you want to discard the selection and add items from ${this.shop.name}`,
-              showCancelButton: true,
-              confirmButtonColor: "#3085d6",
-              cancelButtonColor: "#d33",
-              confirmButtonText: "Replace",
-              background: "#fff",
-              backdrop: `
-          rgba(0,0,123,0.4)
-          left top
-          no-repeat `,
-            })
-            .then(async (result) => {
-              if (result.isConfirmed) {
-                //replce item if different shops
-                items = [];
-                this.addItem(items);
-              } else return false;
-            });
-        } else {
-          this.addItem(items);
-        }
-      } else {
-        // add first item
-        this.addItem(items);
+      const order = {
+        custId: this.$store.state.user.uid,
       }
-    },
-    addItem: async function(items) {
-      let itemArr = [];
-      if (items && items.length) {
-        itemArr = items;
-        for (let i = 0; i < itemArr.length; i++) {
-          if (itemArr[i].id === this.selectedItem.id) {
-            itemArr[i].qty = this.itemQty;
-            window.sessionStorage.setItem("cartItems", JSON.stringify(itemArr));
-            window.$("#cart-modal").modal("hide");
-            this.$toast.success(`${itemArr[i].name} added to cart`);
-            this.itemQty = 1;
-            this.selectedItem = "";
-            return;
-          }
-        }
-      }
-      const item = this.selectedItem;
-      item.qty = this.itemQty;
-      item.shop = this.shop;
-      itemArr.push(item);
-      window.sessionStorage.setItem("cartItems", JSON.stringify(itemArr));
-      window.$("#cart-modal").modal("hide");
-      this.itemQty = 1;
-      this.selectedItem = "";
-      this.$toast.success(`${item.name} added to cart`);
-      await this.getCartFromLocal();
     },
   },
 };

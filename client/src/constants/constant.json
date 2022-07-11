@@ -1,0 +1,9 @@
+{
+    "dev": {
+        "deliveryCharge": 40 
+    },
+    "prod": {
+        "deliveryCharge": 40 
+    }
+    
+}
