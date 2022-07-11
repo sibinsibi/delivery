@@ -180,7 +180,7 @@
           @click="gotoShop(shop.id)"
         >
           <!-- Card -->
-          <div class="card">
+          <div class="card" :class="{ blackWhite: !shop.open }">
             <!--Card image-->
             <div>
               <img class="card-img-top" :src="shop.photoUrl" />
@@ -221,7 +221,7 @@
           @click="gotoShop(shop.id)"
         >
           <!-- Card -->
-          <div class="card">
+          <div class="card" :class="{ blackWhite: !shop.open }">
             <!--Card image-->
             <div>
               <img class="card-img-top" :src="shop.photoUrl" />
@@ -246,7 +246,7 @@
     </div>
     <div class="cart-div">
       <router-link to="/cart">
-        <span class="count">{{ cartLength }}</span>
+        <span class="count" v-show="cartLength">{{ cartLength }}</span>
         <span class="material-icons md-18 cart-icon">shopping_cart</span>
       </router-link>
     </div>
@@ -274,6 +274,7 @@ export default {
     let items =
       window.sessionStorage.getItem("cartItems") &&
       JSON.parse(window.sessionStorage.getItem("cartItems"));
+      if(items)
     this.cartLength = items.length;
   },
   methods: {

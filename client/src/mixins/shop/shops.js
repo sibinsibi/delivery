@@ -59,11 +59,11 @@ export default {
         q = query(collection(this.db, "shops"), where("active", "==", true));
         querySnapshot = await getDocs(q);
       }
-      //open or not condition
       if (querySnapshot.size) {
         querySnapshot.forEach((doc) => {
           const shop = doc.data();
           shop.id = doc.id;
+          if(shop.active)
           allShops.push(shop);
         });
       }

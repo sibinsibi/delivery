@@ -16,9 +16,7 @@
           ><span class="material-icons common-icon cursor">home</span>
         </router-link>
         <router-link to="/cart">
-          <span class="count-1" v-show="cartLength">{{
-            cartLength
-          }}</span>
+          <span class="count-1" v-show="cartLength">{{ cartLength }}</span>
           <span class="material-icons common-icon cursor">shopping_cart</span>
         </router-link>
       </div>
@@ -79,6 +77,24 @@
           </div>
         </div>
       </div>
+      <div
+        class="example1"
+        v-if="
+          shop.category.every((i) => ['fish', 'chicken'].includes(i)) &&
+            shop.open
+        "
+      >
+        <h6>★ Price will be change according to the market price ★</h6>
+      </div>
+      <div class="text-center pendulam-base" v-show="showPendulam">
+        <div class="thread">
+          <div class="pendulum">
+            <router-link to=""
+              ><span class="material-icons common-icon cursor">lock</span>
+            </router-link>
+          </div>
+        </div>
+      </div>
       <div class="row ps-2 pe-2">
         <div
           class="col-12 mt-2 rounded each-item"
@@ -86,7 +102,7 @@
           :key="item.id"
         >
           <div class="row mb-2">
-            <div class="col-6">
+            <div class="col-7">
               <span
                 class="material-icons cursor fs-6"
                 :style="item.veg ? 'color: green;' : 'color: red;'"
@@ -99,14 +115,14 @@
                 {{ item.unit == "kg" ? "/Kg" : item.unit == "lt" ? "/L" : "" }}
               </h6>
             </div>
-            <div class="col-6 text-center">
+            <div class="col-5 text-center" :class="{ blackWhite: !shop.open }">
               <img
                 :src="item.photoUrl"
                 class="mt-3 height-item each-item"
               /><br />
               <button
                 class="mt-2 btn btn-outline-danger btn-sm shadow-sm"
-                @click="openCartModal(item)"
+                @click="openCartModal(item)" :disabled="!shop.open"
               >
                 ADD
               </button>
@@ -228,13 +244,14 @@ export default {
     return {
       db: getFirestore(),
       shopId: this.$route.params.id,
-      shop: "",
+      shop: { category: [] },
       allItems: [],
       loader: false,
       tempItems: [],
       selectedItem: "",
       itemQty: 1,
       cartLength: 0,
+      showPendulam: false
     };
   },
   async mounted() {
@@ -243,7 +260,7 @@ export default {
     document.getElementById("both").checked = true;
     this.getShop();
     this.getItems();
-    this.getCartFromLocal()
+    this.getCartFromLocal();
     this.loader = false;
   },
   methods: {
@@ -251,8 +268,9 @@ export default {
       const docRef = doc(this.db, "shops", this.shopId);
       const docSnap = await getDoc(docRef);
       this.shop = docSnap.data();
+      if(!this.shop.open)this.showPendulam = true
     },
-    getItems: async function() {    
+    getItems: async function() {
       const q = query(
         collection(this.db, "items"),
         where("shopId", "==", this.shopId)
@@ -271,13 +289,12 @@ export default {
         this.tempItems = this.allItems;
       }
     },
-    getCartFromLocal: async function(){
+    getCartFromLocal: async function() {
       let items =
         window.sessionStorage.getItem("cartItems") &&
         JSON.parse(window.sessionStorage.getItem("cartItems"));
-        if(items && items.length)
-        this.cartLength = items.length
-        return items
+      if (items && items.length) this.cartLength = items.length;
+      return items;
     },
     filterItemsVeg: async function(val) {
       if (val === "both") {
@@ -293,13 +310,14 @@ export default {
       this.allItems = this.tempItems.filter((item) => item.veg === flag);
     },
     openCartModal: async function(item) {
+      //if(!this.shop.open) return
       this.itemQty = 1;
       this.selectedItem = item;
-      const items = await this.getCartFromLocal()
-      if(items && items.length){
-        for(let i = 0; i < items.length; i++){
-          if(items[i].id === this.selectedItem.id){
-            this.itemQty = items[i].qty
+      const items = await this.getCartFromLocal();
+      if (items && items.length) {
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].id === this.selectedItem.id) {
+            this.itemQty = items[i].qty;
           }
         }
       }
@@ -322,8 +340,7 @@ export default {
       }
     },
     addTocart: async function() {
-    
-      let items = await this.getCartFromLocal()
+      let items = await this.getCartFromLocal();
 
       if (items && items.length) {
         const item = items[0];
@@ -382,7 +399,7 @@ export default {
       this.itemQty = 1;
       this.selectedItem = "";
       this.$toast.success(`${item.name} added to cart`);
-      await this.getCartFromLocal()
+      await this.getCartFromLocal();
     },
   },
 };

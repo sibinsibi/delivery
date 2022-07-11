@@ -13,6 +13,10 @@
         <router-link to="/"
           ><span class="material-icons common-icon cursor">home</span>
         </router-link>
+        <router-link to="/cart">
+          <span class="count-1" v-show="cartLength">{{ cartLength }}</span>
+          <span class="material-icons common-icon cursor">shopping_cart</span>
+        </router-link>
       </div>
     </div>
     <div class="container-fluid pb-3">
@@ -72,7 +76,7 @@
                 Non
               </label>
             </div>
-            
+
             <div class="col-3 mt-2 text-center">
               <input
                 class="form-check-input"
@@ -88,9 +92,14 @@
           </div>
         </div>
 
-        <div class="col-6 mt-2" v-for="shop in allShops" :key="shop.id" @click="gotoShop(shop.id)">
+        <div
+          class="col-6 mt-2"
+          v-for="shop in allShops"
+          :key="shop.id"
+          @click="gotoShop(shop)"
+        >
           <!-- Card -->
-          <div class="card">
+          <div class="card" :class="{ blackWhite: !shop.open }">
             <!--Card image-->
             <div>
               <img class="card-img-top" :src="shop.photoUrl" />
@@ -180,6 +189,7 @@ export default {
   data() {
     return {
       filter: this.$route.query.filter || "all",
+      cartLength: 0,
     };
   },
   async mounted() {
@@ -192,13 +202,20 @@ export default {
       await this.getShops("category");
     }
     await this.getShopTypes();
+    let items =
+      window.sessionStorage.getItem("cartItems") &&
+      JSON.parse(window.sessionStorage.getItem("cartItems"));
+    if (items) this.cartLength = items.length;
   },
   methods: {
     openFilterModal: async function() {
       window.$("#filterModal").modal("show");
     },
-    gotoShop: function(id) {
-      this.$router.push(`/shop/${id}`);
+    gotoShop: function(shop) {
+      if (!shop.open) {
+        this.$toast.error(`${shop.name} not opened yet!`);
+      }
+      this.$router.push(`/shop/${shop.id}`);
     },
   },
 };

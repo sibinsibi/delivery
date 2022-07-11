@@ -291,22 +291,22 @@ h5 {
   border: 1px solid #c7c8c9;
   border-radius: 20px;
 }
-.font-size-filter{
+.font-size-filter {
   font-size: 13px;
 }
 .form-check-input:checked {
   background-color: red;
   wlor: red;
 }
-.height-item{
+.height-item {
   height: 60px;
   width: 80px;
 }
-.each-item{
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+.each-item {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
-.add-item-qty{
+.add-item-qty {
   font-size: 2em;
 }
 .count-1 {
@@ -325,4 +325,129 @@ h5 {
   font-weight: bold;
   border: 2px solid red;
   border-radius: 50%;
+}
+
+.example1 {
+  height: 50px;
+  overflow: hidden;
+  position: relative;
+}
+.example1 h6 {
+  font-size: 12px;
+  color: limegreen;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  line-height: 50px;
+  text-align: center;
+  /* Starting position */
+  -moz-transform: translateX(100%);
+  -webkit-transform: translateX(100%);
+  transform: translateX(100%);
+  /* Apply animation to this element */
+  -moz-animation: example1 15s linear infinite;
+  -webkit-animation: example1 15s linear infinite;
+  animation: example1 15s linear infinite;
+}
+/* Move it (define the animation) */
+@-moz-keyframes example1 {
+  0% {
+    -moz-transform: translateX(100%);
+  }
+  100% {
+    -moz-transform: translateX(-100%);
+  }
+}
+@-webkit-keyframes example1 {
+  0% {
+    -webkit-transform: translateX(100%);
+  }
+  100% {
+    -webkit-transform: translateX(-100%);
+  }
+}
+@keyframes example1 {
+  0% {
+    -moz-transform: translateX(100%); /* Firefox bug fix */
+    -webkit-transform: translateX(100%); /* Firefox bug fix */
+    transform: translateX(100%);
+  }
+  100% {
+    -moz-transform: translateX(-100%); /* Firefox bug fix */
+    -webkit-transform: translateX(-100%); /* Firefox bug fix */
+    transform: translateX(-100%);
+  }
+}
+.blackWhite {
+  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+  filter: grayscale(100%);
+}
+.empty-cart {
+  margin-top: 50%;
+  font-size: 10em;
+}
+
+.thread {
+  display: inline-block;
+  width: 2px;
+  height: 20px;
+  background: black;
+  border-radius: 5px;
+  position: relative;
+  transform-origin: 50% 0;
+  animation: moveIt 2.5s ease-in-out infinite;
+}
+
+.thread:after {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  border: 2px solid white;
+  top: -4.5px;
+  left: -3.5px;
+}
+.pendulum {
+  width: 20px;
+  height: 13px;
+  border-radius: 50%;
+  position: absolute;
+  bottom: -10px;
+  left: -11px;
+}
+
+@keyframes moveIt {
+  0%,
+  100% {
+    transform: rotate(45deg);
+  }
+  50% {
+    transform: rotate(-45deg);
+  }
+}
+
+@keyframes moveShade {
+  0% {
+    transform: translateX(-220px) scale(1.4, 0.5);
+    filter: blur(20px);
+  }
+  50% {
+    filter: blur(3px);
+  }
+  100% {
+    transform: translateX(220px) scale(1.4, 0.5);
+    filter: blur(20px);
+  }
+}
+.pendulam-base {
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+}
+.cart-font-size {
+  font-size: 14px
 }
