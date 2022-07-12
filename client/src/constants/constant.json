@@ -1,9 +1,11 @@
 {
     "dev": {
-        "deliveryCharge": 40 
+        "deliveryCharge": 40,
+        "minimumCartAmount": 0
     },
     "prod": {
-        "deliveryCharge": 40 
+        "deliveryCharge": 40,
+        "minimumCartAmount": 0
     }
     
 }

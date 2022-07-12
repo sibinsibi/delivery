@@ -66,6 +66,7 @@ export default {
         this.loader = false;
         this.$router.push("/addresses");
       } catch (err) {
+        this.loader = false;
         this.$toast.error(`Something went wrong` + err);
       }
     },

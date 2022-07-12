@@ -147,7 +147,7 @@
             </div>
             <div class="col-4 mt-2">
               <h6 class="text-body cart-font-size fw-bold">
-                ₹ {{ totalItemAmount + this.constant.deliveryCharge }}
+                ₹ {{ totalItemAmount + constant.deliveryCharge }}
               </h6>
             </div>
           </div>
@@ -277,6 +277,7 @@ import {
   where,
   getDocs,
   collection,
+  setDoc,
 } from "firebase/firestore";
 
 export default {
@@ -295,6 +296,8 @@ export default {
         process.env.NODE_ENV === "development" ? constant.dev : constant.prod,
       totalItemAmount: 0,
       paymentMethod: "",
+      gst: 0,
+      extraCharge: 0,
     };
   },
   async mounted() {
@@ -320,6 +323,7 @@ export default {
       window.$("#address-modal").modal("show");
     },
     selectAddress: function(address) {
+      //check latlng in future
       this.selectedAddress = address;
       window.$("#address-modal").modal("hide");
     },
@@ -335,7 +339,7 @@ export default {
       return item;
     },
     getCartFromLocal: async function() {
-        this.allItems = []
+      this.allItems = [];
       let items =
         window.sessionStorage.getItem("cartItems") &&
         JSON.parse(window.sessionStorage.getItem("cartItems"));
@@ -360,21 +364,48 @@ export default {
       this.totalItemAmount = this.totalItemAmount + amount;
     },
     deleteItem: async function(item) {
-        this.loader = true
-      let items =
-        window.sessionStorage.getItem("cartItems") &&
-        JSON.parse(window.sessionStorage.getItem("cartItems"));
-      if (items && items.length) {
-        const newItemArr = items.filter((object) => {
-          return object.id !== item.id;
+      this.$swal
+        .fire({
+          title: "Are you sure?",
+          text: "",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!",
+          background: "#fff",
+          backdrop: `
+          rgba(0,0,123,0.4)
+          left top
+          no-repeat `,
+        })
+        .then(async (result) => {
+          if (result.isConfirmed) {
+            this.loader = true;
+            let items =
+              window.sessionStorage.getItem("cartItems") &&
+              JSON.parse(window.sessionStorage.getItem("cartItems"));
+            if (items && items.length) {
+              const newItemArr = items.filter((object) => {
+                return object.id !== item.id;
+              });
+              window.sessionStorage.setItem(
+                "cartItems",
+                JSON.stringify(newItemArr)
+              );
+              this.totalItemAmount = 0;
+              await this.getCartFromLocal();
+              this.loader = false;
+            }
+          }
         });
-        window.sessionStorage.setItem("cartItems", JSON.stringify(newItemArr));
-        this.totalItemAmount = 0;
-        await this.getCartFromLocal();
-        this.loader = false
-      }
     },
     placeOrder: async function() {
+      if (this.constant.minimumCartAmount > this.totalItemAmount) {
+        this.$toast.error(
+          `Minimum cart amount is ${this.constant.minimumCartAmount}. Please add items to continue`
+        );
+        return;
+      }
       if (!this.selectedAddress) {
         this.$toast.error(`Select your address`);
         return;
@@ -384,9 +415,62 @@ export default {
         return;
       }
 
+      this.loader = true;
+
       const order = {
         custId: this.$store.state.user.uid,
+        status: "pending",
+        date: new Date().getTime(),
+        dbBoy: {},
+        type: "",
+      };
+      order.shop = {
+        name: this.shop.name,
+        localName: this.shop.localName,
+        address: {
+          street: this.shop.address.street,
+          mob: this.shop.address.mob,
+          city: this.shop.address.city,
+        },
+      };
+      const orderId = "ORD" + order.date;
+      order.payment = {
+        dc: this.constant.deliveryCharge,
+        extra: this.extraCharge,
+        total:
+          this.totalItemAmount +
+          this.constant.deliveryCharge +
+          this.extraCharge +
+          this.gst,
+        method: this.paymentMethod,
+        status: "pending",
+        id: "",
+      };
+
+      delete this.selectedAddress.default;
+      order.address = this.selectedAddress;
+
+      for (let i = 0; i < this.allItems.length; i++) {
+        delete this.allItems[i].active;
+        delete this.allItems[i].eatable;
+        delete this.allItems[i].photoUrl;
+        delete this.allItems[i].shopId;
       }
+
+      order.items = this.allItems;
+
+      try {
+        await setDoc(doc(this.db, "orders", orderId), order);
+        this.loader = false;
+        window.sessionStorage.setItem("cartItems", JSON.stringify(""));
+        this.$toast.success(`Order placed successfully`);
+        this.$router.push("/");
+      } catch (err) {
+        this.$toast.error(`Something went wrong! Try later` + err);
+        this.loader = false;
+      }
+
+      //check total amount and item amount from database
     },
   },
 };
