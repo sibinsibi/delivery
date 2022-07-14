@@ -36,28 +36,27 @@
                     >api</span
                   >
                 </div>
-                <div class="col-6">
+                <div class="col-5">
                   <h6
-                    class="product-name mt-2 cart-font-size"
+                    class="product-name mt-2 cart-font-size-1"
                     :class="{ 'text-black-50': !item.active }"
                   >
                     {{ item.name }}
                   </h6>
-                  <h6 class="text-muted cart-font-size">
+                  <h6 class="text-muted cart-font-size-1">
                     ({{ item.localName }})
                   </h6>
                 </div>
-                <div class="col-2 cart-font-size text-black-50">
-                  {{ item.qty }}
-                </div>
-                <div class="col-2 text-center">
-                  <h6 class="cart-font-size" v-show="item.active">
-                    ₹{{ item.price * item.qty }}
-                    {{
+                <div class="col-3 cart-font-size-1 pt-2">
+                  {{ item.qty }}  {{
                       item.unit == "kg" ? "/Kg" : item.unit == "lt" ? "/L" : ""
                     }}
+                </div>
+                <div class="col-2 text-center pt-2">
+                  <h6 class="cart-font-size-1" v-show="item.active">
+                    ₹{{ item.price * item.qty }}
                   </h6>
-                  <h6 class="not-availble-cart " v-show="!item.active">
+                  <h6 class="not-availble-cart" v-show="!item.active">
                     Currently not available
                   </h6>
                 </div>

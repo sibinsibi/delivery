@@ -451,6 +451,10 @@ h5 {
 .cart-font-size {
   font-size: 14px
 }
+
+.cart-font-size-1 {
+  font-size: 12px
+}
 .not-availble-cart{
   font-size: 9px;
 }
