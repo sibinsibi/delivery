@@ -304,6 +304,7 @@ export default {
     await this.checkAuth();
     this.getCartFromLocal();
     this.loader = false;
+    console.log(this.$store.state.user)
   },
   methods: {
     openAddressModal: async function() {
@@ -417,12 +418,16 @@ export default {
       this.loader = true;
 
       const order = {
-        custId: this.$store.state.user.uid,
         status: "pending",
         date: new Date().getTime(),
         dbBoy: '',
         type: "",
       };
+      order.customer = {
+        id: this.$store.state.user.uid,
+        name: this.$store.state.user.name,
+        mob: this.$store.state.user.mobile,
+      }
       order.shop = {
         name: this.shop.name,
         localName: this.shop.localName,

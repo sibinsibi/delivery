@@ -352,8 +352,8 @@
               <!--//nav-link-->
             </li>
             <!--//nav-item-->
-            <!--   <li class="nav-item">
-              <a class="nav-link" href="docs.html">
+             <li class="nav-item">
+             <router-link class="nav-link" to="/live_orders">
                 <span class="nav-icon">
                   <svg
                     width="1em"
@@ -372,9 +372,9 @@
                     />
                   </svg>
                 </span>
-                <span class="nav-link-text">Docs</span>
-              </a>
-            </li> -->
+                <span class="nav-link-text">Live Orders</span>
+              </router-link>
+            </li> 
             <!--//nav-item-->
 
             <li class="nav-item has-submenu" style="display:none">
