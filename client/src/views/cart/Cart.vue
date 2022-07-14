@@ -421,7 +421,7 @@ export default {
         custId: this.$store.state.user.uid,
         status: "pending",
         date: new Date().getTime(),
-        dbBoy: {},
+        dbBoy: '',
         type: "",
       };
       order.shop = {
