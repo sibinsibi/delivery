@@ -327,7 +327,7 @@
           <ul class="app-menu list-unstyled accordion" id="menu-accordion">
             <li class="nav-item">
               <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-              <a class="nav-link active" href="index.html">
+              <router-link class="nav-link" to="/">
                 <span class="nav-icon">
                   <svg
                     width="1em"
@@ -348,7 +348,7 @@
                   </svg>
                 </span>
                 <span class="nav-link-text">Dashboard</span>
-              </a>
+              </router-link>
               <!--//nav-link-->
             </li>
             <!--//nav-item-->
@@ -372,7 +372,7 @@
                     />
                   </svg>
                 </span>
-                <span class="nav-link-text">Live Orders</span>
+                <span class="nav-link-text">Pending Orders</span>
               </router-link>
             </li> 
             <!--//nav-item-->

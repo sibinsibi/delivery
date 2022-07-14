@@ -4,7 +4,7 @@
     <div class="app-wrapper">
       <div class="app-content pt-3 p-md-3 p-lg-4">
         <div class="container-xl">
-          <h1 class="app-page-title mt-md-5">Live Orders</h1>
+          <h1 class="app-page-title mt-md-5">Pending Orders</h1>
 
           <div class="row g-4 settings-section">
             <div class="col-12 col-md-12">
@@ -24,7 +24,7 @@
                   </div>-->
                   <div class="table-responsive">
                     <table
-                      id="example"
+                      id="live-order-table"
                       class="table mb-0 text-left hover-table"
                     >
                       <thead>
@@ -34,18 +34,39 @@
                           <th>Customer</th>
                           <th>Address</th>
                           <th>Shop</th>
-                          <th>Order Status</th>
+                          <th>Status</th>
                           <th></th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr v-for="(order, index) in allOrders" :key="index">
-                          <td class="cell">{{ order.a }}</td>
-                          <td class="cell">{{ order.a }}</td>
-                          <td class="cell">{{ order.a }}</td>
-                          <td class="cell">{{ order.a }}</td>
-                          <td class="cell">{{ order.a }}</td>
-                          <td class="cell">{{ order.a }}</td>
+                          <td class="cell">{{ order.id }}</td>
+                          <td class="cell">{{ order.date }}</td>
+                          <td class="cell">
+                            {{ order.customer.name }}
+                            {{ order.customer.mob }}
+                          </td>
+                          <td class="cell">
+                            {{ order.address.name }}, {{ order.address.mob }},
+                            {{ order.address.house }},
+                            {{ order.address.place }},
+                            {{ order.address.landmark }}
+                          </td>
+                          <td class="cell">
+                            {{ order.shop.name }}, {{ order.shop.address.mob }},
+                            {{ order.shop.address.street }},
+                            {{ order.shop.address.city }}
+                          </td>
+                          <td class="cell capitalize">{{ order.status }}</td>
+                          <td class="cell capitalize">
+                            <router-link to="" @click="gotoOrder(order.id)"
+
+                              ><span
+                                class="material-icons"
+                                >visibility</span
+                              >
+                            </router-link>
+                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -73,14 +94,12 @@ import Loader from "@/components/loader";
 
 import {
   getFirestore,
-  doc,
-  getDocs,
   query,
   where,
   collection,
-  updateDoc,
   onSnapshot,
 } from "firebase/firestore";
+import moment from "moment";
 
 export default {
   components: { Layout, Loader },
@@ -104,88 +123,23 @@ export default {
         snapshot.docChanges().forEach((change) => {
           if (change.type === "added") {
             const order = change.doc.data();
+            order.id = change.doc.id;
+            order.date = moment(order.date).format("DD/MM//YYYY hh:mm");
             this.allOrders.push(order);
           }
           if (change.type === "modified") {
-            console.log("Modified city: ");
+            console.log("Modified");
           }
           if (change.type === "removed") {
-            console.log("Removed city: ");
+            console.log("Removed");
           }
         });
       });
     },
-    updateTypeArr: function(id, index) {
-      var chk = document.getElementById(id);
-      if (chk.checked) {
-        this.typesArr.push(id);
-      } else {
-        this.typesArr.splice(index, 1);
-      }
-    },
-    getShops: async function(flag) {
-      if (flag === "category" && !this.typesArr.length) {
-        this.$toast.error(`Select one or more category`);
-        return;
-      }
-      this.loader = true;
-
-      let querySnapshot = "";
-      const allShops = [];
-      if (flag === "category" && this.typesArr.length) {
-        var q = query(
-          collection(this.db, "shops"),
-          where("category", "array-contains-any", this.typesArr)
-        );
-        querySnapshot = await getDocs(q);
-      } else if (flag === "all") {
-        this.typesArr = [];
-        window.$("#shop-form input:checkbox").prop("checked", false);
-        q = query(collection(this.db, "shops"), where("active", "==", true));
-        querySnapshot = await getDocs(q);
-      }
-      querySnapshot.forEach((doc) => {
-        const shop = doc.data();
-        shop.id = doc.id;
-        allShops.push(shop);
-      });
-      this.allShops = allShops;
-      this.loader = false;
-    },
-    openItemModal: async function(shop) {
-      this.selectedShop = shop;
-      const q = query(
-        collection(this.db, "items"),
-        where("shopId", "==", shop.id)
-      );
-      const querySnapshot = await getDocs(q);
-      const allItems = [];
-      querySnapshot.forEach((doc) => {
-        const item = doc.data();
-        item.id = doc.id;
-        allItems.push(item);
-      });
-      this.allItems = allItems;
-      window.$("#itemModal").modal("show");
-    },
-    updateActive: async function(id) {
-      var chk = document.getElementById("active" + id);
-      let active = false;
-      if (chk.checked) {
-        active = true;
-      }
-      const itemRef = doc(this.db, "items", id);
-
-      await updateDoc(itemRef, {
-        active: active,
-      });
-      this.$toast.success(`Updated`);
-    },
-    gotoEditShop: function(id) {
-      window.$("#itemModal").modal("toggle");
+    gotoOrder: function(id) {
 
       this.$root.$router.push({
-        path: `/item/${id}`,
+        path: `/order/${id}`,
       });
     },
   },

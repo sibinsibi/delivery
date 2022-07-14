@@ -29,6 +29,7 @@ import "./registerServiceWorker";
 
 import Toaster from "@meforma/vue-toaster";
 
+
 createApp(App)
   .use(store)
   .use(router)

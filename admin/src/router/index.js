@@ -55,6 +55,11 @@ const routes = [
     name: "Live-Orders",
     component: () => import("../views/orders/Live_Orders.vue"),
   },
+  {
+    path: "/order/:id",
+    name: "order",
+    component: () => import("../views/orders/Order.vue"),
+  },
   
 
 ];

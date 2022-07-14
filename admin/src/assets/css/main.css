@@ -11107,3 +11107,9 @@ a {
 .item-img-size {
   width: 50px;
 }
+#live-order-table {
+  font-size: 12px;
+}
+.capitalize{
+  text-transform: capitalize;
+}
