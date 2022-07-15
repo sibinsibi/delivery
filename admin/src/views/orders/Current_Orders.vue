@@ -13,7 +13,7 @@
               <div class="app-card app-card-settings shadow-sm p-4">
                 <div class="app-card-body">
                   <div class="row">
-                    <div class="col-6 col-md-4 col-sm-6 mt-1"  @click="getOrders(filter)">
+                    <div class="col-6 col-md-4 col-sm-6 mt-1">
                       <input
                         class="form-check-input"
                         type="radio"
@@ -21,7 +21,7 @@
                         id="both"
                         checked
                       />
-                      <label class="form-check-label cursor" for="both"
+                      <label class="form-check-label cursor" for="both" @click="getOrders(filter)"
                         >Both</label
                       >
                     </div>
@@ -41,6 +41,7 @@
                       >
                     </div>
                   </div>
+                  <hr />
                   <div class="table-responsive">
                     <table
                       id="live-order-table"

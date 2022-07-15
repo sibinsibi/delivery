@@ -250,8 +250,8 @@ export default {
   methods: {
     getOrder: async function() {
       this.loader = true;
-      const shopRef = doc(this.db, "orders", this.orderId);
-      const orderSnap = await getDoc(shopRef);
+      const orderRef = doc(this.db, "orders", this.orderId);
+      const orderSnap = await getDoc(orderRef);
       this.order = orderSnap.data();
       this.loader = false;
     },
