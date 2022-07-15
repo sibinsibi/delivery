@@ -60,6 +60,16 @@ const routes = [
     name: "order",
     component: () => import("../views/orders/Order.vue"),
   },
+  {
+    path: "/current_orders",
+    name: "Current-Orders",
+    component: () => import("../views/orders/Current_Orders.vue"),
+  },
+  {
+    path: "/get_orders",
+    name: "Get-Orders",
+    component: () => import("../views/orders/Get_Orders.vue"),
+  },
   
 
 ];

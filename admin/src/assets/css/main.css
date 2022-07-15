@@ -11110,6 +11110,12 @@ a {
 #live-order-table {
   font-size: 12px;
 }
+.order-font-size{
+  font-size: 15px;
+}
+.order-font-size-1 {
+  font-size: 20px;
+}
 .capitalize{
   text-transform: capitalize;
 }

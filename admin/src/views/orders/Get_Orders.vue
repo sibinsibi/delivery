@@ -4,24 +4,43 @@
     <div class="app-wrapper">
       <div class="app-content pt-3 p-md-3 p-lg-4">
         <div class="container-xl">
-          <h1 class="app-page-title mt-md-5 mt-5 mt-sm-5 fs-5">Pending Orders</h1>
+          <h1 class="app-page-title mt-md-5 mt-5 mt-sm-5 fs-5">
+            Filter Orders
+          </h1>
 
           <div class="row g-4 settings-section">
             <div class="col-12 col-md-12">
               <div class="app-card app-card-settings shadow-sm p-4">
                 <div class="app-card-body">
-                  <!-- <div class="row">
-                    <div class="col-12 col-md-4 offset-md-8">
+                  <div class="row">
+                    <div class="col-6 col-md-4 col-sm-6 mt-1"  @click="getOrders(filter)">
                       <input
-                        type="text"
-                        id="search-orders"
-                        name="searchorders"
-                        class="form-control search-orders"
-                        placeholder="Search"
-                        v-model="searchQuery"
+                        class="form-check-input"
+                        type="radio"
+                        name="filterOrder"
+                        id="both"
+                        checked
                       />
+                      <label class="form-check-label cursor" for="both"
+                        >Both</label
+                      >
                     </div>
-                  </div>-->
+                    <div
+                      class="col-6 col-md-4 col-sm-6 mt-1"
+                      v-for="(f, index) in filter"
+                      :key="index" @click="getOrders([f])"
+                    >
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="filterOrder"
+                        :id="f"
+                      />
+                      <label class="form-check-label text-nowrap cursor" :for="f">
+                        {{ f }}</label
+                      >
+                    </div>
+                  </div>
                   <div class="table-responsive">
                     <table
                       id="live-order-table"
@@ -58,13 +77,9 @@
                             {{ order.shop.address.city }}
                           </td>
                           <td class="cell capitalize">{{ order.status }}</td>
-                          <td class="cell capitalize">
+                          <td class="cell">
                             <router-link to="" @click="gotoOrder(order.id)"
-
-                              ><span
-                                class="material-icons"
-                                >visibility</span
-                              >
+                              ><span class="material-icons">visibility</span>
                             </router-link>
                           </td>
                         </tr>
@@ -97,7 +112,7 @@ import {
   query,
   where,
   collection,
-  onSnapshot,
+  getDocs,
 } from "firebase/firestore";
 import moment from "moment";
 
@@ -108,36 +123,31 @@ export default {
       db: getFirestore(),
       loader: false,
       allOrders: [],
+      filter: ["confirmed", "outForDelivery"],
     };
   },
   mounted() {
-    this.getOrders();
+    this.getOrders(this.filter);
   },
   methods: {
-    getOrders: async function() {
+    getOrders: async function(filter) {
+      this.loader = true
       const q = query(
         collection(this.db, "orders"),
-        where("status", "==", "pending")
+        where("status", "in", filter)
       );
-      onSnapshot(q, (snapshot) => {
-        snapshot.docChanges().forEach((change) => {
-          if (change.type === "added") {
-            const order = change.doc.data();
-            order.id = change.doc.id;
-            order.date = moment(order.date).format("DD/MM//YYYY hh:mm");
-            this.allOrders.push(order);
-          }
-          if (change.type === "modified") {
-            console.log("Modified");
-          }
-          if (change.type === "removed") {
-            console.log("Removed");
-          }
-        });
+      const querySnapshot = await getDocs(q);
+      const orders = [];
+      querySnapshot.forEach((doc) => {
+        const order = doc.data();
+        order.id = doc.id;
+        order.date = moment(order.date).format("DD/MM//YYYY hh:mm");
+        orders.push(order);
       });
+      this.allOrders = orders;
+      this.loader = false
     },
     gotoOrder: function(id) {
-
       this.$root.$router.push({
         path: `/order/${id}`,
       });
