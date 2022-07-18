@@ -9,36 +9,52 @@
           </h1>
 
           <div class="row">
-            <div class="col-6 col-md-3 col-sm-6 mt-1">
+            <div class="col-6 col-md-2 col-sm-6 mt-1">
               <button
-                class="btn btn-sm btn-warning text-white w-100"
+                class="btn btn-sm btn-warning text-white w-100 btn-font-size-10"
                 @click="getOrders('today')"
               >
                 Today`s Orders
               </button>
             </div>
-            <div class="col-6 col-md-3 col-sm-6 mt-1">
+            <div class="col-6 col-md-2 col-sm-6 mt-1">
               <button
-                class="btn btn-sm btn-warning text-white w-100"
+                class="btn btn-sm btn-warning text-white w-100 btn-font-size-10"
                 @click="getOrders('yesterday')"
               >
                 Yesterday`s Orders
               </button>
             </div>
-            <div class="col-6 col-md-3 col-sm-6 mt-1">
+            <div class="col-6 col-md-2 col-sm-6 mt-1">
               <button
-                class="btn btn-sm btn-warning text-white w-100"
+                class="btn btn-sm btn-warning text-white w-100 btn-font-size-10"
                 @click="getOrders('week')"
               >
                 This week Orders
               </button>
             </div>
-            <div class="col-6 col-md-3 col-sm-6 mt-1">
+            <div class="col-6 col-md-2 col-sm-6 mt-1">
               <button
-                class="btn btn-sm btn-warning text-white w-100"
+                class="btn btn-sm btn-warning text-white w-100 btn-font-size-10"
+                @click="getOrders('pweek')"
+              >
+                Previous week Orders
+              </button>
+            </div>
+            <div class="col-6 col-md-2 col-sm-6 mt-1">
+              <button
+                class="btn btn-sm btn-warning text-white w-100 btn-font-size-10"
                 @click="getOrders('month')"
               >
                 This Month Orders
+              </button>
+            </div>
+            <div class="col-6 col-md-2 col-sm-6 mt-1">
+              <button
+                class="btn btn-sm btn-warning text-white w-100 btn-font-size-10"
+                @click="getOrders('pmonth')"
+              >
+                Pre Month Orders
               </button>
             </div>
           </div>
@@ -431,21 +447,53 @@ export default {
         eDate.setHours(23, 59, 59, 999);
         eDate = eDate.getTime();
       } else if (flag === "yesterday") {
-          sDate = moment()
+        sDate = moment()
           .subtract(1, "days")
-          .startOf("day")
+          .startOf("day");
         sDate = moment(sDate).format("x");
         eDate = moment()
           .subtract(1, "days")
-          .endOf("day")
+          .endOf("day");
         eDate = moment(eDate).format("x");
+      } else if (flag === "week") {
+        sDate = moment().startOf("week");
+        sDate = moment(sDate).format("x");
+        eDate = moment().endOf("week");
+        eDate = moment(eDate).format("x");
+      } else if (flag === "pweek") {
+        sDate = moment()
+          .subtract(1, "weeks")
+          .startOf("week")
+          .format("x");
+
+        eDate = moment()
+          .subtract(1, "weeks")
+          .endOf("week")
+          .format("x");
       }
+      else if (flag === "month") {
+        sDate = moment().startOf("month");
+        sDate = moment(sDate).format("x");
+        eDate = moment().endOf("month");
+        eDate = moment(eDate).format("x");
+      }else{
+         sDate = moment()
+          .subtract(1, "months")
+          .startOf("month")
+          .format("x");
+
+        eDate = moment()
+          .subtract(1, "months")
+          .endOf("month")
+          .format("x");
+      }
+
       this.allOrders = [];
       this.loader = true;
       const q = query(
         collection(this.db, "orders"),
-        where("date", ">=", sDate),
-        where("date", "<=", eDate)
+        where("date", ">=", +sDate),
+        where("date", "<=", +eDate)
       );
       const querySnapshot = await getDocs(q);
       const orders = [];

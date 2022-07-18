@@ -304,7 +304,6 @@ export default {
     await this.checkAuth();
     this.getCartFromLocal();
     this.loader = false;
-    console.log(this.$store.state.user)
   },
   methods: {
     openAddressModal: async function() {
@@ -331,6 +330,7 @@ export default {
       const docRef = doc(this.db, "shops", shopId);
       const docSnap = await getDoc(docRef);
       this.shop = docSnap.data();
+      this.shop.id = shopId
     },
     getItemFromDB: async function(id) {
       const docRef = doc(this.db, "items", id);
@@ -429,6 +429,7 @@ export default {
         mob: this.$store.state.user.mobile,
       }
       order.shop = {
+        id: this.shop.id,
         name: this.shop.name,
         localName: this.shop.localName,
         address: {
@@ -456,7 +457,7 @@ export default {
 
       for (let i = 0; i < this.allItems.length; i++) {
         delete this.allItems[i].active;
-        delete this.allItems[i].eatable;
+        //delete this.allItems[i].eatable;
         delete this.allItems[i].photoUrl;
         delete this.allItems[i].shopId;
       }

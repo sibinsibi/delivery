@@ -2,13 +2,13 @@
     "dev": {
         "deliveryCharge": 40,
         "minimumCartAmount": 0,
-        "paymentStatus": ["pending","success", "cancelled"],
+        "paymentStatus": ["pending","success", "cancelled", "failed", "returned"],
         "orderStatus": ["pending","confirmed","outForDelivery","delivered","cancelled"]
     },
     "prod": {
         "deliveryCharge": 40,
         "minimumCartAmount": 0,
-        "paymentStatus": ["pending","success", "cancelled"],
+        "paymentStatus": ["pending","success", "cancelled", "failed", "returned"],
         "orderStatus": ["pending","confirmed","outForDelivery","delivered","cancelled"]
     }
     
