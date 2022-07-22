@@ -137,7 +137,6 @@ export default {
       });
     },
     gotoOrder: function(id) {
-
       this.$root.$router.push({
         path: `/order/${id}`,
       });

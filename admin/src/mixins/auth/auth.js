@@ -135,7 +135,6 @@ export default {
       const auth = getAuth();
 
       onAuthStateChanged(auth, async (user) => {
-       // console.log(user)
         if (user) {
           const docRef = doc(this.db, "users", user.uid);
           const docSnap = await getDoc(docRef);

@@ -70,7 +70,21 @@ const routes = [
     name: "Get-Orders",
     component: () => import("../views/orders/Get_Orders.vue"),
   },
-  
+  {
+    path: "/account",
+    name: "Account",
+    component: () => import("../views/auth/Account.vue"),
+  },
+  {
+    path: "/customers",
+    name: "Customers",
+    component: () => import("../views/customers/Customers.vue"),
+  },
+  {
+    path: "/users",
+    name: "Users",
+    component: () => import("../views/users/Users.vue"),
+  },
 
 ];
 
