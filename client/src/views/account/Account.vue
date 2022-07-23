@@ -28,10 +28,13 @@
         </div>
       </div>
 
-      <router-link class="text-decoration-none a-text-decoration-color" to="/">
+      <router-link
+        class="text-decoration-none a-text-decoration-color"
+        to="/orders"
+      >
         <div class="row shadow p-3 mb-2 bg-body rounded">
           <div class="col-2">
-            <router-link to="" class="text-end"
+            <router-link to="/orders" class="text-end"
               ><span class="material-icons md-18 common-icon cursor"
                 >shopping_bag</span
               ></router-link
@@ -41,7 +44,7 @@
             Your orders
           </div>
           <div class="col-2">
-            <router-link to="" class=""
+            <router-link to="/orders" class=""
               ><span class="material-icons md-18 mt-1 cursor text-black-50"
                 >keyboard_arrow_right</span
               ></router-link
@@ -75,13 +78,14 @@
         </div>
       </router-link>
 
-       <router-link
+      <router-link
         class="text-decoration-none a-text-decoration-color"
-        to="" @click="gotoLogout"
+        to=""
+        @click="gotoLogout"
       >
         <div class="row shadow p-3 bg-body rounded mt-2">
           <div class="col-2">
-            <router-link class="text-end"  to="" @click="gotoLogout"
+            <router-link class="text-end" to="" @click="gotoLogout"
               ><span class="material-icons md-18 cursor common-icon"
                 >exit_to_app</span
               ></router-link
@@ -99,9 +103,6 @@
           </div>
         </div>
       </router-link>
-      
-
-      
     </div>
   </div>
 </template>
@@ -119,8 +120,8 @@ export default {
     await this.checkAuth();
   },
   methods: {
-    gotoLogout: function(){
-       this.$swal
+    gotoLogout: function() {
+      this.$swal
         .fire({
           title: "Are you sure?",
           showCancelButton: true,
@@ -135,10 +136,10 @@ export default {
         })
         .then(async (result) => {
           if (result.isConfirmed) {
-            this.logout()
+            this.logout();
           }
         });
-    }
+    },
   },
 };
 </script>

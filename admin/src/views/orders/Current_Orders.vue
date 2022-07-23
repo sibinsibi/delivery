@@ -142,7 +142,7 @@ export default {
       querySnapshot.forEach((doc) => {
         const order = doc.data();
         order.id = doc.id;
-        order.date = moment(order.date).format("DD/MM//YYYY hh:mm");
+        order.date = moment(order.date).format("DD/MM/YYYY hh:mm");
         orders.push(order);
       });
       this.allOrders = orders;

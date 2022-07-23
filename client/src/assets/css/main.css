@@ -309,6 +309,9 @@ h5 {
 .add-item-qty {
   font-size: 2em;
 }
+.add-item-qty-1 {
+  font-size: 1.5em;
+}
 .count-1 {
   position: absolute;
   top: 9px;
@@ -453,8 +456,37 @@ h5 {
 }
 
 .cart-font-size-1 {
-  font-size: 12px
+  font-size: 11.5px
 }
 .not-availble-cart{
   font-size: 9px;
 }
+.display-inline {
+  display: flex;
+  justify-content: space-between;
+}
+.capitalize{
+  text-transform: capitalize;
+}
+.delivered-icon {
+  color: #13ac13;
+  font-size: 20px;
+}
+.line-height-5{
+  line-height: 5px;
+}
+.order-details-icon {
+  font-size: 22px;
+  color: rgb(138, 130, 130);
+}
+.vl {
+  border-left: 3px dotted  rgb(138, 130, 130);;
+}
+.dashed-border{
+  border:none;
+  border-top:2px dashed rgb(106, 101, 101);
+  color:#fff;
+  background-color:#fff;
+}
+
+/* progress bar */

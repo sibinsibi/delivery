@@ -139,6 +139,7 @@ export default {
       signOut(auth)
         .then(() => {
           this.$store.dispatch("SET_USER", "");
+          window.sessionStorage.setItem("cartItems", JSON.stringify(""));
           this.$router.push("/login");
         })
         .catch(() => {

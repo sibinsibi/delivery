@@ -372,7 +372,7 @@ export default {
         const order = orderSnap.data();
         if (order) {
           order.id = this.orderIdFilter;
-          order.date = moment(order.date).format("DD/MM//YYYY hh:mm");
+          order.date = moment(order.date).format("DD/MM/YYYY hh:mm");
           this.allOrders.push(order);
         }
         this.loader = false;
@@ -418,7 +418,7 @@ export default {
         querySnapshot.forEach((doc) => {
           const order = doc.data();
           order.id = doc.id;
-          order.date = moment(order.date).format("DD/MM//YYYY hh:mm A");
+          order.date = moment(order.date).format("DD/MM/YYYY hh:mm A");
           orders.push(order);
         });
         this.allOrders = orders;
@@ -500,7 +500,7 @@ export default {
       querySnapshot.forEach((doc) => {
         const order = doc.data();
         order.id = doc.id;
-        order.date = moment(order.date).format("DD/MM//YYYY hh:mm A");
+        order.date = moment(order.date).format("DD/MM/YYYY hh:mm A");
         orders.push(order);
       });
       this.allOrders = orders;

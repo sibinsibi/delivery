@@ -36,7 +36,7 @@
                     >api</span
                   >
                 </div>
-                <div class="col-5">
+                <div class="col-4">
                   <h6
                     class="product-name mt-2 cart-font-size-1"
                     :class="{ 'text-black-50': !item.active }"
@@ -47,10 +47,26 @@
                     ({{ item.localName }})
                   </h6>
                 </div>
-                <div class="col-3 cart-font-size-1 pt-2">
-                  {{ item.qty }}  {{
-                      item.unit == "kg" ? "/Kg" : item.unit == "lt" ? "/L" : ""
-                    }}
+                <div
+                  class="col-4 cart-font-size-1 display-inline pt-2 text-center"
+                >
+                  <router-link to="" @click="updateCartItem('dec', item)"
+                    ><span
+                      class="material-icons common-icon cursor add-item-qty-1"
+                      >do_not_disturb_on</span
+                    >
+                  </router-link>
+                  {{ item.qty
+                  }}{{
+                    item.unit == "kg" ? "/Kg" : item.unit == "lt" ? "/L" : ""
+                  }}
+
+                  <router-link to="" @click="updateCartItem('inc', item)"
+                    ><span
+                      class="material-icons common-icon cursor add-item-qty-1"
+                      >add_circle</span
+                    >
+                  </router-link>
                 </div>
                 <div class="col-2 text-center pt-2">
                   <h6 class="cart-font-size-1" v-show="item.active">
@@ -128,7 +144,7 @@
               <h6 class="text-body cart-font-size">₹{{ totalItemAmount }}</h6>
             </div>
             <div class="col-8">
-              <h6 class="text-body cart-font-size">Delivery fee</h6>
+              <h6 class="text-body cart-font-size">Delivery Charge</h6>
             </div>
             <div class="col-4">
               <h6 class="text-body cart-font-size">
@@ -207,13 +223,16 @@
       </router-link>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal all address-->
     <div class="modal fade" id="address-modal" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h6 class="modal-title">
+            <h6 class="modal-title" v-if="allAddress.length">
               Select your address
+            </h6>
+            <h6 class="modal-title" v-else>
+              Add new address
             </h6>
             <button
               type="button"
@@ -246,6 +265,100 @@
                 </div>
               </div>
             </div>
+            <div class="container text-center" v-else>No address found</div>
+          </div>
+          <div class="modal-footer">
+            <button
+              @click="openNewAddressModal"
+              class="btn btn-outline-danger btn-sm"
+            >
+              Add New Address
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal new address-->
+    <div class="modal fade" id="new-address-modal" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 class="modal-title">
+              Add new address
+            </h6>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form class="add-address">
+              <div class="mb-3 mt-3 form-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  placeholder="Name"
+                  name="name"
+                  autocomplete="off"
+                  v-model="newAddress.customerName"
+                />
+              </div>
+              <div class="mb-3 mt-3 form-group">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="mobile"
+                  placeholder="Mobile"
+                  name="mobile"
+                  autocomplete="off"
+                  v-model="newAddress.mob"
+                />
+              </div>
+              <div class="mb-3 mt-3 form-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="house"
+                  placeholder="House/Flat Name/No"
+                  name="house"
+                  autocomplete="off"
+                  v-model="newAddress.house"
+                />
+              </div>
+              <div class="mb-3 mt-3 form-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="place"
+                  placeholder="Place"
+                  name="place"
+                  autocomplete="off"
+                  v-model="newAddress.place"
+                />
+              </div>
+              <div class="mb-3 mt-3 form-group">
+                <textarea
+                  class="form-control"
+                  rows="5"
+                  id="comment"
+                  name="text"
+                  placeholder="Landmark/ Direction to reach (Optional)"
+                  v-model="newAddress.landmark"
+                ></textarea>
+              </div>
+
+              <button
+                type="button"
+                class="add-address-button"
+                @click="saveNewAddress"
+              >
+                Save
+              </button>
+            </form>
           </div>
           <div class="modal-footer">
             <button
@@ -277,6 +390,7 @@ import {
   getDocs,
   collection,
   setDoc,
+  addDoc,
 } from "firebase/firestore";
 
 export default {
@@ -297,6 +411,14 @@ export default {
       paymentMethod: "",
       gst: 0,
       extraCharge: 0,
+      newAddress: {
+        name: "",
+        mob: "",
+        house: "",
+        place: "",
+        landmark: "",
+        defaultFlag: false,
+      },
     };
   },
   async mounted() {
@@ -304,6 +426,9 @@ export default {
     await this.checkAuth();
     this.getCartFromLocal();
     this.loader = false;
+    window.$("#new-address-modal").on("hidden.bs.modal", () => {
+      this.openAddressModal()
+    });
   },
   methods: {
     openAddressModal: async function() {
@@ -321,6 +446,54 @@ export default {
       this.allAddress = allAddress;
       window.$("#address-modal").modal("show");
     },
+    openNewAddressModal: async function() {
+      window.$("#address-modal").modal("hide");
+      window.$("#new-address-modal").modal("show");
+    },
+    saveNewAddress: async function() {
+      //get lat and lng
+      if (
+        !this.newAddress.customerName ||
+        !this.newAddress.mob ||
+        !this.newAddress.house ||
+        !this.newAddress.place
+      ) {
+        this.$toast.error("Enter all rquired fields");
+        return;
+      }
+      if (this.newAddress.mob.toString().length !== 10) {
+        this.$toast.error("Enter 10 digit mobile number");
+        return;
+      }
+      this.loader = true;
+      const address = {
+        name: this.newAddress.customerName,
+        mob: this.newAddress.mob,
+        house: this.newAddress.house,
+        place: this.newAddress.place,
+        landmark: this.newAddress.landmark,
+        default: this.newAddress.defaultFlag,
+        latLng: "",
+        id: this.$store.state.user.uid,
+      };
+      try {
+        await addDoc(collection(this.db, "address"), address);
+        this.loader = false;
+        window.$("#new-address-modal").modal("hide");
+        await this.openAddressModal();
+        this.newAddress = {
+          name: "",
+          mob: "",
+          house: "",
+          place: "",
+          landmark: "",
+          defaultFlag: false,
+        };
+      } catch (err) {
+        this.loader = false;
+        this.$toast.error(`Something went wrong! Try later`);
+      }
+    },
     selectAddress: function(address) {
       //check latlng in future
       this.selectedAddress = address;
@@ -330,7 +503,7 @@ export default {
       const docRef = doc(this.db, "shops", shopId);
       const docSnap = await getDoc(docRef);
       this.shop = docSnap.data();
-      this.shop.id = shopId
+      this.shop.id = shopId;
     },
     getItemFromDB: async function(id) {
       const docRef = doc(this.db, "items", id);
@@ -339,6 +512,7 @@ export default {
       return item;
     },
     getCartFromLocal: async function() {
+      this.loader = true;
       this.allItems = [];
       let items =
         window.sessionStorage.getItem("cartItems") &&
@@ -359,6 +533,7 @@ export default {
       } else {
         this.showEmpty = true;
       }
+      this.loader = false;
     },
     calculateTotal: async function(amount) {
       this.totalItemAmount = this.totalItemAmount + amount;
@@ -399,6 +574,48 @@ export default {
           }
         });
     },
+    updateCartItem: async function(type, selectedItem) {
+      this.loader = true;
+      let items =
+        window.sessionStorage.getItem("cartItems") &&
+        JSON.parse(window.sessionStorage.getItem("cartItems"));
+      if (items && items.length) {
+        for (let i = 0; i < items.length; i++) {
+          const item = items[i];
+          let itemQty = item.qty;
+          if (item.id === selectedItem.id) {
+            if (type === "inc") {
+              //limit qty by adding
+              if (
+                selectedItem.unit === "nb" ||
+                selectedItem.unit === "lt" ||
+                (selectedItem.unit === "kg" && selectedItem.eatable)
+              ) {
+                itemQty = itemQty + 1;
+              } else if (selectedItem.unit === "kg" && !selectedItem.eatable) {
+                itemQty = itemQty + 0.5;
+              }
+            } else {
+              if (
+                selectedItem.unit === "nb" ||
+                selectedItem.unit === "lt" ||
+                (selectedItem.unit === "kg" && selectedItem.eatable)
+              ) {
+                itemQty !== 1 ? (itemQty = itemQty - 1) : null;
+              } else if (selectedItem.unit === "kg" && !selectedItem.eatable) {
+                itemQty !== 0.5 ? (itemQty = itemQty - 0.5) : null;
+              }
+            }
+
+            items[i].qty = itemQty;
+            this.totalItemAmount = 0;
+            window.sessionStorage.setItem("cartItems", JSON.stringify(items));
+            await this.getCartFromLocal();
+            break;
+          }
+        }
+      }
+    },
     placeOrder: async function() {
       if (this.constant.minimumCartAmount > this.totalItemAmount) {
         this.$toast.error(
@@ -420,14 +637,14 @@ export default {
       const order = {
         status: "pending",
         date: new Date().getTime(),
-        dbBoy: '',
+        dbBoy: "",
         type: "",
       };
       order.customer = {
         id: this.$store.state.user.uid,
         name: this.$store.state.user.name,
         mob: this.$store.state.user.mobile,
-      }
+      };
       order.shop = {
         id: this.shop.id,
         name: this.shop.name,

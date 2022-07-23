@@ -4,7 +4,9 @@
     <div class="app-wrapper">
       <div class="app-content pt-3 p-md-3 p-lg-4">
         <div class="container-xl">
-          <h1 class="app-page-title mt-md-5 mt-5 mt-sm-5 fs-5">Pending Orders</h1>
+          <h1 class="app-page-title mt-md-5 mt-5 mt-sm-5 fs-5">
+            Pending Orders
+          </h1>
 
           <div class="row g-4 settings-section">
             <div class="col-12 col-md-12">
@@ -60,11 +62,7 @@
                           <td class="cell capitalize">{{ order.status }}</td>
                           <td class="cell capitalize">
                             <router-link to="" @click="gotoOrder(order.id)"
-
-                              ><span
-                                class="material-icons"
-                                >visibility</span
-                              >
+                              ><span class="material-icons">visibility</span>
                             </router-link>
                           </td>
                         </tr>
@@ -124,7 +122,7 @@ export default {
           if (change.type === "added") {
             const order = change.doc.data();
             order.id = change.doc.id;
-            order.date = moment(order.date).format("DD/MM//YYYY hh:mm");
+            order.date = moment(order.date).format("DD/MM/YYYY hh:mm");
             this.allOrders.push(order);
           }
           if (change.type === "modified") {

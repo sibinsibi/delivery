@@ -67,7 +67,7 @@ export default {
         this.$router.push("/addresses");
       } catch (err) {
         this.loader = false;
-        this.$toast.error(`Something went wrong` + err);
+        this.$toast.error(`Something went wrong! Try later`);
       }
     },
     deleteAddress: async function(id) {
