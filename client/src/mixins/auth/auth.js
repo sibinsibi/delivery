@@ -16,6 +16,7 @@ export default {
       password: "",
       name: "",
       signupEmail: "",
+      signupMobile: '',
       signupPassword: "",
       cPassword: "",
       db: getFirestore(),
@@ -62,6 +63,7 @@ export default {
       if (
         !this.name ||
         !this.signupEmail ||
+        !this.signupMobile ||
         !this.signupPassword ||
         !this.cPassword
       ) {
@@ -107,13 +109,13 @@ export default {
           const errorMessage = error.message;
           console.log(errorMessage);
           this.loader = false;
-          this.$toast.error(errorMessage);
+          this.$toast.error('Try later');
         });
     },
     createUser: async function(user) {
       const userObj = {
         name: this.name || user.displayName,
-        mobile: "",
+        mobile: this.signupMobile,
         email: user.email,
         active: true,
         //loggedIn: true,
@@ -188,37 +190,6 @@ export default {
         resolve(userObj);
       });
     },
-    // setUserState: function() {
-    //   const auth = getAuth();
-    //   this.loader = true;
-    //   onAuthStateChanged(auth, async (user) => {
-    //     if (user) {
-    //       const docRef = doc(this.db, "customers", user.uid);
-    //       const docSnap = await getDoc(docRef);
-    //       if (docSnap.exists()) {
-    //         let userObj = {};
-    //         userObj = docSnap.data();
-    //         userObj.uid = docSnap.id;
-    //         this.$store.dispatch("SET_USER", userObj);
-
-    //         if (!userObj.active) {
-    //           this.$router.push("/denied");
-    //           return;
-    //         } else {
-    //           if (
-    //             this.$router.currentRoute._value.path == "/denied" ||
-    //             this.$router.currentRoute._value.path == "/login"
-    //           )
-    //             this.$router.push("/");
-    //         }
-    //       } else {
-    //         this.$store.dispatch("SET_USER", "");
-    //         this.logout();
-    //       }
-    //     } else this.logout();
-    //     this.loader = false;
-    //   });
-    // },
     showPassword: function(flag) {
       flag ? (this.showPwd = !this.showPwd) : (this.showPwd = !this.showPwd);
 

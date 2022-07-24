@@ -427,7 +427,7 @@ export default {
     this.getCartFromLocal();
     this.loader = false;
     window.$("#new-address-modal").on("hidden.bs.modal", () => {
-      this.openAddressModal()
+      this.openAddressModal();
     });
   },
   methods: {
@@ -465,6 +465,7 @@ export default {
         this.$toast.error("Enter 10 digit mobile number");
         return;
       }
+      window.$("#new-address-modal").modal("hide");
       this.loader = true;
       const address = {
         name: this.newAddress.customerName,
@@ -479,8 +480,6 @@ export default {
       try {
         await addDoc(collection(this.db, "address"), address);
         this.loader = false;
-        window.$("#new-address-modal").modal("hide");
-        await this.openAddressModal();
         this.newAddress = {
           name: "",
           mob: "",
@@ -489,6 +488,7 @@ export default {
           landmark: "",
           defaultFlag: false,
         };
+        await this.openAddressModal();
       } catch (err) {
         this.loader = false;
         this.$toast.error(`Something went wrong! Try later`);

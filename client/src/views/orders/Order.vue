@@ -8,8 +8,13 @@
           >
         </router-link>
       </div>
-      <div class="col-8 ps-3 fw-bold">#{{ orderId }} <br>
-      <div class="text-muted capitalize cart-font-size-1 fw-lighter">{{order.status}}, {{order.items.length}} Items, ₹{{order.payment.total}} </div>
+      <div class="col-8 ps-3 fw-bold">
+        #{{ orderId }} <br />
+        <div class="text-muted capitalize cart-font-size-1 fw-lighter">
+          {{ order.status }}, {{ order.items.length }} Items, ₹{{
+            order.payment.total
+          }}
+        </div>
       </div>
       <div class="col-3 ps-3 text-end">
         <router-link to="/"
@@ -48,14 +53,12 @@
               <router-link to="" v-show="order.status === 'delivered'"
                 ><span
                   class="material-icons delivered-icon cursor"
-                  @click="$router.go(-1)"
                   >check_circle</span
                 >
               </router-link>
               <router-link to="" v-show="order.status === 'cancelled'"
                 ><span
                   class="material-icons delivered-icon cursor text-danger"
-                  @click="$router.go(-1)"
                   >cancel</span
                 >
               </router-link>
@@ -94,12 +97,58 @@
             </div>
           </div>
         </div>
+        <div
+          class="col-sm-12 col-12"
+          v-show="
+            order.status === 'pending' ||
+              order.status === 'confirmed' ||
+              order.status === 'outForDelivery'
+          "
+        >
+          <div class="progress-track">
+            <ul id="progressbar">
+              <li
+                class="step0"
+                id="step1"
+                :class="{
+                  'active-progress':
+                    order.status === 'pending' ||
+                    order.status === 'confirmed' ||
+                    order.status === 'outForDelivery',
+                }"
+              >
+                Pending
+              </li>
+              <li
+                class="step0"
+                id="step2"
+                :class="{
+                  'active-progress':
+                    order.status === 'confirmed' ||
+                    order.status === 'outForDelivery',
+                }"
+              >
+                <span class="">Order Confirmed </span>
+              </li>
+              <li
+                class="step0 text-center "
+                id="step3"
+                :class="{
+                  'active-progress': order.status === 'outForDelivery',
+                }"
+              >
+                <div class="progress-out-for-delivery">Dispatched</div>
+              </li>
+              <li class="step0 text-end" id="step4">Delivered</li>
+            </ul>
+          </div>
+        </div>
       </div>
 
-      <div class="row mt-2 text-secondary">Bill Details</div>
+      <div class="row mt-2 text-secondary fs-6 fw-bolder">Bill Details</div>
       <div class="row mt-2 border pt-3 pb-3 cart-font-size">
         <div
-          class="row cart-font-size-1"
+          class="row cart-font-size mt-1"
           v-for="item in order.items"
           :key="item.id"
         >
@@ -113,6 +162,8 @@
           <div class="col-7 text-secondary">
             {{ item.name }} x {{ item.qty
             }}{{ item.unit == "kg" ? " Kg" : item.unit == "lt" ? " L" : "" }}
+            <br />
+            <span class="cart-font-size-1">{{ item.localName }}</span>
           </div>
           <div class="col-4 text-secondary text-end">
             ₹{{ item.price * item.qty }}
@@ -131,21 +182,15 @@
             ₹{{ order.payment.dc }}
           </div>
           <div class="col-7 capitalize mt-2">
-          Payment Method: {{order.payment.method}}<br>
-          Payment Status: {{order.payment.status}}
+            Payment Method: {{ order.payment.method }}<br />
+            Payment Status: {{ order.payment.status }}
           </div>
-          <div class="col-5 text-end mt-3 fw-bold">Total: ₹{{order.payment.total}}</div>
+          <div class="col-5 text-end mt-3 fw-bold">
+            Total: ₹{{ order.payment.total }}
+          </div>
         </div>
       </div>
     </div>
-
-    <!--  <div class="text-center">
-      <router-link to="/add_address" class="text-decoration-null">
-        <button type="button" class="goto-add-address-button">
-          Add new address
-        </button>
-      </router-link>
-    </div> -->
     <Loader v-show="loader" />
   </div>
 </template>
@@ -170,7 +215,7 @@ export default {
         shop: {
           address: {},
         },
-        items: []
+        items: [],
       },
       orderId: useRoute().params.id,
       itemTotal: 0,

@@ -250,32 +250,125 @@
         <span class="material-icons md-18 cart-icon">shopping_cart</span>
       </router-link>
     </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade animate"
+      id="order-modal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog bottom-modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-black fs-6" id="exampleModalLabel">
+              Current Orders
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body bottom-modal-scroll">
+            <div class="container ps-4 pe-4 mt-2" v-if="orders.length">
+              <div
+                class="row shadow p-3 mb-3 bg-body rounded cart-font-size-1"
+                v-for="order in orders"
+                :key="order.id"
+                @click="gotoOrder(order.id)"
+              >
+                <div class="col-8 line-height-5">
+                  <h6 class="fw-bold text-body cart-font-size-1">
+                    {{ order.shop.name }}
+                  </h6>
+                  <span class="text-secondary">
+                    {{ order.shop.address.street }}
+                  </span>
+                </div>
+                <div class="col-4 capitalize text-center">
+                  {{ order.status }}<br />
+                  <router-link to="" v-show="order.status === 'confirmed'"
+                    ><span
+                      class="material-icons delivered-icon cursor text-danger"
+                      >recommend</span
+                    >
+                  </router-link>
+                  <router-link to="" v-show="order.status === 'outForDelivery'"
+                    ><span
+                      class="material-icons delivered-icon cursor text-danger"
+                      >directions_bike</span
+                    >
+                  </router-link>
+                  <router-link to="" v-show="order.status === 'pending'"
+                    ><span
+                      class="material-icons delivered-icon cursor text-danger"
+                      >pending_actions</span
+                    >
+                  </router-link>
+                </div>
+                <div class="col-12 mt-2">
+                  <span v-for="item in order.items" :key="item.id">
+                    {{ item.name }} ({{ item.qty }}),
+                  </span>
+                </div>
+                <div class="col-12 text-muted">
+                  <span>{{ order.date }} </span>
+                </div>
+                <div class="col-12 mt-1">₹{{ order.payment.total }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <Loader v-show="loader" />
+    <div class="home-bottom-order w-100" v-show="orders.length">
+      <button class="fancyshrink" @click="getOrders()">
+        Current Orders
+        <router-link to="" class="home-current-button"
+          ><span class="mt-2 material-icons text-white">arrow_forward_ios</span>
+        </router-link>
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import auth from "@/mixins/auth/auth.js";
 import shop from "@/mixins/shop/shops.js";
 import Loader from "@/components/loader";
+import moment from "moment";
 
 export default {
   mixins: [auth, shop],
   components: { Loader },
   data() {
     return {
+      db: getFirestore(),
       cartLength: 0,
+      orders: [],
     };
   },
   async mounted() {
-    await this.checkAuth();
+    const user = await this.checkAuth();
+    await this.getOrders(user.uid, true);
     this.getShopTypes();
     this.getShops("all");
     let items =
       window.sessionStorage.getItem("cartItems") &&
       JSON.parse(window.sessionStorage.getItem("cartItems"));
-      if(items)
-    this.cartLength = items.length;
+    if (items) this.cartLength = items.length;
   },
   methods: {
     gotoShops: function(flag) {
@@ -283,6 +376,36 @@ export default {
     },
     gotoShop: function(id) {
       this.$router.push(`/shop/${id}`);
+    },
+    getOrders: async function(uid = this.$store.state.user.uid, flag) {
+      this.loader = true;
+      let sDate = new Date();
+      sDate.setHours(0, 0, 0, 0);
+      sDate = sDate.getTime();
+      const q = query(
+        collection(this.db, "orders"),
+        where("customer.id", "==", uid),
+        where("date", ">=", sDate),
+        where("status", "in", ["pending", "confirmed", "outForDelivery"])
+      );
+      const querySnapshot = await getDocs(q);
+      const orders = [];
+      querySnapshot.forEach((doc) => {
+        const order = doc.data();
+        order.id = doc.id;
+        order.date = moment(order.date).format("DD/MM/YYYY hh:mm A");
+        orders.push(order);
+      });
+      this.orders = orders;
+      this.loader = false;
+      if(!flag)
+      window.$("#order-modal").modal("show");
+    },
+    gotoOrder: function(id) {
+      window.$("#order-modal").modal("hide");
+      setTimeout(() => {
+        this.$router.push(`/order/${id}`);
+      }, 1000);
     },
   },
 };
