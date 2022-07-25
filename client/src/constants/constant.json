@@ -1,7 +1,49 @@
 {
     "dev": {
         "deliveryCharge": 40,
-        "minimumCartAmount": 0
+        "minimumCartAmount": 0,
+        "foodCategories": [
+            {
+                "active": true,
+                "name": "Chicken",
+                "url": "https://ik.imagekit.io/s60rojqsg/categories/chicken_Eg6D0a5KS.jpg"
+            },
+            {
+                "active": true,
+                "name": "Cakes",
+                "url": "https://ik.imagekit.io/s60rojqsg/categories/cake_FtgfpWP7s.jpg"
+            },
+            {
+                "active": true,
+                "name": "Parotta",
+                "url": "https://ik.imagekit.io/s60rojqsg/categories/parotta_EqicDL0Qa.jpeg"
+            },
+            {
+                "active": true,
+                "name": "Biryani",
+                "url": "https://ik.imagekit.io/s60rojqsg/categories/briyani_i0YZyeR8f.jpg"
+            },
+            {
+                "active": true,
+                "name": "Rolls",
+                "url": "https://ik.imagekit.io/s60rojqsg/categories/parotta_EqicDL0Qa.jpeg"
+            },
+            {
+                "active": true,
+                "name": "Shawarma",
+                "url": "https://ik.imagekit.io/s60rojqsg/categories/cake_FtgfpWP7s.jpg"
+            },
+            {
+                "active": true,
+                "name": "Puffs",
+                "url": "https://ik.imagekit.io/s60rojqsg/categories/parotta_EqicDL0Qa.jpeg"
+            },
+            {
+                "active": true,
+                "name": "Thattukada",
+                "url": "https://ik.imagekit.io/s60rojqsg/categories/briyani_i0YZyeR8f.jpg"
+            }
+        ]
     },
     "prod": {
         "deliveryCharge": 40,

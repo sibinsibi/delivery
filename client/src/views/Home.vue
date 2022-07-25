@@ -150,7 +150,27 @@
             </button>
           </div>
         </div>
-        <h5 class="side-head">Shops types</h5>
+
+        <div class="row">
+          <div class="col-12">
+            <h6 class="side-head mt-3">What do you like?</h6>
+          </div>
+          <div class="col-12">
+            <div class="row">
+              <div
+                class="col-3 text-center"
+                v-for="(food, index) in constant.foodCategories"
+                :key="index"
+                v-show="food.active"
+              >
+                <img :src="food.url" class="w-100 rounded-circle shadow-sm" />
+                <span class="cart-font-size-1">{{ food.name }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h5 class="side-head mt-3">Shops types</h5>
         <div
           class="col-4 pt-2"
           v-for="(types, index) in shopTypes"
@@ -317,7 +337,8 @@
                 <div class="col-12 text-muted">
                   <span>{{ order.date }} </span>
                 </div>
-                <div class="col-12 mt-1">₹{{ order.payment.total }}</div>{{order.timer}}
+                <div class="col-12 mt-1">₹{{ order.payment.total }}</div>
+                {{ order.timer }}
               </div>
             </div>
           </div>
@@ -349,6 +370,7 @@ import auth from "@/mixins/auth/auth.js";
 import shop from "@/mixins/shop/shops.js";
 import Loader from "@/components/loader";
 import moment from "moment";
+import Constant from "@/constants/constant.json";
 
 export default {
   mixins: [auth, shop],
@@ -358,6 +380,8 @@ export default {
       db: getFirestore(),
       cartLength: 0,
       orders: [],
+      constant:
+        process.env.NODE_ENV === "development" ? Constant.dev : Constant.prod,
     };
   },
   async mounted() {
