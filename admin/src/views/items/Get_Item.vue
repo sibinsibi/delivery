@@ -4,7 +4,7 @@
     <div class="app-wrapper">
       <div class="app-content pt-3 p-md-3 p-lg-4">
         <div class="container-xl">
-          <h1 class="app-page-title mt-md-5">Select Shops</h1>
+          <h1 class="app-page-title mt-md-5">Edit Item</h1>
           <button
             type="button"
             @click="getShops('all')"

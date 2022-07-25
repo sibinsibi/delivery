@@ -470,14 +470,13 @@ export default {
           .subtract(1, "weeks")
           .endOf("week")
           .format("x");
-      }
-      else if (flag === "month") {
+      } else if (flag === "month") {
         sDate = moment().startOf("month");
         sDate = moment(sDate).format("x");
         eDate = moment().endOf("month");
         eDate = moment(eDate).format("x");
-      }else{
-         sDate = moment()
+      } else {
+        sDate = moment()
           .subtract(1, "months")
           .startOf("month")
           .format("x");

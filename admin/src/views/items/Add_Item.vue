@@ -4,7 +4,7 @@
     <div class="app-wrapper">
       <div class="app-content pt-3 p-md-3 p-lg-4">
         <div class="container-xl">
-          <h1 class="app-page-title mt-md-5">Select Shops</h1>
+          <h1 class="app-page-title mt-md-5">Add New Item</h1>
           <button
             type="button"
             @click="getShops('all')"
@@ -154,7 +154,7 @@
 
                 <div class="col-md-6 col-sm-6 div-mt">
                   <select class="form-select" v-model="unit">
-                    <option selected="" value="">Select unit</option>
+                    <option selected="" value="" disabled>Select unit</option>
                     <option value="kg">Kilogram</option>
                     <option value="lt">Litre</option>
                     <option value="nb">Numbers</option>
@@ -172,41 +172,50 @@
                   />
                 </div>
 
-                <div class="d-flex">
-                  <div class="form-check form-switch mb-3 mt-4">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="settings-switch-1"
-                      v-model="active"
-                      :checked="active"
-                    />
-                    <label class="form-check-label" for="settings-switch-1"
-                      >Active</label
-                    >
-                  </div>
-                  <div class="form-check form-switch mb-3 mt-4">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="veg"
-                      v-model="veg"
-                      :checked="veg"
-                    />
-                    <label class="form-check-label" for="veg">Veg</label>
-                  </div>
+                <div class="col-md-6 col-sm-6 div-mt">
+                  <select class="form-select" v-model="itemCategory">
+                    <option selected="" value="" disabled>Select category</option>
+                    <option :value="c.name" v-for="(c, index) in constant.foodCategories" :key="index">{{c.name}}</option>
+                  </select>
+                </div>
 
-                  <div class="form-check form-switch mb-3 mt-4">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="eatable"
-                      v-model="eatable"
-                      :checked="eatable"
-                    />
-                    <label class="form-check-label" for="eatable"
-                      >Eatable</label
-                    >
+                <div class="col-md-6 col-sm-6 div-mt">
+                  <div class="d-flex">
+                    <div class="form-check form-switch mb-3 mt-2">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="settings-switch-1"
+                        v-model="active"
+                        :checked="active"
+                      />
+                      <label class="form-check-label" for="settings-switch-1"
+                        >Active</label
+                      >
+                    </div>
+                    <div class="form-check form-switch mb-3 mt-2">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="veg"
+                        v-model="veg"
+                        :checked="veg"
+                      />
+                      <label class="form-check-label" for="veg">Veg</label>
+                    </div>
+
+                    <div class="form-check form-switch mb-3 mt-2">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="eatable"
+                        v-model="eatable"
+                        :checked="eatable"
+                      />
+                      <label class="form-check-label" for="eatable"
+                        >Eatable</label
+                      >
+                    </div>
                   </div>
                 </div>
               </div>
@@ -234,6 +243,7 @@
 <script>
 import Layout from "@/components/layout/layout.vue";
 import Loader from "@/components/loader";
+import Constant from "@/constants/constant.json";
 
 import {
   getFirestore,
@@ -263,6 +273,9 @@ export default {
       active: false,
       veg: false,
       eatable: false,
+      itemCategory:'',
+      constant:
+        process.env.NODE_ENV === "development" ? Constant.dev : Constant.prod,
     };
   },
   mounted() {
@@ -347,6 +360,7 @@ export default {
         eatable: this.eatable,
         photoUrl: "",
         shopId: this.selectedShop.id,
+        category: this.itemCategory
       };
 
       try {

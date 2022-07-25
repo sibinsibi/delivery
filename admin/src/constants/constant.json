@@ -2,14 +2,79 @@
     "dev": {
         "deliveryCharge": 40,
         "minimumCartAmount": 0,
-        "paymentStatus": ["pending","success", "cancelled", "failed", "refund"],
-        "orderStatus": ["pending","confirmed","outForDelivery","delivered","cancelled"]
+        "paymentStatus": [
+            "pending",
+            "success",
+            "cancelled",
+            "failed",
+            "refund"
+        ],
+        "orderStatus": [
+            "pending",
+            "confirmed",
+            "outForDelivery",
+            "delivered",
+            "cancelled"
+        ],
+        "foodCategories": [
+            {
+                "active": true,
+                "name": "Chicken",
+                "url": ""
+            },
+            {
+                "active": true,
+                "name": "Cakes",
+                "url": ""
+            },
+            {
+                "active": true,
+                "name": "Parotta",
+                "url": ""
+            },
+            {
+                "active": true,
+                "name": "Biryani",
+                "url": ""
+            },
+            {
+                "active": true,
+                "name": "Roles",
+                "url": ""
+            },
+            {
+                "active": true,
+                "name": "Shawarma",
+                "url": ""
+            },
+            {
+                "active": true,
+                "name": "Puffs",
+                "url": ""
+            },
+            {
+                "active": true,
+                "name": "thattukada",
+                "url": ""
+            }
+        ]
     },
     "prod": {
         "deliveryCharge": 40,
         "minimumCartAmount": 0,
-        "paymentStatus": ["pending","success", "cancelled", "failed", "refund"],
-        "orderStatus": ["pending","confirmed","outForDelivery","delivered","cancelled"]
+        "paymentStatus": [
+            "pending",
+            "success",
+            "cancelled",
+            "failed",
+            "refund"
+        ],
+        "orderStatus": [
+            "pending",
+            "confirmed",
+            "outForDelivery",
+            "delivered",
+            "cancelled"
+        ]
     }
-    
 }
