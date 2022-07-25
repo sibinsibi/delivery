@@ -317,7 +317,7 @@
                 <div class="col-12 text-muted">
                   <span>{{ order.date }} </span>
                 </div>
-                <div class="col-12 mt-1">₹{{ order.payment.total }}</div>
+                <div class="col-12 mt-1">₹{{ order.payment.total }}</div>{{order.timer}}
               </div>
             </div>
           </div>
@@ -362,13 +362,13 @@ export default {
   },
   async mounted() {
     const user = await this.checkAuth();
-    await this.getOrders(user.uid, true);
     this.getShopTypes();
     this.getShops("all");
     let items =
       window.sessionStorage.getItem("cartItems") &&
       JSON.parse(window.sessionStorage.getItem("cartItems"));
     if (items) this.cartLength = items.length;
+    await this.getOrders(user.uid, true);
   },
   methods: {
     gotoShops: function(flag) {
@@ -390,7 +390,7 @@ export default {
       );
       const querySnapshot = await getDocs(q);
       const orders = [];
-      querySnapshot.forEach((doc) => {
+      querySnapshot.forEach(async (doc) => {
         const order = doc.data();
         order.id = doc.id;
         order.date = moment(order.date).format("DD/MM/YYYY hh:mm A");
@@ -398,8 +398,7 @@ export default {
       });
       this.orders = orders;
       this.loader = false;
-      if(!flag)
-      window.$("#order-modal").modal("show");
+      if (!flag) window.$("#order-modal").modal("show");
     },
     gotoOrder: function(id) {
       window.$("#order-modal").modal("hide");

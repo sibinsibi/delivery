@@ -60,6 +60,11 @@ const routes = [
     name: "Order",
     component: () => import("../views/orders/Order.vue"),
   },
+  {
+    path: "/coming_soon",
+    name: "Coming-Soon",
+    component: () => import("../views/Coming_Soon.vue"),
+  },
   
 
 ];

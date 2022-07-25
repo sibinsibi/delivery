@@ -16,7 +16,7 @@ export default {
       password: "",
       name: "",
       signupEmail: "",
-      signupMobile: '',
+      signupMobile: "",
       signupPassword: "",
       cPassword: "",
       db: getFirestore(),
@@ -29,7 +29,7 @@ export default {
       window.$(".modal").modal("hide");
       window.$(".modal-backdrop").remove();
       window.$(".in").remove();
-      window.$("body").css({ 'overflow' : 'auto', 'padding-right' : '' });
+      window.$("body").css({ overflow: "auto", "padding-right": "" });
     });
   },
   methods: {
@@ -109,7 +109,7 @@ export default {
           const errorMessage = error.message;
           console.log(errorMessage);
           this.loader = false;
-          this.$toast.error('Try later');
+          this.$toast.error("Try later");
         });
     },
     createUser: async function(user) {
@@ -169,6 +169,11 @@ export default {
       });
     },
     checkAuth: async function() {
+      if (!this.$isMobile()) {
+        this.$router.push("/coming_soon");
+        return;
+      }
+
       const userObj = await this.getUser();
       return new Promise((resolve) => {
         if (userObj) {

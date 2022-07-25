@@ -21,10 +21,12 @@ import "./registerServiceWorker";
 import Toaster from "@meforma/vue-toaster";
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import VueMobileDetection from 'vue-mobile-detection'
 
 createApp(App)
   .use(store)
   .use(router)
+  .use(VueMobileDetection)
   .use(VueSweetalert2, {})
   .use(Toaster, { position: "bottom" })
   .mount("#app");
