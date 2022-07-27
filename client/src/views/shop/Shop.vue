@@ -118,7 +118,7 @@
             <div class="col-5 text-center" :class="{ blackWhite: !shop.open }">
               <img
                 :src="item.photoUrl"
-                class="mt-3 height-item each-item"
+                class="mt-3 height-item each-item rounded-2"
               /><br />
               <button
                 class="mt-2 btn btn-outline-danger btn-sm shadow-sm"

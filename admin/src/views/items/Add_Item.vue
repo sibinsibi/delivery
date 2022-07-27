@@ -381,6 +381,7 @@ export default {
           (this.active = false),
           (this.veg = false),
           (this.eatable = false),
+          (this.itemCategory = false),
           this.$toast.success(`Updated successfully`);
       } catch (err) {
         this.$toast.error(`Something went wrong` + err);

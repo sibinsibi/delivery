@@ -65,6 +65,11 @@ const routes = [
     name: "Coming-Soon",
     component: () => import("../views/Coming_Soon.vue"),
   },
+  {
+    path: "/items/:category",
+    name: "Items",
+    component: () => import("../views/shop/Items.vue"),
+  },
   
 
 ];

@@ -234,10 +234,13 @@ export default {
       if (chk.checked) {
         active = true;
       }
+      document.getElementById(id).checked = active;
+
       const shopRef = doc(this.db, "shops", id);
 
       await updateDoc(shopRef, {
         active: active,
+        open: active
       });
       this.$toast.success(`Updated`);
     },

@@ -150,33 +150,33 @@
             </button>
           </div>
         </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="text-center text2 fw-bold text-danger">
+            Delivery with in {{ constant.deliveryLimitKm }} Km only
+          </div>
         </div>
-        <div class="row">
-          <div class="col-12">
-            <div class="text-center text2 fw-bold text-danger">
-              Delivery with in {{ constant.deliveryLimitKm }} Km only
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <h6 class="side-head mt-3">What do you like?</h6>
+        </div>
+        <div class="col-12">
+          <div class="row">
+            <div
+              class="col-3 text-center" @click="gotoItems(food)"
+              v-for="(food, index) in constant.foodCategories"
+              :key="index"
+              v-show="food.active"
+            >
+              <img :src="food.url" class="w-100 rounded-circle shadow-sm" />
+              <span class="cart-font-size-1">{{ food.name }}</span>
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-12">
-            <h6 class="side-head mt-3">What do you like?</h6>
-          </div>
-          <div class="col-12">
-            <div class="row">
-              <div
-                class="col-3 text-center"
-                v-for="(food, index) in constant.foodCategories"
-                :key="index"
-                v-show="food.active"
-              >
-                <img :src="food.url" class="w-100 rounded-circle shadow-sm" />
-                <span class="cart-font-size-1">{{ food.name }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-<div class="row">
+      </div>
+      <div class="row">
         <h5 class="side-head mt-3">Shops types</h5>
         <div
           class="col-4 pt-2"
@@ -433,6 +433,9 @@ export default {
       setTimeout(() => {
         this.$router.push(`/order/${id}`);
       }, 1000);
+    },
+     gotoItems: function(category) {
+      this.$router.push(`/items/${category.name}`);
     },
   },
 };

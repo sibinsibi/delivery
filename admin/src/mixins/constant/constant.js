@@ -8,9 +8,8 @@ export default {
   },
   mounted() {
     //process.env.NODE_ENV === "development" ? Constant.dev : Constant.prod,
-    alert(location.host)
     if (
-      location.host === "client-dev-b7062.web.app" ||
+      location.host === "delivery-d2b04.web.app" ||
       location.host === "localhost:8080" || location.host == '192.168.18.25:8080'
     ) {
       this.constant = Constant.dev;
