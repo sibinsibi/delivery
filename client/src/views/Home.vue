@@ -150,6 +150,7 @@
             </button>
           </div>
         </div>
+        </div>
         <div class="row">
           <div class="col-12">
             <div class="text-center text2 fw-bold text-danger">
@@ -175,7 +176,7 @@
             </div>
           </div>
         </div>
-
+<div class="row">
         <h5 class="side-head mt-3">Shops types</h5>
         <div
           class="col-4 pt-2"
