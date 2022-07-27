@@ -4,7 +4,7 @@
     <div class="app-wrapper">
       <div class="app-content pt-3 p-md-3 p-lg-4">
         <div class="container-xl">
-          <h1 class="app-page-title mt-md-5">Add New Item</h1>
+          <h1 class="app-page-title mt-md-5 mt-5 mt-sm-5 fs-5">Add New Item</h1>
           <button
             type="button"
             @click="getShops('all')"
@@ -174,8 +174,15 @@
 
                 <div class="col-md-6 col-sm-6 div-mt">
                   <select class="form-select" v-model="itemCategory">
-                    <option selected="" value="" disabled>Select category</option>
-                    <option :value="c.name" v-for="(c, index) in constant.foodCategories" :key="index">{{c.name}}</option>
+                    <option selected="" value="" disabled
+                      >Select category</option
+                    >
+                    <option
+                      :value="c.name"
+                      v-for="(c, index) in constant.foodCategories"
+                      :key="index"
+                      >{{ c.name }}</option
+                    >
                   </select>
                 </div>
 
@@ -243,7 +250,7 @@
 <script>
 import Layout from "@/components/layout/layout.vue";
 import Loader from "@/components/loader";
-import Constant from "@/constants/constant.json";
+import Constants from "@/mixins/constant/constant.js";
 
 import {
   getFirestore,
@@ -258,6 +265,8 @@ import {
 
 export default {
   components: { Layout, Loader },
+  mixins: [Constants],
+
   data() {
     return {
       db: getFirestore(),
@@ -273,9 +282,7 @@ export default {
       active: false,
       veg: false,
       eatable: false,
-      itemCategory:'',
-      constant:
-        process.env.NODE_ENV === "development" ? Constant.dev : Constant.prod,
+      itemCategory: "",
     };
   },
   mounted() {
@@ -360,7 +367,7 @@ export default {
         eatable: this.eatable,
         photoUrl: "",
         shopId: this.selectedShop.id,
-        category: this.itemCategory
+        category: this.itemCategory,
       };
 
       try {

@@ -8,6 +8,8 @@ import {
   signInWithRedirect,
 } from "firebase/auth";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import Constant from "@/constants/constant.json";
+
 export default {
   data() {
     return {
@@ -22,9 +24,21 @@ export default {
       db: getFirestore(),
       loader: false,
       showPwd: false,
+      constant: ''
     };
   },
   mounted() {
+    
+    //process.env.NODE_ENV === "development" ? Constant.dev : Constant.prod,
+    if (
+      location.host === "client-dev-b7062.web.app" ||
+      location.host === "localhost:8080" || location.host == '192.168.18.25:8080'
+    ) {
+      this.constant = Constant.dev;
+    }
+    else this.constant = Constant.prod;
+
+    //modal hide while goto previous page
     window.$(window).on("popstate", function() {
       window.$(".modal").modal("hide");
       window.$(".modal-backdrop").remove();

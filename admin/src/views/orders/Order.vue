@@ -328,7 +328,7 @@
 import { useRoute } from "vue-router";
 import Layout from "@/components/layout/layout.vue";
 import Loader from "@/components/loader";
-import Constant from "@/constants/constant.json";
+import Constants from "@/mixins/constant/constant.js";
 
 import {
   getFirestore,
@@ -342,6 +342,7 @@ import {
 } from "firebase/firestore";
 
 export default {
+  mixins: [Constants],
   components: { Layout, Loader },
   data() {
     return {
@@ -359,8 +360,6 @@ export default {
       loader: false,
       paymentStatus: -1,
       orderStatus: -1,
-      constant:
-        process.env.NODE_ENV === "development" ? Constant.dev : Constant.prod,
       gst: 0,
       totalItemAmount: 0,
       allItems: [],

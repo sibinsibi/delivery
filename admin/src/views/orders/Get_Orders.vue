@@ -303,7 +303,7 @@
 <script>
 import Layout from "@/components/layout/layout.vue";
 import Loader from "@/components/loader";
-import Constant from "@/constants/constant.json";
+import Constants from "@/mixins/constant/constant.js";
 
 import {
   getFirestore,
@@ -317,6 +317,7 @@ import {
 import moment from "moment";
 
 export default {
+  mixins: [Constants],
   components: { Layout, Loader },
   data() {
     return {
@@ -330,8 +331,6 @@ export default {
         days: false,
       },
       orderIdFilter: "",
-      constant:
-        process.env.NODE_ENV === "development" ? Constant.dev : Constant.prod,
       paymentStatus: -1,
       orderStatus: -1,
       eDate: "",

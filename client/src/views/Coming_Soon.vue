@@ -84,6 +84,20 @@
   </div>
 </template>
 
+<script>
+export default {
+  data() {
+    return {};
+  },
+  async mounted() {
+    if (this.$isMobile()) {
+        this.$router.push("/");
+        return;
+      }
+  },
+};
+</script>
+
 <style scoped>
 .container-main {
   position: relative;

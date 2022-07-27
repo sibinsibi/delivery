@@ -378,7 +378,6 @@
 </template>
 
 <script>
-import constant from "@/constants/constant.json";
 import Loader from "@/components/loader";
 import auth from "@/mixins/auth/auth.js";
 import {
@@ -405,8 +404,6 @@ export default {
       showEmpty: false,
       allAddress: [],
       selectedAddress: false,
-      constant:
-        process.env.NODE_ENV === "development" ? constant.dev : constant.prod,
       totalItemAmount: 0,
       paymentMethod: "",
       gst: 0,

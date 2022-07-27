@@ -2,6 +2,7 @@
     "dev": {
         "deliveryCharge": 40,
         "minimumCartAmount": 0,
+        "deliveryLimitKm": 5,
         "foodCategories": [
             {
                 "active": true,

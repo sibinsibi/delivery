@@ -153,12 +153,14 @@
 import { useRoute } from "vue-router";
 import Layout from "@/components/layout/layout.vue";
 import Loader from "@/components/loader";
-import Constant from "@/constants/constant.json";
+import Constants from "@/mixins/constant/constant.js";
 
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 
 export default {
   components: { Layout, Loader },
+  mixins: [Constants],
+
   data() {
     return {
       db: getFirestore(),
@@ -172,8 +174,6 @@ export default {
       itemId: "",
       photoUrl: "",
       itemCategory: "",
-      constant:
-        process.env.NODE_ENV === "development" ? Constant.dev : Constant.prod,
     };
   },
   mounted() {

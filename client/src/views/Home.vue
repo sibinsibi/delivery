@@ -150,7 +150,13 @@
             </button>
           </div>
         </div>
-
+        <div class="row">
+          <div class="col-12">
+            <div class="text-center text2 fw-bold text-danger">
+              Delivery with in {{ constant.deliveryLimitKm }} Km only
+            </div>
+          </div>
+        </div>
         <div class="row">
           <div class="col-12">
             <h6 class="side-head mt-3">What do you like?</h6>
@@ -370,7 +376,6 @@ import auth from "@/mixins/auth/auth.js";
 import shop from "@/mixins/shop/shops.js";
 import Loader from "@/components/loader";
 import moment from "moment";
-import Constant from "@/constants/constant.json";
 
 export default {
   mixins: [auth, shop],
@@ -380,8 +385,6 @@ export default {
       db: getFirestore(),
       cartLength: 0,
       orders: [],
-      constant:
-        process.env.NODE_ENV === "development" ? Constant.dev : Constant.prod,
     };
   },
   async mounted() {
