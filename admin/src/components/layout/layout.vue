@@ -372,6 +372,21 @@
             </li>
             <!--//nav-item-->
 
+            <!--//nav-item-->
+            <li class="nav-item">
+              <router-link class="nav-link" to="/live_svc_orders">
+                <span class="nav-icon">
+                  <svg class="svg-icon bi bi-receipt" viewBox="0 0 20 20">
+                    <path
+                      d="M6.176,7.241V6.78c0-0.221-0.181-0.402-0.402-0.402c-0.221,0-0.403,0.181-0.403,0.402v0.461C4.79,7.416,4.365,7.955,4.365,8.591c0,0.636,0.424,1.175,1.006,1.35v3.278c0,0.222,0.182,0.402,0.403,0.402c0.222,0,0.402-0.181,0.402-0.402V9.941c0.582-0.175,1.006-0.714,1.006-1.35C7.183,7.955,6.758,7.416,6.176,7.241 M5.774,9.195c-0.332,0-0.604-0.272-0.604-0.604c0-0.332,0.272-0.604,0.604-0.604c0.332,0,0.604,0.272,0.604,0.604C6.377,8.923,6.105,9.195,5.774,9.195 M10.402,10.058V6.78c0-0.221-0.181-0.402-0.402-0.402c-0.222,0-0.402,0.181-0.402,0.402v3.278c-0.582,0.175-1.006,0.714-1.006,1.35c0,0.637,0.424,1.175,1.006,1.351v0.461c0,0.222,0.181,0.402,0.402,0.402c0.221,0,0.402-0.181,0.402-0.402v-0.461c0.582-0.176,1.006-0.714,1.006-1.351C11.408,10.772,10.984,10.233,10.402,10.058M10,12.013c-0.333,0-0.604-0.272-0.604-0.604S9.667,10.805,10,10.805c0.332,0,0.604,0.271,0.604,0.604S10.332,12.013,10,12.013M14.629,8.448V6.78c0-0.221-0.182-0.402-0.403-0.402c-0.221,0-0.402,0.181-0.402,0.402v1.668c-0.581,0.175-1.006,0.714-1.006,1.35c0,0.636,0.425,1.176,1.006,1.351v2.07c0,0.222,0.182,0.402,0.402,0.402c0.222,0,0.403-0.181,0.403-0.402v-2.07c0.581-0.175,1.006-0.715,1.006-1.351C15.635,9.163,15.21,8.624,14.629,8.448 M14.226,10.402c-0.331,0-0.604-0.272-0.604-0.604c0-0.332,0.272-0.604,0.604-0.604c0.332,0,0.604,0.272,0.604,0.604C14.83,10.13,14.558,10.402,14.226,10.402 M17.647,3.962H2.353c-0.221,0-0.402,0.181-0.402,0.402v11.27c0,0.222,0.181,0.402,0.402,0.402h15.295c0.222,0,0.402-0.181,0.402-0.402V4.365C18.05,4.144,17.869,3.962,17.647,3.962 M17.245,15.232H2.755V4.768h14.49V15.232z"
+                    ></path>
+                  </svg>
+                </span>
+                <span class="nav-link-text">Pending SVC Orders</span>
+              </router-link>
+            </li>
+            <!--//nav-item-->
+
             <li class="nav-item has-submenu">
               <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
               <a
@@ -424,6 +439,63 @@
                   <li class="submenu-item">
                     <router-link class="submenu-link" to="/get_orders"
                       >Get Orders</router-link
+                    >
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <li class="nav-item has-submenu">
+              <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
+              <a
+                class="nav-link submenu-toggle"
+                href="#"
+                data-bs-toggle="collapse"
+                data-bs-target="#submenu-8"
+                aria-expanded="false"
+                aria-controls="submenu-8"
+              >
+                <span class="nav-icon">
+                  <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
+                  <svg class="svg-icon bi bi-columns-gap" viewBox="0 0 20 20">
+                    <path
+                      d="M17.283,5.549h-5.26V4.335c0-0.222-0.183-0.404-0.404-0.404H8.381c-0.222,0-0.404,0.182-0.404,0.404v1.214h-5.26c-0.223,0-0.405,0.182-0.405,0.405v9.71c0,0.223,0.182,0.405,0.405,0.405h14.566c0.223,0,0.404-0.183,0.404-0.405v-9.71C17.688,5.731,17.506,5.549,17.283,5.549 M8.786,4.74h2.428v0.809H8.786V4.74z M16.879,15.26H3.122v-4.046h5.665v1.201c0,0.223,0.182,0.404,0.405,0.404h1.618c0.222,0,0.405-0.182,0.405-0.404v-1.201h5.665V15.26z M9.595,9.583h0.81v2.428h-0.81V9.583zM16.879,10.405h-5.665V9.19c0-0.222-0.183-0.405-0.405-0.405H9.191c-0.223,0-0.405,0.183-0.405,0.405v1.215H3.122V6.358h13.757V10.405z"
+                    ></path>
+                  </svg>
+                </span>
+                <span class="nav-link-text">SVC Order Management</span>
+                <span class="submenu-arrow">
+                  <svg
+                    width="1em"
+                    height="1em"
+                    viewBox="0 0 16 16"
+                    class="bi bi-chevron-down"
+                    fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+                    />
+                  </svg>
+                </span>
+                <!--//submenu-arrow-->
+              </a>
+              <!--//nav-link-->
+              <div
+                id="submenu-8"
+                class="collapse submenu submenu-8"
+                data-bs-parent="#menu-accordion"
+              >
+                <ul class="submenu-list list-unstyled">
+                  <li class="submenu-item">
+                    <router-link class="submenu-link" to="/current_svc_orders"
+                      >Current SVC Orders</router-link
+                    >
+                  </li>
+                  <li class="submenu-item">
+                    <router-link class="submenu-link" to="/get_svc_orders"
+                      >Get SVC Orders</router-link
                     >
                   </li>
                 </ul>

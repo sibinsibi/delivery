@@ -57,7 +57,7 @@ const routes = [
   },
   {
     path: "/order/:id",
-    name: "order",
+    name: "Order",
     component: () => import("../views/orders/Order.vue"),
   },
   {
@@ -84,6 +84,26 @@ const routes = [
     path: "/users",
     name: "Users",
     component: () => import("../views/users/Users.vue"),
+  },
+  {
+    path: "/live_svc_orders",
+    name: "Live-SVC-Orders",
+    component: () => import("../views/svc-orders/Live_SVC_Orders.vue"),
+  },
+  {
+    path: "/current_svc_orders",
+    name: "Current-SVC-Orders",
+    component: () => import("../views/svc-orders/Current_SVC_Orders.vue"),
+  },
+  {
+    path: "/get_svc_orders",
+    name: "Get-SVC-Orders",
+    component: () => import("../views/svc-orders/Get_SVC_Orders.vue"),
+  },
+  {
+    path: "/svcorder/:id",
+    name: "SVC-Order",
+    component: () => import("../views/svc-orders/SVCOrder.vue"),
   },
 
 ];

@@ -16,6 +16,19 @@
             "delivered",
             "cancelled"
         ],
+        "svcPaymentStatus": [
+            "pending",
+            "success",
+            "cancelled",
+            "failed",
+            "refund"
+        ],
+        "svcOrderStatus": [
+            "pending",
+            "confirmed",
+            "completed",
+            "cancelled"
+        ],
         "foodCategories": [
             {
                 "active": true,
