@@ -70,6 +70,11 @@ const routes = [
     name: "Items",
     component: () => import("../views/shop/Items.vue"),
   },
+  {
+    path: "/service",
+    name: "Service",
+    component: () => import("../views/service/Book_Service.vue"),
+  },
   
 
 ];

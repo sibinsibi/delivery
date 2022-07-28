@@ -44,11 +44,37 @@
                 "name": "Thattukada",
                 "url": "https://ik.imagekit.io/s60rojqsg/categories/briyani_i0YZyeR8f.jpg"
             }
+        ],
+        "serviceTypes": [
+            {
+                "name": "Electrical",
+                "active": true,
+                "url": "https://ik.imagekit.io/s60rojqsg/services/Electrical_L6APSv_bq.jpg"
+            },
+            {
+                "name": "Plumbing",
+                "active": true,
+                "url": "https://ik.imagekit.io/s60rojqsg/services/plumbing_XYGobwxNtP.jpeg"
+            },
+            {
+                "name": "Studio",
+                "active": true,
+                "url": "https://ik.imagekit.io/s60rojqsg/services/studio_ClvI3NwCJ.jpg"
+            },
+            {
+                "name": "Dance",
+                "active": true,
+                "url": "https://ik.imagekit.io/s60rojqsg/services/dance_CFxdZLPpu.webp"
+            },
+            {
+                "name": "Chef",
+                "active": true,
+                "url": "https://ik.imagekit.io/s60rojqsg/services/chef_oyitd-_Tw.webp"
+            }
         ]
     },
     "prod": {
         "deliveryCharge": 40,
         "minimumCartAmount": 0
     }
-    
 }

@@ -165,7 +165,8 @@
         <div class="col-12">
           <div class="row">
             <div
-              class="col-3 text-center" @click="gotoItems(food)"
+              class="col-3 text-center"
+              @click="gotoItems(food)"
               v-for="(food, index) in constant.foodCategories"
               :key="index"
               v-show="food.active"
@@ -231,6 +232,30 @@
       </div>
 
       <!-- Fish/Chicken end-->
+
+      <!-- services end-->
+
+      <div class="row mt-3">
+        <div class="col-12">
+          <h5 class="side-head mt-3">Book Your Service</h5>
+        </div>
+        <div class="col-12">
+          <div class="row">
+            <div
+              class="col-4 text-center"
+              @click="gotoService(service)"
+              v-for="(service, index) in constant.serviceTypes"
+              :key="index"
+              v-show="service.active"
+            >
+              <img :src="service.url" class="w-100 shadow border-radius-25" />
+              <span class="cart-font-size-1">{{ service.name }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- services end-->
 
       <div class="row">
         <div class="col-8"><h6 class="side-head mt-3">Your partners</h6></div>
@@ -354,12 +379,9 @@
     </div>
 
     <Loader v-show="loader" />
-    <div class="home-bottom-order w-100" v-show="orders.length">
-      <button class="fancyshrink" @click="getOrders()">
+    <div class="home-bottom-order w-100 text-center" v-show="orders.length">
+      <button class="fancyshrink w-75 rounded-pill" @click="getOrders()">
         Current Orders
-        <router-link to="" class="home-current-button"
-          ><span class="mt-2 material-icons text-white">arrow_forward_ios</span>
-        </router-link>
       </button>
     </div>
   </div>
@@ -434,8 +456,12 @@ export default {
         this.$router.push(`/order/${id}`);
       }, 1000);
     },
-     gotoItems: function(category) {
+    gotoItems: function(category) {
       this.$router.push(`/items/${category.name}`);
+    },
+    gotoService: function(service) {
+      this.$router.push({ path: 'service', query: { 'service': service.name }})
+
     },
   },
 };
