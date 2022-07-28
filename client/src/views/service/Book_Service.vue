@@ -9,13 +9,22 @@
         </router-link>
       </div>
       <div class="col-7 ps-3">Book Service</div>
-      <div class="col-4 ps-3 text-end">
+      <div class="col-4 text-end">
         <router-link to="/"
           ><span class="material-icons common-icon cursor">home</span>
         </router-link>
       </div>
     </div>
-    <form class="add-address">
+    <div class="add-address text-end">
+      <div class="pe-2">
+        <button
+          class="btn btn-outline-danger btn-sm"
+          @click="openAddressModal()"
+        >
+          Addresses
+        </button>
+      </div>
+
       <div class="mb-3 mt-3 form-group">
         <select class="form-select" v-model="selectedService">
           <option value="" disabled>Select Service</option>
@@ -82,16 +91,72 @@
           v-model="landmark"
         ></textarea>
       </div>
-      <button type="button" class="add-address-button" @click="bookNewService">
+      <button class="add-address-button" @click="bookNewService">
         Save
       </button>
-    </form>
+    </div>
+
+    <!-- Modal all address-->
+    <div class="modal fade" id="address-modal" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 class="modal-title" v-if="allAddress.length">
+              Select your address
+            </h6>
+            <h6 class="modal-title" v-else>
+              Add new address
+            </h6>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="container ps-4 pe-4 mt-2" v-if="allAddress.length">
+              <div
+                class="row shadow p-3 mb-3 bg-body rounded"
+                v-for="address in allAddress"
+                :key="address.id"
+                @click="selectAddress(address)"
+              >
+                <div class="col-2">
+                  <router-link to="" class="text-end"
+                    ><span class="material-icons md-18 cursor common-icon"
+                      >house</span
+                    ></router-link
+                  >
+                </div>
+                <div class="col-10">
+                  <h6 class="fw-bold text-body">{{ address.house }}</h6>
+                  <span class="text-secondary">
+                    {{ address.name }} - {{ address.mob }}<br />
+                    {{ address.place }}, {{ address.landmark }}<br />
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="container text-center" v-else>No address found</div>
+          </div>
+        </div>
+      </div>
+    </div>
     <Loader v-show="loader" />
   </div>
 </template>
 
 <script>
-import { getFirestore, setDoc, doc } from "firebase/firestore";
+import {
+  getFirestore,
+  setDoc,
+  doc,
+  query,
+  collection,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import Loader from "@/components/loader";
 import auth from "@/mixins/auth/auth.js";
 
@@ -108,6 +173,7 @@ export default {
       landmark: "",
       selectedService: this.$route.query.service,
       services: [],
+      allAddress: [],
     };
   },
   async mounted() {
@@ -117,6 +183,10 @@ export default {
     bookNewService: async function() {
       if (!this.customerName || !this.mob || !this.house || !this.place) {
         this.$toast.error("Enter all rquired fields");
+        return;
+      }
+      if(!this.selectedService){
+        this.$toast.error("Select service");
         return;
       }
       if (this.mob.toString().length !== 10) {
@@ -152,7 +222,9 @@ export default {
       try {
         await setDoc(doc(this.db, "svcorders", orderId), service);
         this.loader = false;
-        this.$toast.success(`You have booked successfully`);
+        this.$toast.success(
+          `You have booked successfully, We will contact you shortly`
+        );
         this.customerName = "";
         this.mob = "";
         this.house = "";
@@ -164,6 +236,29 @@ export default {
         this.loader = false;
         this.$toast.error(`Something went wrong! Try later`);
       }
+    },
+    openAddressModal: async function() {
+      const q = query(
+        collection(this.db, "address"),
+        where("id", "==", this.$store.state.user.uid)
+      );
+      const querySnapshot = await getDocs(q);
+      const allAddress = [];
+      querySnapshot.forEach((doc) => {
+        const address = doc.data();
+        address.id = doc.id;
+        allAddress.push(address);
+      });
+      this.allAddress = allAddress;
+      window.$("#address-modal").modal("show");
+    },
+    selectAddress: function(address) {
+      this.customerName = address.name;
+      this.mob = address.mob;
+      this.house = address.house;
+      this.place = address.place;
+      this.landmark = address.landmark;
+      window.$("#address-modal").modal("hide");
     },
   },
 };

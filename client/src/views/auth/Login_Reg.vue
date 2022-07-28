@@ -54,12 +54,7 @@
           ></rect>
         </svg>
       </div>
-      <input
-        type="email"
-        name=""
-        placeholder="Email"
-        v-model="email"
-      />
+      <input type="email" name="" placeholder="Email" v-model="email" />
       <input
         type="password"
         name=""
@@ -69,16 +64,41 @@
       <a class="forgot" href="#">Forgot password?</a>
       <input type="button" name="" value="Login" @click="login" />
       <div class="text-center">
-        No Account? Sign up
-        <a class="text-link text-light" @click="showReg = !showReg">here</a>
+        No Account?         <!--<a class="text-light fs-5" @click="showReg = !showReg">HERE</a> -->
+
+        <div class="waviy"  @click="showReg = !showReg">
+          <span style="--i:1">S</span>
+          <span style="--i:2">I</span>
+          <span style="--i:3">G</span>
+          <span style="--i:4">N</span>
+          <span style="--i:5">&nbsp;</span>
+          <span style="--i:6">U</span>
+          <span style="--i:7">P</span>
+          <span style="--i:8">&nbsp;</span>
+          <span style="--i:9">H</span>
+          <span style="--i:10">E</span>
+          <span style="--i:11">R</span>
+          <span style="--i:12">E</span>
+        </div>
       </div>
     </div>
     <div v-show="showReg" class="login-signup-form">
       <h5>Register with us</h5>
 
-      <input type="text" name="" placeholder="Name" v-model="name" autocomplete="off"/>
+      <input
+        type="text"
+        name=""
+        placeholder="Name"
+        v-model="name"
+        autocomplete="off"
+      />
       <input type="email" name="" placeholder="Email" v-model="signupEmail" />
-      <input type="number" name="" placeholder="Mobile" v-model="signupMobile" />
+      <input
+        type="number"
+        name=""
+        placeholder="Mobile"
+        v-model="signupMobile"
+      />
       <input
         type="password"
         name=""
@@ -123,7 +143,7 @@ import Loader from "@/components/loader";
 export default {
   mixins: [auth],
   async created() {
-     await this.checkAuth()
+    await this.checkAuth();
   },
   components: { Loader },
 };

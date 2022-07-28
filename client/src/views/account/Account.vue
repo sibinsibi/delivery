@@ -55,9 +55,34 @@
 
       <router-link
         class="text-decoration-none a-text-decoration-color"
-        to="/addresses"
+        to="/svcorders"
       >
         <div class="row shadow p-3 bg-body rounded">
+          <div class="col-2">
+            <router-link to="/svcorders" class="text-end"
+              ><span class="material-icons md-18 cursor common-icon"
+                >business_center</span
+              ></router-link
+            >
+          </div>
+          <div class="col-8">
+            Booked Services
+          </div>
+          <div class="col-2">
+            <router-link to="/svcorders" class=""
+              ><span class="material-icons md-18 mt-1 cursor text-black-50"
+                >keyboard_arrow_right</span
+              ></router-link
+            >
+          </div>
+        </div>
+      </router-link>
+
+      <router-link
+        class="text-decoration-none a-text-decoration-color"
+        to="/addresses"
+      >
+        <div class="row shadow p-3 bg-body rounded mt-2">
           <div class="col-2">
             <router-link to="/addresses" class="text-end"
               ><span class="material-icons md-18 cursor common-icon"
