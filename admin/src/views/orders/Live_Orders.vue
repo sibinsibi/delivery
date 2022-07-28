@@ -8,7 +8,55 @@
             Pending Orders
           </h1>
 
-          <div class="row g-4 settings-section">
+          <div class="row app-card pt-2 pb-3 shadow-sm">
+            <h6>Place filter</h6>
+            <div class="col-6 col-md-2 col-sm-6 mt-1">
+              <button
+                class="btn btn-sm btn-warning text-white w-100 btn-font-size-10 place-button"
+                @click="getFilteredOrders('all')"
+              >
+                All
+              </button>
+            </div>
+            <div
+              class="col-6 col-md-2 col-sm-6 mt-1"
+              v-for="(place, index) in places"
+              :key="index"
+            >
+              <button
+                class="btn btn-sm btn-warning text-white w-100 btn-font-size-10 place-button"
+                @click="getFilteredOrders(place)"
+              >
+                {{ place }}
+              </button>
+            </div>
+          </div>
+
+          <div class="row app-card pt-2 pb-3 mt-2 shadow-sm">
+            <h6>Shop filter</h6>
+            <div class="col-6 col-md-2 col-sm-6 mt-1">
+              <button
+                class="btn btn-sm btn-warning text-white w-100 btn-font-size-10 place-button"
+                @click="getFilteredOrdersByShop('all')"
+              >
+                All
+              </button>
+            </div>
+            <div
+              class="col-6 col-md-2 col-sm-6 mt-1"
+              v-for="(shop, index) in shops"
+              :key="index"
+            >
+              <button
+                class="btn btn-sm btn-warning text-white w-100 btn-font-size-10 place-button"
+                @click="getFilteredOrdersByShop(shop)"
+              >
+                {{ shop }}
+              </button>
+            </div>
+          </div>
+
+          <div class="row g-4 settings-section mt-2">
             <div class="col-12 col-md-12">
               <div class="app-card app-card-settings shadow-sm p-4">
                 <div class="app-card-body">
@@ -106,6 +154,9 @@ export default {
       db: getFirestore(),
       loader: false,
       allOrders: [],
+      tempOrders: [],
+      places: [],
+      shops: [],
     };
   },
   mounted() {
@@ -113,26 +164,63 @@ export default {
   },
   methods: {
     getOrders: async function() {
+      this.places = [];
       const q = query(
         collection(this.db, "orders"),
         where("status", "==", "pending")
       );
-      onSnapshot(q, (snapshot) => {
-        snapshot.docChanges().forEach((change) => {
+      await onSnapshot(q, async (snapshot) => {
+        snapshot.docChanges().forEach(async (change) => {
           if (change.type === "added") {
             const order = change.doc.data();
             order.id = change.doc.id;
             order.date = moment(order.date).format("DD/MM/YYYY hh:mm");
             this.allOrders.push(order);
+            const place =
+              order.address.place[0].toUpperCase() +
+              order.address.place.slice(1);
+            if (!this.places.includes(place)) {
+              this.places.push(place);
+            }
+            const shop =
+              order.shop.name[0].toUpperCase() + order.shop.name.slice(1);
+            if (!this.shops.includes(shop)) {
+              this.shops.push(shop);
+            }
+            this.tempOrders.push(order);
           }
-          if (change.type === "modified") {
-            console.log("Modified");
-          }
+          // if (change.type === "modified") {
+          //   console.log("Modified");
+          // }
           if (change.type === "removed") {
-            console.log("Removed");
+            const orderId = change.doc.id;
+            this.allOrders = this.allOrders.filter(
+              (order) => order.id !== orderId
+            );
+            this.tempOrders = this.allOrders;
           }
         });
       });
+    },
+    getFilteredOrders: function(place) {
+      if (place === "all") {
+        this.allOrders = this.tempOrders;
+        return;
+      }
+
+      this.allOrders = this.tempOrders.filter(
+        (order) => order.address.place.toLowerCase() == place.toLowerCase()
+      );
+    },
+    getFilteredOrdersByShop: function(shop) {
+      if (shop === "all") {
+        this.allOrders = this.tempOrders;
+        return;
+      }
+
+      this.allOrders = this.tempOrders.filter(
+        (order) => order.shop.name.toLowerCase() == shop.toLowerCase()
+      );
     },
     gotoOrder: function(id) {
       this.$root.$router.push({

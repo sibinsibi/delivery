@@ -236,6 +236,7 @@
                     <div class="col-1 col-sm-1 col-md-1 fw-bold">:</div>
                     <div class="col-7 col-sm-7 col-md-7 fw-bold capitalize">
                       {{ order.status }}
+                      <h6 class="fw-normal order-font-size" v-show="order.status === 'cancelled'">({{order.cReason}})</h6>
                     </div>
                     <div class="col-4 col-sm-4 col-md-4 mt-1">Update</div>
                     <div class="col-1 col-sm-1 col-md-1 mt-1">:</div>

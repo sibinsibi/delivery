@@ -11136,3 +11136,6 @@ a {
   stroke: #000;
   stroke-width: 1;
 }
+.place-button:focus{
+  background:red;
+}
