@@ -48,8 +48,7 @@
                     <div class="col-4 col-sm-4 col-md-4">
                       <button
                         type="button"
-                        data-toggle="modal"
-                        data-target="#amountModal"
+                        onclick="window.$('#amountModal').modal('show')"
                         class="btn btn-sm btn-success text-white"
                       >
                         Update Amount
@@ -170,7 +169,7 @@
             <button
               type="button"
               class="btn-close"
-              data-dismiss="modal"
+              onclick="window.$('#amountModal').modal('hide')"
             ></button>
           </div>
 
@@ -234,9 +233,6 @@ export default {
       loader: false,
       paymentStatus: -1,
       orderStatus: -1,
-      gst: 0,
-      totalItemAmount: 0,
-      allItems: [],
       paymentCommission: 0,
       paymentTotal: 0,
     };
@@ -252,6 +248,8 @@ export default {
       const orderRef = doc(this.db, "svcorders", this.orderId);
       const orderSnap = await getDoc(orderRef);
       this.order = orderSnap.data();
+      this.paymentCommission = this.order.payment.commission;
+      this.paymentTotal = this.order.payment.total;
       this.loader = false;
     },
     updatePaymentStatus: async function() {
@@ -355,9 +353,8 @@ export default {
           no-repeat `,
         })
         .then(async (result) => {
-          window.$("#amountModal").modal("hide");
-
           if (result.isConfirmed) {
+            window.$("#amountModal").modal("hide");
             this.loader = true;
             try {
               const orderRef = doc(this.db, "svcorders", this.orderId);
@@ -365,9 +362,7 @@ export default {
                 "payment.total": this.paymentTotal,
                 "payment.commission": this.paymentCommission,
               });
-              this.paymentTotal = 0;
-              this.paymentCommission = 0;
-
+             
               await this.getOrder();
               this.$toast.success(`Updated successfully`);
             } catch (err) {
@@ -375,8 +370,8 @@ export default {
               this.loader = false;
             }
           } else {
-            this.paymentTotal = 0;
-            this.paymentCommission = 0;
+            this.paymentCommission = this.order.payment.commission;
+            this.paymentTotal = this.order.payment.total;
           }
         });
     },
