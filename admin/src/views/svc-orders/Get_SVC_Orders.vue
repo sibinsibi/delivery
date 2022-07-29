@@ -5,7 +5,7 @@
       <div class="app-content pt-3 p-md-3 p-lg-4">
         <div class="container-xl">
           <h1 class="app-page-title mt-md-5 mt-5 mt-sm-5 fs-5">
-            Filter Orders
+            Filter SVC Orders
           </h1>
 
           <div class="row">

@@ -8,7 +8,7 @@
           >
         </router-link>
       </div>
-      <div class="col-8 ps-3">My Orders</div>
+      <div class="col-8 ps-3">My Bookings</div>
       <div class="col-3 ps-3 text-end">
         <router-link to="/"
           ><span class="material-icons common-icon cursor">home</span>
@@ -25,36 +25,32 @@
       >
         <div class="col-8 line-height-5">
           <h6 class="fw-bold text-body cart-font-size-1">
-            {{ order.shop.name }}
+            {{ order.address.name }}
           </h6>
           <span class="text-secondary">
-            {{ order.shop.address.street }}
+            {{ order.address.place }}
           </span>
         </div>
         <div class="col-4 capitalize display-inline ">
           {{ order.status }}
-          <router-link to="" v-show="order.status === 'delivered'"
-            ><span
-              class="material-icons delivered-icon cursor"
+          <router-link to="" v-show="order.status === 'completed'"
+            ><span class="material-icons delivered-icon cursor"
               >check_circle</span
             >
           </router-link>
           <router-link to="" v-show="order.status === 'cancelled'"
-            ><span
-              class="material-icons delivered-icon cursor text-danger"
+            ><span class="material-icons delivered-icon cursor text-danger"
               >cancel</span
             >
           </router-link>
         </div>
-        <div class="col-12 mt-2">
-          <span v-for="item in order.items" :key="item.id">
-            {{ item.name }} ({{ item.qty }}),
-          </span>
-        </div>
-        <div class="col-12 text-muted">
+        <div class="col-12 text-muted mt-2">
           <span>{{ order.date }} </span>
         </div>
-        <div class="col-12 mt-1">₹{{ order.payment.total }}</div>
+        <div class="col-12 mt-1" v-if="order.payment.total">
+          ₹{{ order.payment.total }}
+        </div>
+        <div class="col-12 mt-1" v-else>Not Paid</div>
       </div>
     </div>
 
@@ -62,7 +58,7 @@
       <div class="row">
         <div class="col-12 text-center">
           <span class="material-icons common-icon cursor empty-address-icon"
-            >shop</span
+            >business_center</span
           >
           <p>No Orders</p>
         </div>
@@ -113,7 +109,7 @@ export default {
     getOrders: async function(uid, lmt) {
       this.loader = true;
       const q = query(
-        collection(this.db, "orders"),
+        collection(this.db, "svcorders"),
         where("customer.id", "==", uid),
         orderBy("date", "desc"),
         limit(lmt)
@@ -130,7 +126,7 @@ export default {
       this.loader = false;
     },
     gotoOrder: function(id) {
-      this.$router.push(`/order/${id}`);
+      this.$router.push(`/svcorder/${id}`);
     },
   },
 };

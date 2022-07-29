@@ -33,14 +33,14 @@
         to="/orders"
       >
         <div class="row shadow p-3 mb-2 bg-body rounded">
-          <div class="col-2">
+          <div class="col-2 pt-1">
             <router-link to="/orders" class="text-end"
               ><span class="material-icons md-18 common-icon cursor"
                 >shopping_bag</span
               ></router-link
             >
           </div>
-          <div class="col-8">
+          <div class="col-8 pt-1">
             Your orders
           </div>
           <div class="col-2">
@@ -55,21 +55,21 @@
 
       <router-link
         class="text-decoration-none a-text-decoration-color"
-        to="/svcorders"
+        to="/svc_orders"
       >
         <div class="row shadow p-3 bg-body rounded">
-          <div class="col-2">
-            <router-link to="/svcorders" class="text-end"
+          <div class="col-2 pt-1">
+            <router-link to="/svc_orders" class="text-end"
               ><span class="material-icons md-18 cursor common-icon"
                 >business_center</span
               ></router-link
             >
           </div>
-          <div class="col-8">
+          <div class="col-8 pt-1">
             Booked Services
           </div>
           <div class="col-2">
-            <router-link to="/svcorders" class=""
+            <router-link to="/svc_orders" class=""
               ><span class="material-icons md-18 mt-1 cursor text-black-50"
                 >keyboard_arrow_right</span
               ></router-link
@@ -83,14 +83,14 @@
         to="/addresses"
       >
         <div class="row shadow p-3 bg-body rounded mt-2">
-          <div class="col-2">
+          <div class="col-2 pt-1">
             <router-link to="/addresses" class="text-end"
               ><span class="material-icons md-18 cursor common-icon"
                 >house</span
               ></router-link
             >
           </div>
-          <div class="col-8">
+          <div class="col-8 pt-1">
             Addresses
           </div>
           <div class="col-2">
@@ -109,14 +109,14 @@
         @click="gotoLogout"
       >
         <div class="row shadow p-3 bg-body rounded mt-2">
-          <div class="col-2">
+          <div class="col-2 pt-1">
             <router-link class="text-end" to="" @click="gotoLogout"
               ><span class="material-icons md-18 cursor common-icon"
                 >exit_to_app</span
               ></router-link
             >
           </div>
-          <div class="col-8">
+          <div class="col-8 pt-1">
             Logout
           </div>
           <div class="col-2">

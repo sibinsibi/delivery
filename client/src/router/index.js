@@ -75,6 +75,16 @@ const routes = [
     name: "Service",
     component: () => import("../views/service/Book_Service.vue"),
   },
+  {
+    path: "/svc_orders",
+    name: "SVC-Orders",
+    component: () => import("../views/service/SVC_Orders.vue"),
+  },
+  {
+    path: "/svcorder/:id",
+    name: "SVC-Order",
+    component: () => import("../views/service/SVC_Order.vue"),
+  },
   
 
 ];

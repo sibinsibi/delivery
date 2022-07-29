@@ -185,7 +185,7 @@ export default {
         this.$toast.error("Enter all rquired fields");
         return;
       }
-      if(!this.selectedService){
+      if (!this.selectedService) {
         this.$toast.error("Select service");
         return;
       }
@@ -213,6 +213,7 @@ export default {
         payment: {
           total: 0,
           commission: 0,
+          status: "pending",
         },
         status: "pending",
       };
