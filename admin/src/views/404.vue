@@ -6,9 +6,9 @@
   <div class="bubble"></div>
   <div class="main">
     <h1>404</h1>
-    <p>It looks like you're lost...<br />That's a trouble?</p>
+    <p>Page Not Found</p>
     <button type="button">
-      <router-link  to="/" class="text-white"
+      <router-link  to="/" class="text-white text-decoration-none"
         >HOME</router-link
       >
     </button>

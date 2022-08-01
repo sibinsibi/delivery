@@ -85,6 +85,11 @@ const routes = [
     name: "SVC-Order",
     component: () => import("../views/service/SVC_Order.vue"),
   },
+  {
+    path: "/:catchAll(.*)",
+    name: "SVC-Order",
+    component: () => import("../views/404.vue"),
+  },
   
 
 ];

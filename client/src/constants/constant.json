@@ -49,27 +49,50 @@
             {
                 "name": "Electrical",
                 "active": true,
-                "url": "https://ik.imagekit.io/s60rojqsg/services/Electrical_L6APSv_bq.jpg"
+                "url": "https://ik.imagekit.io/s60rojqsg/services/Electrical_L6APSv_bq.jpg",
+                "description": ""
             },
             {
                 "name": "Plumbing",
                 "active": true,
-                "url": "https://ik.imagekit.io/s60rojqsg/services/plumbing_XYGobwxNtP.jpeg"
+                "url": "https://ik.imagekit.io/s60rojqsg/services/plumbing_XYGobwxNtP.jpeg",
+                "description": ""
             },
             {
                 "name": "Studio",
                 "active": true,
-                "url": "https://ik.imagekit.io/s60rojqsg/services/studio_ClvI3NwCJ.jpg"
+                "url": "https://ik.imagekit.io/s60rojqsg/services/studio_ClvI3NwCJ.jpg",
+                "description": ""
             },
             {
                 "name": "Dance",
                 "active": true,
-                "url": "https://ik.imagekit.io/s60rojqsg/services/dance_CFxdZLPpu.webp"
+                "url": "https://ik.imagekit.io/s60rojqsg/services/dance_CFxdZLPpu.webp",
+                "description": ""
             },
             {
                 "name": "Chef",
                 "active": true,
-                "url": "https://ik.imagekit.io/s60rojqsg/services/chef_oyitd-_Tw.webp"
+                "url": "https://ik.imagekit.io/s60rojqsg/services/chef_oyitd-_Tw.webp",
+                "description": ""
+            },
+            {
+                "name": "Car Wash",
+                "active": true,
+                "url": "https://ik.imagekit.io/s60rojqsg/services/car_eAw2PVD08.jpg",
+                "description": ""
+            },
+            {
+                "name": "Computer Service",
+                "active": true,
+                "url": "https://ik.imagekit.io/s60rojqsg/services/computer_oqvs7j663.jpg",
+                "description": ""
+            },
+            {
+                "name": "Car Workshop",
+                "active": true,
+                "url": "https://ik.imagekit.io/s60rojqsg/services/carworkshop_6r2qMJom2.jpg",
+                "description": ""
             }
         ]
     },
