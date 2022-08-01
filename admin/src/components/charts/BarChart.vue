@@ -52,11 +52,7 @@ export default {
     }
   },
   data() {
-    return {
-      chartOptions: {
-        responsive: true
-      }
-    }
+
   }
 }
 </script>
