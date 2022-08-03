@@ -183,7 +183,7 @@ export default {
     //         return element.date >= start && element.date <= end;
     //       }).length
     //     );
-    //     // console.log(date);
+    //    
     //     // console.log(
     //     //   orders.filter((element) => {
     //     //     return element.date >= start && element.date <= end;
