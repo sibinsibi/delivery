@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+/* css cache */
 
 import { register } from 'register-service-worker'
 
