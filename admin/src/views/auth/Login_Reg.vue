@@ -9,7 +9,7 @@
             /></a>
           </div>
           <h2 class="auth-heading text-center mb-5" v-show="!showReg">
-            Log in to Portal
+            Mr.Changay
           </h2>
           <h2 class="auth-heading text-center mb-5" v-show="showReg">
             Sign up to Portal

@@ -2,7 +2,7 @@
   <form class="box">
     <div v-show="!showReg" class="login-signup-form">
       <div>
-        <h1>KOKACHI</h1>
+        <h1>Mr.ചങ്ങായി</h1>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           x="0px"

@@ -96,11 +96,7 @@
                         class="row gx-2 justify-content-between align-items-center"
                       >
                         <div class="col-auto">
-                          <img
-                            class="profile-image"
-                            src="assets/images/profiles/profile-1.png"
-                            alt=""
-                          />
+                          <img class="profile-image" src="" alt="" />
                         </div>
                         <!--//col-->
                         <div class="col">
@@ -201,11 +197,7 @@
                         class="row gx-2 justify-content-between align-items-center"
                       >
                         <div class="col-auto">
-                          <img
-                            class="profile-image"
-                            src="assets/images/profiles/profile-2.png"
-                            alt=""
-                          />
+                          <img class="profile-image" src="" alt="" />
                         </div>
                         <!--//col-->
                         <div class="col">
@@ -264,8 +256,9 @@
                   href="#"
                   role="button"
                   aria-expanded="false"
-                  ><img src="img/web/user.svg" alt="user profile"
-                /></a>
+                >
+                  
+                </a>
 
                 <ul
                   class="dropdown-menu"
@@ -319,7 +312,7 @@
               class="logo-icon me-2"
               src="img/web/app-logo.svg"
               alt="logo"
-            /><span class="logo-text">KOKACHI</span></router-link
+            /><span class="logo-text">Mr.Changay</span></router-link
           >
         </div>
         <div class="text-center">
