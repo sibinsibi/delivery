@@ -1,6 +1,11 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 const routes = [
   {
+    path: "/:catchAll(.*)",
+    name: "SVC-Order",
+    component: () => import("../views/404.vue"),
+  },
+  {
     path: "/",
     name: "Home",
     component: () => import("../views/Home.vue"),
@@ -85,13 +90,6 @@ const routes = [
     name: "SVC-Order",
     component: () => import("../views/service/SVC_Order.vue"),
   },
-  {
-    path: "/:catchAll(.*)",
-    name: "SVC-Order",
-    component: () => import("../views/404.vue"),
-  },
-  
-
 ];
 
 const router = createRouter({

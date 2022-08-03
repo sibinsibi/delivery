@@ -15,7 +15,7 @@
         </router-link>
       </div>
     </div>
-    <div class="add-address text-end">
+    <div class="add-address text-end mt-2">
       <div class="pe-2">
         <button
           class="btn btn-outline-danger btn-sm"
@@ -177,6 +177,7 @@ export default {
     };
   },
   async mounted() {
+    window.scrollTo(0, 0); 
     await this.checkAuth();
   },
   methods: {

@@ -249,6 +249,7 @@
                           <th>O.Status</th>
                           <th>P.Status</th>
                           <th></th>
+                          <th></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -277,6 +278,13 @@
                           <td class="cell">
                             <router-link to="" @click="gotoOrder(order.id)"
                               ><span class="material-icons">visibility</span>
+                            </router-link>
+                          </td>
+                          <td class="cell">
+                            <router-link to="" @click="deleteOrder(order.id)"
+                              ><span class="material-icons text-danger"
+                                >delete</span
+                              >
                             </router-link>
                           </td>
                         </tr>
@@ -313,6 +321,7 @@ import {
   getDocs,
   getDoc,
   doc,
+  deleteDoc,
 } from "firebase/firestore";
 import moment from "moment";
 
@@ -503,6 +512,18 @@ export default {
       });
       this.allOrders = orders;
       this.loader = false;
+    },
+    deleteOrder: async function(id) {
+      if (!confirm("Are you sure?")) {
+        return;
+      }
+      try {
+        await deleteDoc(doc(this.db, "orders", id));
+        this.$toast.success("Deleted successfully");
+        this.allOrders = []
+      } catch {
+        this.$toast.error("Something went wrong! Try later");
+      }
     },
   },
 };
