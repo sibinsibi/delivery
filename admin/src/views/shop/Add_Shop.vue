@@ -266,6 +266,7 @@ export default {
   },
   methods: {
     getData: async function() {
+      
       const docRef = doc(this.db, "shopTypes", "types");
       const docSnap = await getDoc(docRef);
       const types = docSnap.data();

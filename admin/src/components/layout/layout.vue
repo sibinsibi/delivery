@@ -731,7 +731,7 @@
             <ul class="app-menu footer-menu list-unstyled">
               <li class="nav-item">
                 <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                <a class="nav-link" href="settings.html">
+                <a class="nav-link">
                   <span class="nav-icon">
                     <svg class="svg-icon bi bi-gear" viewBox="0 0 20 20">
                       <path
